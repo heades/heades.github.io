@@ -22,6 +22,7 @@ sitemap:
           {{ publication.authors | join: ', ' }}.
           <strong>{{ publication.title }}</strong>.
             {% if publication.journal %} {{ publication.journal }}, {% endif %}
+            {% if publication.note %} {{ publication.note }}. {% endif %}
             {% if publication.volume %} volume {{ publication.volume }}. {% endif %}
             {% if publication.pages %} Pages {{ publication.pages }}. {% endif %}
             {% if publication.date %} {{ publication.date | date: "%d %B %Y" }}.
@@ -128,6 +129,7 @@ sitemap:
           <strong>{{ publication.title }}</strong>.          
           {% if publication.publisher %}{{ publication.publisher }}.{% endif %}
           {% if publication.note %}<i>{{ publication.note }}.</i>{% endif %}
+          {% if publication.year %}{{ publication.year }}.{% endif %}
           {% if publication.resource %}
 	    {% if publication.resource.type == 'doi' %}
 	      <a href="http://dx.doi.org/{{ publication.resource.value }}">doi: {{ publication.resource.value }}</a>
@@ -159,6 +161,7 @@ sitemap:
           <strong>{{ publication.title }}</strong>.          
           {% if publication.publisher %}{{ publication.publisher }}.{% endif %}
           {% if publication.note %}<i>{{ publication.note }}.</i>{% endif %}
+          {% if publication.year %}<i>{{ publication.year }}.</i>{% endif %}
           {% if publication.resource %}
 	    {% if publication.resource.type == 'doi' %}
 	      <a href="http://dx.doi.org/{{ publication.resource.value }}">doi: {{ publication.resource.value }}</a>
