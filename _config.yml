@@ -1,0 +1,9 @@
+name: Harley Eades III
+markdown: redcarpet
+highlighter: pygments
+permalink: /blog/:year/:month/:day/:title.html
+collections:
+  services:
+    output: false
+  pubs:
+    output: false

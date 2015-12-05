@@ -1,0 +1,128 @@
+---
+layout: default
+title: Publications
+sitemap:
+    priority: 0.9
+    changefreq: monthly
+---
+
+{% assign collection = site.pubs | group_by: "type" %}
+
+{% for group in collection %}
+
+  {% if group.name == 'inproceedings' %}
+
+  {% assign subgroups = group.items | group_by:"workshop" %}
+
+  {% for subgroup in subgroups %}
+
+    {% if subgroup.name == 'false' %}
+
+    <h4>Papers in Conference Proceedings (in construction)</h4>
+
+    {% else %}
+
+    <h4>Papers In Workshop Proceedings (in construction)</h4>
+
+    {% endif %}
+
+    <ul class="list-group">
+
+      {% for publication in subgroup.items reversed %}
+
+        <li class="list-group-item">
+          {{ publication.authors | join: ', ' }}.
+          <strong>{{ publication.title }}</strong>.
+          {% if publication.booktitle %} In Proc. {{ publication.booktitle }}. {% endif %} 
+          {% if publication.editors %} Edited by {{ publication.editors | join: ', ' }}. {% endif %}
+          {% if publication.series %} {{ publication.series }}, {% endif %}
+          {% if publication.volume %} volume {{ publication.volume }}{% endif %}
+          {% if publication.pages %} Pages {{ publication.pages }}. {% endif %}
+          {% if publication.date %} {{ publication.date | date: "%d %B %Y" }}.  {% endif %} 
+          {% if publication.year %} {{ publication.year }}.  {% endif %} 
+          {% if publication.local %} {{ publication.local }}.  {% endif %} 
+          {% if publication.publisher %}{{ publication.publisher }}.{% endif %}
+          {% if publication.note %}<i>{{ publication.note }}.</i>{% endif %}
+          {% if publication.resource %}
+	    {% if publication.resource.type == 'doi' %}
+	      <a href="http://dx.doi.org/{{ publication.resource.value }}">doi: {{ publication.resource.value }}</a>
+	    {% elsif publication.resource.type == 'url' %}
+	      <a href="{{ publication.resource.value }}">{{ publication.resource.value }}</a>
+            {% endif %}
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+    {% endfor %}
+  {% else %}
+
+    {% if group.name == 'article' %}
+
+      <h4>Journal Papers <span class="badge">{{ group.items | size }}</span></h4>
+
+    {% elsif group.name == 'report' %}
+
+      <h4>Technical Reports <span class="badge">{{ group.items | size }}</span></h4>
+
+    {% elsif group.name == 'chapter' %}
+
+      <h4>Book Chapters <span class="badge">{{ group.items | size }}</span></h4>
+
+    {% else %}
+
+      <h4>{{ group.name }}</h4>
+
+    {% endif %}
+
+    <ul class="list-group">
+
+      {% for publication in group.items reversed %}
+
+        <li class="list-group-item">
+          {{ publication.authors | join: ', ' }}.
+          <strong>{{ publication.title }}</strong>.
+          {% if group.name == 'article' %}
+            {% if publication.journal %} {{ publication.journal }}, {% endif %}
+            {% if publication.volume %} volume {{ publication.volume }}. {% endif %}
+            {% if pubs.pages %} Pages {{ publication.pages }}. {% endif %}
+            {% if publication.date %} {{ publication.date | date: "%d %B %Y" }}.
+	    {% elsif pubs.year %} {{ publication.year }}.
+	    {% endif %} 
+          {% elsif group.name == 'report' %}
+            {% if publication.institution %} {{ publication.institution }}, {% endif %}
+            {% if publication.number %} {{ publication.number }}, {% endif %}
+            {% if publication.year %} {{ publication.year }}. {% endif %}
+          {% elsif group.name == 'inproceedings' %}
+            {% if publication.booktitle %} In Proc. {{ publication.booktitle }}. {% endif %} 
+            {% if publication.editors %} Edited by {{ publication.editors | join: ', ' }}. {% endif %}
+            {% if publication.series %} {{ publication.series }}, {% endif %}
+            {% if publication.volume %} volume {{ publication.volume }}{% endif %}
+            {% if publication.pages %} Pages {{ publication.pages }}. {% endif %}
+            {% if publication.date %} {{ publication.date | date: "%d %B %Y" }}.  {% endif %} 
+            {% if publication.local %} {{ publication.local }}.  {% endif %} 
+          {% elsif group.name == 'chapter' %}
+            {{ publication.booktitle }}.
+            {% if publication.series %} {{ publication.series }}, {% endif %}
+            {% if publication.volume %} volume {{ publication.volume }}, {% endif %}
+            {% if pubs.pages %}, p. {{ publication.pages }}.{% endif %}.
+            {% if publication.editors %}Edited by {{ publication.editors | join: ', ' }}. {% endif %}
+            {% if pubs.year %} {{ publication.year }}.  {% endif %} 
+            {% if pubs.isbn %} ISBN {{ publication.isbn }}.  {% endif %} 
+          {% endif %}
+          {% if publication.publisher %}{{ publication.publisher }}.{% endif %}
+          {% if publication.note %}<i>{{ publication.note }}.</i>{% endif %}
+          {% if publication.resource %}
+	    {% if publication.resource.type == 'doi' %}
+	      <a href="http://dx.doi.org/{{ publication.resource.value }}">doi: {{ publication.resource.value }}</a>
+	    {% elsif publication.resource.type == 'url' %}
+	      <a href="{{ publication.resource.value }}">{{ publication.resource.value }}</a>
+            {% elsif publication.resource.type == 'pdf-report' %}
+	      [<a href="{{ publication.resource.pdf-url }}">PDF</a>]
+              [<a href="{{ publication.resource.report-url }}">PDF ({{ publication.resource.report-note }})</a>]
+            {% endif %}
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endfor %}
