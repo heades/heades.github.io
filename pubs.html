@@ -6,7 +6,7 @@ sitemap:
     changefreq: monthly
 ---
 
-{% assign collection = site.pubs | group_by: "type" %}
+{% assign collection = site.pubs | sort: "date" | group_by: "type" %}
 
 {% for group in collection %}
 
@@ -56,7 +56,11 @@ sitemap:
     {% endfor %}
   {% else %}
 
-    {% if group.name == 'article' %}
+    {% if group.name == 'draft' %}
+
+    <h4> Drafts <span class="badge">{{ group.items | size }}</span></h4>
+    
+    {% elsif group.name == 'article' %}
 
       <h4>Journal Papers <span class="badge">{{ group.items | size }}</span></h4>
 
@@ -87,7 +91,14 @@ sitemap:
             {% if pubs.pages %} Pages {{ publication.pages }}. {% endif %}
             {% if publication.date %} {{ publication.date | date: "%d %B %Y" }}.
 	    {% elsif pubs.year %} {{ publication.year }}.
-	    {% endif %} 
+	    {% endif %}
+          {% elsif group.name == 'draft' %}
+            {% if publication.journal %} {{ publication.journal }}, {% endif %}
+            {% if publication.volume %} volume {{ publication.volume }}. {% endif %}
+            {% if pubs.pages %} Pages {{ publication.pages }}. {% endif %}
+            {% if publication.date %} {{ publication.date | date: "%d %B %Y" }}.
+	    {% elsif pubs.year %} {{ publication.year }}.
+	    {% endif %}           
           {% elsif group.name == 'report' %}
             {% if publication.institution %} {{ publication.institution }}, {% endif %}
             {% if publication.number %} {{ publication.number }}, {% endif %}
@@ -119,6 +130,8 @@ sitemap:
             {% elsif publication.resource.type == 'pdf-report' %}
 	      [<a href="{{ publication.resource.pdf-url }}">PDF</a>]
               [<a href="{{ publication.resource.report-url }}">PDF ({{ publication.resource.report-note }})</a>]
+            {% elsif publication.resource.type == 'pdf' %}
+	      [<a href="{{ publication.resource.pdf-url }}">PDF</a>]
             {% endif %}
           {% endif %}
         </li>
