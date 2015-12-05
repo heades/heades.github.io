@@ -96,16 +96,17 @@ sitemap:
           {% if group.name == 'article' %}
             {% if publication.journal %} {{ publication.journal }}, {% endif %}
             {% if publication.volume %} volume {{ publication.volume }}. {% endif %}
-            {% if pubs.pages %} Pages {{ publication.pages }}. {% endif %}
+            {% if publication.number %} number {{ publication.number }}. {% endif %}
+            {% if publication.pages %} Pages {{ publication.pages }}. {% endif %}
             {% if publication.date %} {{ publication.date | date: "%d %B %Y" }}.
-	    {% elsif pubs.year %} {{ publication.year }}.
+	    {% elsif publication.year %} {{ publication.year }}.
 	    {% endif %}
           {% elsif group.name == 'draft' %}
             {% if publication.journal %} {{ publication.journal }}, {% endif %}
             {% if publication.volume %} volume {{ publication.volume }}. {% endif %}
-            {% if pubs.pages %} Pages {{ publication.pages }}. {% endif %}
+            {% if publication.pages %} Pages {{ publication.pages }}. {% endif %}
             {% if publication.date %} {{ publication.date | date: "%d %B %Y" }}.
-	    {% elsif pubs.year %} {{ publication.year }}.
+	    {% elsif publication.year %} {{ publication.year }}.
 	    {% endif %}           
           {% elsif group.name == 'report' %}
             {% if publication.institution %} {{ publication.institution }}, {% endif %}
@@ -123,10 +124,10 @@ sitemap:
             {{ publication.booktitle }}.
             {% if publication.series %} {{ publication.series }}, {% endif %}
             {% if publication.volume %} volume {{ publication.volume }}, {% endif %}
-            {% if pubs.pages %}, p. {{ publication.pages }}.{% endif %}.
+            {% if publication.pages %}, p. {{ publication.pages }}.{% endif %}.
             {% if publication.editors %}Edited by {{ publication.editors | join: ', ' }}. {% endif %}
-            {% if pubs.year %} {{ publication.year }}.  {% endif %} 
-            {% if pubs.isbn %} ISBN {{ publication.isbn }}.  {% endif %} 
+            {% if publication.year %} {{ publication.year }}.  {% endif %} 
+            {% if publication.isbn %} ISBN {{ publication.isbn }}.  {% endif %} 
           {% endif %}
           {% if publication.publisher %}{{ publication.publisher }}.{% endif %}
           {% if publication.note %}<i>{{ publication.note }}.</i>{% endif %}
