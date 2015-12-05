@@ -72,6 +72,10 @@ sitemap:
 
       <h4>Book Chapters <span class="badge">{{ group.items | size }}</span></h4>
 
+    {% elsif group.name == 'workshop' %}
+
+      <h4>Workshop Papers <span class="badge">{{ group.items | size }}</span></h4>      
+
     {% elsif group.name == 'poster' %}
 
       <h4> Posters <span class="badge">{{ group.items | size }}</span></h4>
