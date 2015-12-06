@@ -7,5 +7,4 @@ collections:
     output: false
   pubs:
     output: false
-gems:
-  - jekyll-feed
+
