@@ -1,0 +1,13 @@
+@ARTICLE{2013arXiv1309.1256E,
+   author = {{Eades}, H. and {Stump}, A.},
+    title = "{Hereditary Substitution for the $\backslash$lambda$\backslash$Delta-Calculus}",
+  journal = {ArXiv e-prints},
+archivePrefix = "arXiv",
+   eprint = {1309.1256},
+ primaryClass = "cs.LO",
+ keywords = {Computer Science - Logic in Computer Science, Computer Science - Programming Languages, D.3.1, D.3.3, F.3.1, F.3.3, F.4.1},
+     year = 2013,
+    month = sep,
+   adsurl = {http://adsabs.harvard.edu/abs/2013arXiv1309.1256E},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}

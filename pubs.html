@@ -28,17 +28,25 @@ sitemap:
             {% if publication.pages %} Pages {{ publication.pages }}. {% endif %}
             {% if publication.date %} {{ publication.date | date: "%d %B %Y" }}.
 	    {% elsif publication.year %} {{ publication.year }}.
-	    {% endif %}                     
-	    {% if publication.resource.type == 'doi' %}
-	      <a href="http://dx.doi.org/{{ publication.resource.value }}">doi: {{ publication.resource.value }}</a>
-	    {% elsif publication.resource.type == 'url' %}
-	      <a href="{{ publication.resource.value }}">{{ publication.resource.value }}</a>
-            {% elsif publication.resource.type == 'pdf-report' %}
-	      [<a href="{{ publication.resource.pdf-url }}">PDF</a>]
-              [<a href="{{ publication.resource.report-url }}">PDF ({{ publication.resource.report-note }})</a>]
-            {% elsif publication.resource.type == 'pdf' %}
-	      [<a href="{{ publication.resource.pdf-url }}">PDF</a>]
-            {% endif %}          
+	    {% endif %}
+            {% if publication.resource %}
+              {% if publication.resource.bibtex %}
+	        [<a href="{{ publication.resource.bibtex }}">Bibtex</a>]
+              {% endif %}
+              {% if publication.resource.slides %}
+	        [<a href="{{ publication.resource.slides }}">Slides</a>]
+              {% endif %} 
+	      {% if publication.resource.type == 'doi' %}
+	        <a href="http://dx.doi.org/{{ publication.resource.value }}">doi: {{ publication.resource.value }}</a>
+	      {% elsif publication.resource.type == 'url' %}
+	        <a href="{{ publication.resource.value }}">{{ publication.resource.value }}</a>
+              {% elsif publication.resource.type == 'pdf-report' %}
+	        [<a href="{{ publication.resource.pdf-url }}">PDF</a>]
+                [<a href="{{ publication.resource.report-url }}">PDF ({{ publication.resource.report-note }})</a>]
+              {% elsif publication.resource.type == 'pdf' %}
+	        [<a href="{{ publication.resource.pdf-url }}">PDF</a>]
+              {% endif %}
+            {% endif %}
         </li>
       {% endfor %}
     {% endif %}
@@ -70,6 +78,12 @@ sitemap:
           {% if publication.publisher %}{{ publication.publisher }}.{% endif %}
           {% if publication.note %}<i>{{ publication.note }}.</i>{% endif %}
           {% if publication.resource %}
+            {% if publication.resource.bibtex %}
+	      [<a href="{{ publication.resource.bibtex }}">Bibtex</a>]
+            {% endif %}
+            {% if publication.resource.slides %}
+	      [<a href="{{ publication.resource.slides }}">Slides</a>]
+            {% endif %} 
 	    {% if publication.resource.type == 'doi' %}
 	      <a href="http://dx.doi.org/{{ publication.resource.value }}">doi: {{ publication.resource.value }}</a>
 	    {% elsif publication.resource.type == 'url' %}
@@ -105,6 +119,12 @@ sitemap:
 	  {% elsif publication.year %} {{ publication.year }}.
 	  {% endif %}          
           {% if publication.resource %}
+            {% if publication.resource.bibtex %}
+              [<a href="{{ publication.resource.bibtex }}">Bibtex</a>]
+            {% endif %}
+            {% if publication.resource.slides %}
+	      [<a href="{{ publication.resource.slides }}">Slides</a>]
+            {% endif %} 
 	    {% if publication.resource.type == 'doi' %}
 	      <a href="http://dx.doi.org/{{ publication.resource.value }}">doi: {{ publication.resource.value }}</a>
 	    {% elsif publication.resource.type == 'url' %}
@@ -138,6 +158,12 @@ sitemap:
           {% if publication.note %}<i>{{ publication.note }}.</i>{% endif %}
           {% if publication.year %}{{ publication.year }}.{% endif %}
           {% if publication.resource %}
+            {% if publication.resource.bibtex %}
+              [<a href="{{ publication.resource.bibtex }}">Bibtex</a>]
+            {% endif %}
+            {% if publication.resource.slides %}
+	      [<a href="{{ publication.resource.slides }}">Slides</a>]
+            {% endif %} 
 	    {% if publication.resource.type == 'doi' %}
 	      <a href="http://dx.doi.org/{{ publication.resource.value }}">doi: {{ publication.resource.value }}</a>
 	    {% elsif publication.resource.type == 'url' %}
@@ -171,6 +197,12 @@ sitemap:
           {% if publication.note %}<i>{{ publication.note }}.</i>{% endif %}
           {% if publication.year %}<i>{{ publication.year }}.</i>{% endif %}
           {% if publication.resource %}
+            {% if publication.resource.bibtex %}
+	      [<a href="{{ publication.resource.bibtex }}">Bibtex</a>]
+            {% endif %}
+            {% if publication.resource.slides %}
+              [<a href="{{ publication.resource.slides }}">Slides</a>]
+            {% endif %} 
 	    {% if publication.resource.type == 'doi' %}
 	      <a href="http://dx.doi.org/{{ publication.resource.value }}">doi: {{ publication.resource.value }}</a>
 	    {% elsif publication.resource.type == 'url' %}
