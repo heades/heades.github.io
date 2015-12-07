@@ -2,8 +2,7 @@ name: Harley Eades III
 markdown: redcarpet
 highlighter: pygments
 collections:
-  services:
-    output: false
   pubs:
     output: false
-
+  talks:
+    output: false
