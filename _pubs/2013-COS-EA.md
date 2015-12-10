@@ -1,5 +1,5 @@
 ---
-type: workshop
+type: abstract
 authors:
   - Aaron Stump
   - Harley Eades III
