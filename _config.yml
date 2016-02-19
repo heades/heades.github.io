@@ -1,6 +1,6 @@
 name: Harley Eades III
 markdown: redcarpet
-highlighter: pygments
+highlighter: rouge
 collections:
   pubs:
     output: false
