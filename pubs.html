@@ -26,7 +26,6 @@ sitemap:
             {% if publication.note %} {{ publication.note }}. {% endif %}
             {% if publication.volume %} volume {{ publication.volume }}. {% endif %}
             {% if publication.pages %} Pages {{ publication.pages }}. {% endif %}
-	    {% elsif publication.year %} {{ publication.year }}.
 	    {% endif %}
             {% if publication.resource %}
               {% if publication.resource.bibtex %}
