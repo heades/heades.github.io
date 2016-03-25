@@ -25,8 +25,7 @@ sitemap:
             {% if publication.journal %} {{ publication.journal }}, {% endif %}
             {% if publication.note %} {{ publication.note }}. {% endif %}
             {% if publication.volume %} volume {{ publication.volume }}. {% endif %}
-            {% if publication.pages %} Pages {{ publication.pages }}. {% endif %}.
-	    {% endif %}
+            {% if publication.pages %} Pages {{ publication.pages }}. {% endif %}            
             {% if publication.resource %}
               {% if publication.resource.bibtex %}
 	        [<a href="{{ publication.resource.bibtex }}">Bibtex</a>]
