@@ -1,5 +1,5 @@
 ---
-type: unpublished
+type: unpub
 authors:
   - Harley Eades III
 title: "Proposing a New Foundation of Attack Trees in Monoidal Categories"
