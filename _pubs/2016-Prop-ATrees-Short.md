@@ -3,7 +3,7 @@ type: unpub
 authors:
   - Harley Eades III
 title: "Proposing a New Foundation of Attack Trees in Monoidal Categories"
-note: "Updated: March 30, 2016"
+note: "Updated: March 30"
 year: 2016
 resource:
   type: pdf
