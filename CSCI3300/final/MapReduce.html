@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>CSCI:3300 - MapReduce</title>
+        <link rel="stylesheet" type="text/css" href="../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../css/syntax-rj.css" />                
+    </head>
+    <body>
+      
+      <h1>CSCI:3300 - MapReduce </h1>
+        <div id="navigation">
+        <a href="../index.html">Home</a>
+        <a href="../grades.html">Grading</a>
+		<a href="../lectures.html">Lectures</a>
+	    <a href="../assignments.html">Assignments</a>
+	    <a href="../links.html">Links</a>
+        <a href="https://piazza.com/class/i4kkvjdaoqj7aj#">Piazza</a>
+        </div>
+       
+	<br />
+	<br />
+	<h1 id="map-reduce">Map-Reduce</h1>
+<div class="hidden">
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="kw">module</span> <span class="dt">MapReduce</span> (mapReduce) <span class="kw">where</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="kw">import qualified</span> <span class="dt">Data.Map</span> <span class="kw">as</span> <span class="dt">M</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">List</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Prelude</span> <span class="kw">hiding</span> (map, reduce, concat, foldr, foldr1)
+<span class="ot">&gt; expand   ::</span> (a <span class="ot">-&gt;</span> <span class="dt">List</span> (k, v)) <span class="ot">-&gt;</span> <span class="dt">List</span> a <span class="ot">-&gt;</span> <span class="dt">List</span> (k, v)
+<span class="ot">&gt; group    ::</span> (<span class="dt">Ord</span> k) <span class="ot">=&gt;</span> <span class="dt">List</span> (k, v) <span class="ot">-&gt;</span> <span class="dt">M.Map</span> k (<span class="dt">List</span> v)
+<span class="ot">&gt; collapse ::</span> (v <span class="ot">-&gt;</span> v <span class="ot">-&gt;</span> v) <span class="ot">-&gt;</span> <span class="dt">M.Map</span> k (<span class="dt">List</span> v) <span class="ot">-&gt;</span> <span class="dt">M.Map</span> k v</code></pre></div>
+</div>
+<p>The following is a super simplified implementation of <a href="http://en.wikipedia.org/wiki/MapReduce">Map-Reduce</a> using the <a href="List.lhs">Lists</a> and <code>Data.Map</code>.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; mapReduce ::</span> (<span class="dt">Ord</span> k) <span class="ot">=&gt;</span> (a <span class="ot">-&gt;</span> <span class="dt">List</span> (k, v))
+<span class="ot">&gt;</span>                      <span class="ot">-&gt;</span> (v <span class="ot">-&gt;</span> v <span class="ot">-&gt;</span> v)
+<span class="ot">&gt;</span>                      <span class="ot">-&gt;</span> <span class="dt">List</span> a
+<span class="ot">&gt;</span>                      <span class="ot">-&gt;</span> <span class="dt">M.Map</span> k v
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> mapReduce fm fr xs <span class="fu">=</span> kvm
+<span class="ot">&gt;</span>   <span class="kw">where</span>
+<span class="ot">&gt;</span>     kvs   <span class="fu">=</span> expand      fm xs     <span class="co">-- step 1</span>
+<span class="ot">&gt;</span>     kvsm  <span class="fu">=</span> group       kvs       <span class="co">-- step 2</span>
+<span class="ot">&gt;</span>     kvm   <span class="fu">=</span> collapse fr kvsm      <span class="co">-- step 3</span></code></pre></div>
+<p><strong>The Problem</strong> If you solved <code>foldr1</code> then you should get a single type error below, in the call to <code>foldr1</code> in <code>collapse</code>. Fix the error by <strong>modifying the refinement type specifications</strong> only (do not modify any code).</p>
+<p><strong>Note:</strong> This problem requires you to have solved the <code>foldr1</code> problem from <a href="List.lhs" class="uri">List.lhs</a>; otherwise no points.</p>
+<p>Next, we briefly describe and show each step of the <code>mapReduce</code> function.</p>
+<h2 id="step-1-map-elements-into-key-value-lists">Step 1: Map Elements into Key-Value Lists</h2>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ expand  :: (a -&gt; List (k, v)) -&gt; List a -&gt; List (k, v) @-}</span>
+<span class="ot">&gt;</span> expand f xs <span class="fu">=</span> concat (map f xs)</code></pre></div>
+<h2 id="step-2-group-by-key">Step 2: Group By Key</h2>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ group :: (Ord k) =&gt; List (k, v) -&gt; M.Map k (List v) @-}</span>
+<span class="ot">&gt;</span> group     <span class="fu">=</span> foldr addKV  M.empty
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> addKV (k,v) m <span class="fu">=</span> M.insert k vs' m
+<span class="ot">&gt;</span>   <span class="kw">where</span>
+<span class="ot">&gt;</span>     vs'       <span class="fu">=</span> add v (M.findWithDefault empty k m)</code></pre></div>
+<h2 id="step-3-reduce-each-key-to-single-value">Step 3: Reduce Each Key to Single Value</h2>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ collapse  :: (v -&gt; v -&gt; v) -&gt; M.Map k (List v) -&gt; M.Map k v @-}</span>
+<span class="ot">&gt;</span> collapse f <span class="fu">=</span> M.map (foldr1 f)
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; toList ::</span> <span class="dt">M.Map</span> k v <span class="ot">-&gt;</span> <span class="dt">List</span> (k, v)
+<span class="ot">&gt;</span> toList <span class="fu">=</span> M.foldrWithKey (\k v acc <span class="ot">-&gt;</span> add (k, v) acc) empty</code></pre></div>
+    </body>
+
+    <div id="footer"> 
+      Site generated with <a href="http://jaspervdj.be/hakyll">hakyll</a>
+    </div> 
+</html>

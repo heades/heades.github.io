@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>CSCI:3300 - List</title>
+        <link rel="stylesheet" type="text/css" href="../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../css/syntax-rj.css" />                
+    </head>
+    <body>
+      
+      <h1>CSCI:3300 - List </h1>
+        <div id="navigation">
+        <a href="../index.html">Home</a>
+        <a href="../grades.html">Grading</a>
+		<a href="../lectures.html">Lectures</a>
+	    <a href="../assignments.html">Assignments</a>
+	    <a href="../links.html">Links</a>
+        <a href="https://piazza.com/class/i4kkvjdaoqj7aj#">Piazza</a>
+        </div>
+       
+	<br />
+	<br />
+	<h1 id="lists">Lists</h1>
+<div class="hidden">
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ LIQUID &quot;--short-names&quot; @-}</span>
+<span class="ot">&gt;</span> <span class="co">{-@ LIQUID &quot;--no-termination&quot; @-}</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">-- CHECKBINDER prop_size</span>
+<span class="ot">&gt;</span> <span class="co">-- CHECKBINDER empty</span>
+<span class="ot">&gt;</span> <span class="co">-- CHECKBINDER add</span>
+<span class="ot">&gt;</span> <span class="co">-- CHECKBINDER singleton</span>
+<span class="ot">&gt;</span> <span class="co">-- CHECKBINDER prop_replicate</span>
+<span class="ot">&gt;</span> <span class="co">-- CHECKBINDER prop_map</span>
+<span class="ot">&gt;</span> <span class="co">-- CHECKBINDER foldr1</span>
+<span class="ot">&gt;</span> <span class="co">-- CHECKBINDER prop_zipWith</span>
+<span class="ot">&gt;</span> <span class="co">-- CHECKBINDER prop_concat</span>
+<span class="ot">&gt;</span>  
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="kw">module</span> <span class="dt">List</span> ( <span class="dt">List</span>
+<span class="ot">&gt;</span>             , empty
+<span class="ot">&gt;</span>             , add
+<span class="ot">&gt;</span>             , singleton
+<span class="ot">&gt;</span>             , map
+<span class="ot">&gt;</span>             , replicate
+<span class="ot">&gt;</span>             , foldr
+<span class="ot">&gt;</span>             , foldr1
+<span class="ot">&gt;</span>             , zipWith
+<span class="ot">&gt;</span>             , concat
+<span class="ot">&gt;</span>             ) <span class="kw">where</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Assert</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Prelude</span> <span class="kw">hiding</span> (length, replicate, foldr, foldr1, map, concat, zipWith)
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="kw">infixr</span> <span class="dv">9</span> <span class="fu">:+:</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; empty     ::</span> <span class="dt">List</span> a
+<span class="ot">&gt; add       ::</span> a <span class="ot">-&gt;</span> <span class="dt">List</span> a <span class="ot">-&gt;</span> <span class="dt">List</span> a
+<span class="ot">&gt; singleton ::</span> a <span class="ot">-&gt;</span> <span class="dt">List</span> a
+<span class="ot">&gt; replicate ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">List</span> a
+<span class="ot">&gt; map       ::</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> <span class="dt">List</span> a <span class="ot">-&gt;</span> <span class="dt">List</span> b
+<span class="ot">&gt; zipWith   ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> <span class="dt">List</span> a <span class="ot">-&gt;</span> <span class="dt">List</span> b <span class="ot">-&gt;</span> <span class="dt">List</span> c
+<span class="ot">&gt; concat    ::</span> <span class="dt">List</span> (<span class="dt">List</span> a) <span class="ot">-&gt;</span> <span class="dt">List</span> a</code></pre></div>
+</div>
+<h2 id="a-sized-list-datatype">A Sized List Datatype</h2>
+<p>Lets cook up our own <code>List</code> data type from scratch:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="kw">data</span> <span class="dt">List</span> a <span class="fu">=</span> <span class="dt">Emp</span>
+<span class="ot">&gt;</span>             <span class="fu">|</span> (<span class="fu">:+:</span>) a (<span class="dt">List</span> a)
+<span class="ot">&gt;</span>               <span class="kw">deriving</span> (<span class="dt">Eq</span>, <span class="dt">Ord</span>, <span class="dt">Show</span>)</code></pre></div>
+<p>We can write a <strong>measure</strong> that logically represents the <em>size</em>, i.e. number of elements of a <code>List</code>:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ measure size      :: List a -&gt; Int</span>
+<span class="ot">&gt;</span><span class="co">     size (Emp)        = 0</span>
+<span class="ot">&gt;</span><span class="co">     size ((:+:) x xs) = 1 + size xs</span>
+<span class="ot">&gt;</span><span class="co">   @-}</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">{-@ invariant {v:List a | 0 &lt;= size v} @-}</span></code></pre></div>
+<p>It will be helpful to have a few abbreviations. First, lists whose size is equal to <code>N</code></p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ type ListN a N  = {v:List a | size v = N} @-}</span></code></pre></div>
+<p>and then, lists whose size equals that of <em>another</em> list <code>Xs</code>:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ type ListX a Xs = {v:List a | size v = size Xs} @-}</span></code></pre></div>
+<h2 id="a-computing-the-length-of-a-list">(a) Computing the Length of a List</h2>
+<p>Write down a <em>refined</em> type for <code>length</code>:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; length            ::</span> <span class="dt">List</span> a <span class="ot">-&gt;</span> <span class="dt">Int</span>
+<span class="ot">&gt;</span> length <span class="dt">Emp</span>        <span class="fu">=</span> <span class="dv">0</span>
+<span class="ot">&gt;</span> length (x <span class="fu">:+:</span> xs) <span class="fu">=</span> <span class="dv">1</span> <span class="fu">+</span> length xs</code></pre></div>
+<p>such that the following type checks:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">{-@ prop_size :: TRUE @-}</span>
+<span class="ot">&gt;</span> prop_size  <span class="fu">=</span> lAssert (length l3 <span class="fu">==</span> <span class="dv">3</span>)
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">{-@ l3 :: ListN Int 3 @-}</span>
+<span class="ot">&gt;</span> l3     <span class="fu">=</span> <span class="dv">3</span> <span class="fu">:+:</span> l2
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">{-@ l2 :: ListN Int 2 @-}</span>
+<span class="ot">&gt;</span> l2     <span class="fu">=</span> <span class="dv">2</span> <span class="fu">:+:</span> l1
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">{-@ l1 :: ListN Int 1 @-}</span>
+<span class="ot">&gt;</span> l1     <span class="fu">=</span> <span class="dv">1</span> <span class="fu">:+:</span> l0
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">{-@ l0 :: ListN Int 0 @-}</span>
+<span class="ot">&gt;</span> l0     <span class="fu">=</span> <span class="dt">Emp</span><span class="ot"> ::</span> <span class="dt">List</span> <span class="dt">Int</span></code></pre></div>
+<h2 id="b-constructing-lists">(b) Constructing Lists</h2>
+<p>Fill in the implementations of the following functions so that LiquidHaskell verifies respect the given type signatures:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ empty :: ListN a 0 @-}</span>
+<span class="ot">&gt;</span> empty <span class="fu">=</span> fixme <span class="st">&quot;empty&quot;</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">{-@ add :: a -&gt; xs:List a -&gt; ListN a {1 + size xs} @-}</span>
+<span class="ot">&gt;</span> add x xs <span class="fu">=</span> fixme <span class="st">&quot;add&quot;</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">{-@ singleton :: a -&gt; ListN a 1 @-}</span>
+<span class="ot">&gt;</span> singleton x <span class="fu">=</span> fixme <span class="st">&quot;singleton&quot;</span></code></pre></div>
+<h2 id="c-replicating-values">(c) Replicating Values</h2>
+<p>Fill in the code, and update the refinement type specification for <code>replicate n x</code> which should return a <code>List</code> <code>n</code> copies of the value <code>x</code>:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ replicate :: Int -&gt; a -&gt; List a @-}</span>
+<span class="ot">&gt;</span> replicate <span class="fu">=</span> fixme <span class="st">&quot;replicate&quot;</span></code></pre></div>
+<p>When you are done, the following assertion should be verified by LH.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ prop_replicate :: Nat -&gt; a -&gt; TRUE @-}</span>
+<span class="ot">&gt;</span> prop_replicate n x <span class="fu">=</span> lAssert (n <span class="fu">==</span> length (replicate n x))</code></pre></div>
+<h2 id="d-map">(d) Map</h2>
+<p>Fix the specification for <code>map</code> such that the assertion in <code>prop_map</code> is verified by LH. (This will require you to first complete part (a) above.)</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ map :: (a -&gt; b) -&gt; List a -&gt; List b @-}</span>
+<span class="ot">&gt;</span> map f <span class="dt">Emp</span>        <span class="fu">=</span> <span class="dt">Emp</span>
+<span class="ot">&gt;</span> map f (x <span class="fu">:+:</span> xs) <span class="fu">=</span> f x <span class="fu">:+:</span> map f xs
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">{-@ prop_map :: (a -&gt; b) -&gt; List a -&gt; TRUE @-}</span>
+<span class="ot">&gt;</span> prop_map f xs <span class="fu">=</span> lAssert (length xs <span class="fu">==</span> length (map f xs))</code></pre></div>
+<h2 id="e-fold">(e) Fold</h2>
+<p>Fix the specification for <code>foldr1</code> so that the call to <code>die</code> is verified by LH:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ foldr1 :: (a -&gt; a -&gt; a) -&gt; List a -&gt; a @-}</span>
+<span class="ot">&gt;</span> foldr1 op (x <span class="fu">:+:</span> xs) <span class="fu">=</span> foldr op x xs
+<span class="ot">&gt;</span> foldr1 op <span class="dt">Emp</span>        <span class="fu">=</span> die <span class="st">&quot;Cannot call foldr1 with empty list&quot;</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; foldr ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> <span class="dt">List</span> a <span class="ot">-&gt;</span> b
+<span class="ot">&gt;</span> foldr _  b <span class="dt">Emp</span>        <span class="fu">=</span> b
+<span class="ot">&gt;</span> foldr op b (x <span class="fu">:+:</span> xs) <span class="fu">=</span> x <span class="ot">`op`</span> (foldr op b xs)</code></pre></div>
+<h2 id="f-zipwith">(f) ZipWith</h2>
+<p>Fix the specification of <code>zipWith</code> so that LH verifies:</p>
+<ul>
+<li>The call to <code>die</code> inside <code>zipWith</code> and</li>
+<li>The assert inside <code>prop_zipwith</code>.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ zipWith :: (a -&gt; b -&gt; c) -&gt; List a -&gt; List b -&gt; List c @-}</span>
+<span class="ot">&gt;</span> zipWith _ <span class="dt">Emp</span> <span class="dt">Emp</span>               <span class="fu">=</span> <span class="dt">Emp</span>
+<span class="ot">&gt;</span> zipWith f (x <span class="fu">:+:</span> xs) (y <span class="fu">:+:</span> ys) <span class="fu">=</span> f x y <span class="fu">:+:</span> zipWith f xs ys
+<span class="ot">&gt;</span> zipWith f _          _          <span class="fu">=</span> die  <span class="st">&quot;Bad call to zipWith&quot;</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">{-@ prop_zipWith :: Num a =&gt; List a -&gt; TRUE @-}</span>
+<span class="ot">&gt;</span> prop_zipWith xs <span class="fu">=</span> lAssert (length xs <span class="fu">==</span> length x2s)
+<span class="ot">&gt;</span>   <span class="kw">where</span>
+<span class="ot">&gt;</span>     x2s         <span class="fu">=</span> zipWith (<span class="fu">+</span>) xs xs</code></pre></div>
+<h2 id="g-list-concatenation-hard">(g) List Concatenation <em>(Hard?)</em></h2>
+<p>Fill in the (refinement type) specification and implementation for the function <code>concat</code> such that when you are done, the assert inside <code>prop_concat</code> is verified by LH. Feel free to write any other code or specification (types, measures) that you need.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ concat :: List (List a) -&gt; List a @-}</span>
+<span class="ot">&gt;</span> concat <span class="fu">=</span> fixme <span class="st">&quot;concat&quot;</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> prop_concat <span class="fu">=</span> lAssert (length (concat xss) <span class="fu">==</span> <span class="dv">6</span>)
+<span class="ot">&gt;</span>   <span class="kw">where</span>
+<span class="ot">&gt;</span>     xss     <span class="fu">=</span> l0 <span class="fu">:+:</span> l1 <span class="fu">:+:</span> l2 <span class="fu">:+:</span> l3 <span class="fu">:+:</span> <span class="dt">Emp</span></code></pre></div>
+    </body>
+
+    <div id="footer"> 
+      Site generated with <a href="http://jaspervdj.be/hakyll">hakyll</a>
+    </div> 
+</html>

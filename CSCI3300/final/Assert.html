@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>CSCI:3300 - Assert</title>
+        <link rel="stylesheet" type="text/css" href="../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../css/syntax-rj.css" />                
+    </head>
+    <body>
+      
+      <h1>CSCI:3300 - Assert </h1>
+        <div id="navigation">
+        <a href="../index.html">Home</a>
+        <a href="../grades.html">Grading</a>
+		<a href="../lectures.html">Lectures</a>
+	    <a href="../assignments.html">Assignments</a>
+	    <a href="../links.html">Links</a>
+        <a href="https://piazza.com/class/i4kkvjdaoqj7aj#">Piazza</a>
+        </div>
+       
+	<br />
+	<br />
+	<h1 id="assertions">Assertions</h1>
+<div class="hidden">
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="kw">module</span> <span class="dt">Assert</span> (die, fixme, lAssert, divide) <span class="kw">where</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; divide     ::</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Double</span>
+<span class="ot">&gt;</span> <span class="co">{-@ LIQUID &quot;--short-names&quot;    @-}</span>
+<span class="ot">&gt;</span> <span class="co">{-@ LIQUID &quot;--no-termination&quot; @-}</span></code></pre></div>
+</div>
+<p>As a warm up, first lets recall how we can specify and verify <em>assertions</em> with Refinement Types.</p>
+<h2 id="dead-code">Dead Code</h2>
+<p>Recall from lecture, that we can define a function that should <em>never</em> be called.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ die :: {v:String | false} -&gt; a @-}</span>
+<span class="ot">&gt;</span> die str <span class="fu">=</span> error (<span class="st">&quot;Oops, I died!&quot;</span> <span class="fu">++</span> str)</code></pre></div>
+<p>We can use this function in all those places where we need to handle some case that we can know (and want to prove) will never happen at run-time.</p>
+Here’s a variant of <code>die</code> that we will use for those places where <em>you</em> need to fill in code:
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ fixme :: {v:String | false} -&gt; a @-}</span>
+<span class="ot">&gt;</span> fixme str <span class="fu">=</span> error (<span class="st">&quot;Oops, you didn't fill in the code for: &quot;</span><span class="fu">++</span> str)</code></pre></div>
+<h2 id="assertions-1">Assertions</h2>
+<p>Lets define a refined type for the <code>Bool</code> that is <em>always</em> true:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ type TRUE = {v:Bool | Prop v} @-}</span></code></pre></div>
+<p>Notice that we can now assign the type <code>TRUE</code> to any <code>Bool</code> expression that is guaranteed to evaluate to <code>True</code>:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ one_plus_one_eq_two :: TRUE @-}</span>
+<span class="ot">&gt;</span> one_plus_one_eq_two <span class="fu">=</span> (<span class="dv">1</span> <span class="fu">+</span> <span class="dv">1</span> <span class="fu">==</span> <span class="dv">2</span>)</code></pre></div>
+<p>But of course, not to expressions that are <code>False</code>:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ one_plus_one_eq_three :: TRUE @-}</span>
+<span class="ot">&gt;</span> one_plus_one_eq_three <span class="fu">=</span> (<span class="dv">1</span> <span class="fu">+</span> <span class="dv">1</span> <span class="fu">==</span> <span class="dv">3</span>)  <span class="co">-- TYPE ERROR</span></code></pre></div>
+<p>We can now use <code>TRUE</code> to define a <code>lAssert</code> function:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ lAssert :: TRUE -&gt; TRUE @-}</span>
+<span class="ot">&gt;</span> lAssert <span class="dt">True</span>  <span class="fu">=</span> <span class="dt">True</span>
+<span class="ot">&gt;</span> lAssert <span class="dt">False</span> <span class="fu">=</span> die <span class="st">&quot;Assert Fails!&quot;</span></code></pre></div>
+<p>Now, we can call <code>lAssert</code> only on expressions that we want to prove always hold, for example:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> propOk   <span class="fu">=</span> lAssert (<span class="dv">1</span> <span class="fu">+</span> <span class="dv">1</span> <span class="fu">==</span> <span class="dv">2</span>)</code></pre></div>
+<p>But if we try to <code>lAssert</code> bogus facts then they are rejected:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> propFail <span class="fu">=</span> lAssert (<span class="dv">1</span> <span class="fu">+</span> <span class="dv">1</span> <span class="fu">==</span> <span class="dv">3</span>) <span class="co">-- TYPE ERROR</span></code></pre></div>
+<h2 id="divide-by-zero">Divide By Zero</h2>
+<p>Finally, lets write a <em>safe</em> divide by zero operator (that we will use later)</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ divide :: Double -&gt; {v:Int | v /= 0}-&gt; Double @-}</span>
+<span class="ot">&gt;</span> divide n <span class="dv">0</span> <span class="fu">=</span> die <span class="st">&quot;oops divide by zero&quot;</span>
+<span class="ot">&gt;</span> divide n d <span class="fu">=</span> n <span class="fu">/</span> (fromIntegral d)</code></pre></div>
+    </body>
+
+    <div id="footer"> 
+      Site generated with <a href="http://jaspervdj.be/hakyll">hakyll</a>
+    </div> 
+</html>

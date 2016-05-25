@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>CSCI:3300 - Fifo</title>
+        <link rel="stylesheet" type="text/css" href="../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../css/syntax-rj.css" />                
+    </head>
+    <body>
+      
+      <h1>CSCI:3300 - Fifo </h1>
+        <div id="navigation">
+        <a href="../index.html">Home</a>
+        <a href="../grades.html">Grading</a>
+		<a href="../lectures.html">Lectures</a>
+	    <a href="../assignments.html">Assignments</a>
+	    <a href="../links.html">Links</a>
+        <a href="https://piazza.com/class/i4kkvjdaoqj7aj#">Piazza</a>
+        </div>
+       
+	<br />
+	<br />
+	<h1 id="concurrent-fifo-queue">Concurrent FIFO Queue</h1>
+<div class="hidden">
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="ot">{-# LANGUAGE TypeSynonymInstances, FlexibleContexts, OverlappingInstances, FlexibleInstances #-}</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="kw">import qualified</span> <span class="dt">Data.Map</span> <span class="kw">as</span> <span class="dt">Map</span> 
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Control.Monad.State</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Control.Monad.Error</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Control.Monad.Writer</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Test.QuickCheck</span> 
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Control.Monad</span> (forM, forM_)
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Data.List</span> (transpose, intercalate)
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="kw">import qualified</span> <span class="dt">Data.Set</span> <span class="kw">as</span> <span class="dt">Set</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Control.Applicative</span> ((&lt;$&gt;))
+<span class="ot">&gt;</span> <span class="kw">import qualified</span> <span class="dt">Text.PrettyPrint</span> <span class="kw">as</span> <span class="dt">PP</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Control.Concurrent</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Control.Concurrent.STM</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Control.Monad</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">System.Exit</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">System.IO.Unsafe</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Data.IORef</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> quickCheckN n <span class="fu">=</span> quickCheckWith <span class="fu">$</span> stdArgs { maxSuccess <span class="fu">=</span> n}</code></pre></div>
+</div>
+<p>In this question, we’ll develop a concurrently-accessible first-in, first-out (FIFO) queue with a fixed capacity, called a finite channel.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> Your finite channel will behave as follows: If a read occurs when the queue is empty, the reader should block until an item becomes available. Similarly, if a write occurs when the queue is full (i.e., the number of items in the queue is the capacity specified when the queue was created), the writer should block until an item is removed from the queue.</p>
+<p>Before defining any operations on your finite channel, you need to change the representation of finite channels from the following obviously incorrect one:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="kw">data</span> <span class="dt">FiniteChan</span> a <span class="fu">=</span> <span class="dt">Chan</span> ()</code></pre></div>
+<p>Next, define an operation for creating a finite channel of a particular capacity:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; newFiniteChan ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> (<span class="dt">FiniteChan</span> a)
+<span class="ot">&gt;</span> newFiniteChan capacity <span class="fu">=</span> error <span class="st">&quot;TODO&quot;</span></code></pre></div>
+<p>Next, define the operation for reading from the queue:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; readFiniteChan ::</span> <span class="dt">FiniteChan</span> a <span class="ot">-&gt;</span> <span class="dt">IO</span> a
+<span class="ot">&gt;</span> readFiniteChan t <span class="fu">=</span> error <span class="st">&quot;TODO&quot;</span></code></pre></div>
+<p>Remember that reads should block in the case where the channel is empty.</p>
+<p>Finally, define the operation for writing to the queue:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; writeFiniteChan ::</span> <span class="dt">FiniteChan</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">IO</span> ()
+<span class="ot">&gt;</span> writeFiniteChan t x <span class="fu">=</span> error <span class="st">&quot;TODO&quot;</span></code></pre></div>
+<p>Remember that writes should block in the case where the channel is at capacity.</p>
+<p>Below are some tests that exercise your channel abstraction. You should run the `testFiniteChannel’ function at the very end to ensure that all of the tests pass.</p>
+<p>First, we define a debugging output function for tracing the execution of the tests. Uncomment out the second version if you need more information to diagnose errors.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> dbg s <span class="fu">=</span> <span class="kw">do</span> return ()
+<span class="ot">&gt;</span> <span class="co">-- dbg s = do id &lt;- myThreadId;  putStrLn $ &quot;[&quot; ++ (show id) ++ &quot;] &quot; ++ s</span></code></pre></div>
+<p>Various test parameters and utilities follow.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> rounds <span class="fu">=</span> <span class="dv">1000</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> delayUnit <span class="fu">=</span> <span class="dv">1000</span><span class="fu">*</span><span class="dv">200</span> <span class="co">-- 0.2 seconds</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> assert b s <span class="fu">=</span> 
+<span class="ot">&gt;</span>   <span class="kw">if</span> b <span class="kw">then</span> return () <span class="kw">else</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   putStrLn <span class="fu">$</span> <span class="st">&quot;assertion failed: &quot;</span> <span class="fu">++</span> s
+<span class="ot">&gt;</span>   exitWith (<span class="dt">ExitFailure</span> <span class="dv">1</span>)
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> beginTest s <span class="fu">=</span> putStrLn <span class="fu">$</span> <span class="st">&quot;Starting test procedure: &quot;</span> <span class="fu">++</span> s
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> endTest <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   putStrLn <span class="st">&quot;Test passed&quot;</span>
+<span class="ot">&gt;</span>   putStrLn <span class="st">&quot;&quot;</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> newFC x <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   dbg <span class="fu">$</span> <span class="st">&quot;newFiniteChan &quot;</span> <span class="fu">++</span> (show x) <span class="fu">++</span> <span class="st">&quot; called&quot;</span>
+<span class="ot">&gt;</span>   c <span class="ot">&lt;-</span> newFiniteChan x
+<span class="ot">&gt;</span>   dbg <span class="fu">$</span> <span class="st">&quot;newFiniteChan &quot;</span> <span class="fu">++</span> (show x) <span class="fu">++</span> <span class="st">&quot; returned&quot;</span>
+<span class="ot">&gt;</span>   return c
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> readFC c <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   dbg <span class="fu">$</span> <span class="st">&quot;readFiniteChan called&quot;</span>
+<span class="ot">&gt;</span>   x <span class="ot">&lt;-</span> readFiniteChan c
+<span class="ot">&gt;</span>   dbg <span class="fu">$</span> <span class="st">&quot;readFiniteChan returned, result=&quot;</span> <span class="fu">++</span> (show x)
+<span class="ot">&gt;</span>   return x
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> writeFC c x <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   dbg <span class="fu">$</span> <span class="st">&quot;writeFiniteChan &quot;</span> <span class="fu">++</span> (show x) <span class="fu">++</span> <span class="st">&quot; called&quot;</span>
+<span class="ot">&gt;</span>   writeFiniteChan c x
+<span class="ot">&gt;</span>   dbg <span class="fu">$</span> <span class="st">&quot;writeFiniteChan &quot;</span> <span class="fu">++</span> (show x) <span class="fu">++</span> <span class="st">&quot; returned&quot;</span></code></pre></div>
+<p>The first test fills and empties the queue twice, checking that FIFO order is respected.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> test1 <span class="fu">=</span> forM [<span class="dv">1</span><span class="fu">..</span><span class="dv">5</span>] <span class="fu">$</span> \i <span class="ot">-&gt;</span> test1a i
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> test1a x <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   beginTest <span class="fu">$</span> <span class="st">&quot;test1:&quot;</span><span class="fu">++</span>(show x)
+<span class="ot">&gt;</span>   fc <span class="ot">&lt;-</span> newFC x
+<span class="ot">&gt;</span>   forM [<span class="dv">1</span><span class="fu">..</span>x] <span class="fu">$</span> \i<span class="ot">-&gt;</span> writeFC fc i
+<span class="ot">&gt;</span>   forM [<span class="dv">1</span><span class="fu">..</span>x] <span class="fu">$</span> \i<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>     j <span class="ot">&lt;-</span> readFC fc
+<span class="ot">&gt;</span>     assert (i<span class="fu">==</span>j) <span class="st">&quot;FIFO order not respected&quot;</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span>   forM [x<span class="fu">+</span><span class="dv">1</span><span class="fu">..</span><span class="dv">2</span><span class="fu">*</span>x] <span class="fu">$</span> \i<span class="ot">-&gt;</span> writeFC fc i
+<span class="ot">&gt;</span>   forM [x<span class="fu">+</span><span class="dv">1</span><span class="fu">..</span><span class="dv">2</span><span class="fu">*</span>x] <span class="fu">$</span> \i<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>     j <span class="ot">&lt;-</span> readFC fc
+<span class="ot">&gt;</span>     assert (i<span class="fu">==</span>j) <span class="st">&quot;FIFO order not respected&quot;</span>
+<span class="ot">&gt;</span>   endTest</code></pre></div>
+<p>The second test is a simple two-thread producer/consumer setup, again testing for FIFO semantics.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> test2 <span class="fu">=</span> forM [<span class="dv">1</span><span class="fu">..</span><span class="dv">5</span>] <span class="fu">$</span> \i <span class="ot">-&gt;</span> test2a i
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> test2a size <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   beginTest <span class="fu">$</span> <span class="st">&quot;test2:&quot;</span><span class="fu">++</span>(show size)
+<span class="ot">&gt;</span>   fc <span class="ot">&lt;-</span> newFC size
+<span class="ot">&gt;</span>   forkIO (producer fc)
+<span class="ot">&gt;</span>   consumer fc
+<span class="ot">&gt;</span>   forkIO (consumer fc)
+<span class="ot">&gt;</span>   producer fc
+<span class="ot">&gt;</span>   endTest
+<span class="ot">&gt;</span>  <span class="kw">where</span>
+<span class="ot">&gt;</span>   producer fc <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>     forM [<span class="dv">1</span><span class="fu">..</span>rounds] <span class="fu">$</span> \i<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>       writeFC fc i
+<span class="ot">&gt;</span>     return ()
+<span class="ot">&gt;</span>   consumer fc <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>     forM [<span class="dv">1</span><span class="fu">..</span>rounds] <span class="fu">$</span> \i<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>       j <span class="ot">&lt;-</span> readFC fc
+<span class="ot">&gt;</span>       assert(i<span class="fu">==</span>j) <span class="st">&quot;FIFO order not respected&quot;</span>
+<span class="ot">&gt;</span>     return ()</code></pre></div>
+<p>The third test checks that, if the consumer is slow, the queue will always be full when it’s read, and also that the producer is not allowed to insert more items into the queue than its capacity should allow.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> test3 <span class="fu">=</span> forM [<span class="dv">1</span><span class="fu">..</span><span class="dv">5</span>] <span class="fu">$</span> \i <span class="ot">-&gt;</span> test3a i
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> test3a size <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   beginTest <span class="fu">$</span> <span class="st">&quot;test3:&quot;</span><span class="fu">++</span>(show size)
+<span class="ot">&gt;</span>   fc <span class="ot">&lt;-</span> newFC size
+<span class="ot">&gt;</span>   forkIO (producer fc)
+<span class="ot">&gt;</span>   consumer fc
+<span class="ot">&gt;</span>   endTest
+<span class="ot">&gt;</span>  <span class="kw">where</span>
+<span class="ot">&gt;</span>   counter <span class="fu">=</span> unsafePerformIO (newMVar <span class="dv">0</span>)
+<span class="ot">&gt;</span>   producer fc <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>     forM [<span class="dv">1</span><span class="fu">..</span>rounds] <span class="fu">$</span> \i<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>       writeFC fc i
+<span class="ot">&gt;</span>       modifyMVar_ counter <span class="fu">$</span> \c<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>         <span class="co">-- putStrLn $ (show c) ++ &quot;&lt;&quot; ++ (show size)</span>
+<span class="ot">&gt;</span>         assert (c<span class="fu">&lt;</span>size) <span class="st">&quot;Queue size not within limit&quot;</span>
+<span class="ot">&gt;</span>         return (c<span class="fu">+</span><span class="dv">1</span>)
+<span class="ot">&gt;</span>     return ()
+<span class="ot">&gt;</span>   consumer fc <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>     forM [<span class="dv">1</span><span class="fu">..</span><span class="dv">10</span>] <span class="fu">$</span> \i<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>       threadDelay delayUnit
+<span class="ot">&gt;</span>       modifyMVar_ counter <span class="fu">$</span> \c<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>          <span class="co">-- putStrLn $ (show c) ++ &quot;&lt;=&quot; ++ (show size)</span>
+<span class="ot">&gt;</span>          assert (c<span class="fu">==</span>size) <span class="st">&quot;Queue should always be full with a slow reader&quot;</span>
+<span class="ot">&gt;</span>          return (c<span class="fu">-</span><span class="dv">1</span>)
+<span class="ot">&gt;</span>       j <span class="ot">&lt;-</span> readFC fc
+<span class="ot">&gt;</span>       assert(i<span class="fu">==</span>j) <span class="st">&quot;&quot;</span>
+<span class="ot">&gt;</span>     return ()</code></pre></div>
+<p>The fourth test is like the third, except its checks that, with a slow producer, the queue is always empty when it’s written to.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> test4 <span class="fu">=</span> forM [<span class="dv">1</span><span class="fu">..</span><span class="dv">5</span>] <span class="fu">$</span> \i <span class="ot">-&gt;</span> test4a i
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> test4a size <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   beginTest <span class="fu">$</span> <span class="st">&quot;test4:&quot;</span><span class="fu">++</span>(show size)
+<span class="ot">&gt;</span>   fc <span class="ot">&lt;-</span> newFC size
+<span class="ot">&gt;</span>   forkIO (consumer fc)
+<span class="ot">&gt;</span>   producer fc
+<span class="ot">&gt;</span>   endTest
+<span class="ot">&gt;</span>  <span class="kw">where</span>
+<span class="ot">&gt;</span>   counter <span class="fu">=</span> unsafePerformIO (newMVar <span class="dv">0</span>)
+<span class="ot">&gt;</span>   producer fc <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>     forM [<span class="dv">1</span><span class="fu">..</span><span class="dv">5</span>] <span class="fu">$</span> \i<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>       threadDelay delayUnit
+<span class="ot">&gt;</span>       modifyMVar_ counter <span class="fu">$</span> \c<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>         <span class="co">-- putStrLn $ (show c) ++ &quot;&lt;&quot; ++ (show size)</span>
+<span class="ot">&gt;</span>         assert (c<span class="fu">==</span><span class="dv">0</span>) <span class="st">&quot;Queue should always be empty with a slow writer&quot;</span>
+<span class="ot">&gt;</span>         return (c<span class="fu">+</span><span class="dv">1</span>)
+<span class="ot">&gt;</span>       writeFC fc i
+<span class="ot">&gt;</span>     return ()
+<span class="ot">&gt;</span>   consumer fc <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>     forM [<span class="dv">1</span><span class="fu">..</span>rounds] <span class="fu">$</span> \i<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>       j <span class="ot">&lt;-</span> readFC fc
+<span class="ot">&gt;</span>       assert(i<span class="fu">==</span>j) <span class="st">&quot;&quot;</span>
+<span class="ot">&gt;</span>       modifyMVar_ counter <span class="fu">$</span> \c<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>          <span class="co">-- putStrLn $ (show c) ++ &quot;&lt;=&quot; ++ (show size)</span>
+<span class="ot">&gt;</span>          assert (c<span class="fu">&lt;=</span>size) <span class="st">&quot;Queue size not within limit&quot;</span>
+<span class="ot">&gt;</span>          return (c<span class="fu">-</span><span class="dv">1</span>)
+<span class="ot">&gt;</span>     return ()</code></pre></div>
+<p>The fifth test checks the behavior of multiple producers and consumers.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> test5 <span class="fu">=</span> forM [<span class="dv">1</span><span class="fu">..</span><span class="dv">5</span>] <span class="fu">$</span> \i <span class="ot">-&gt;</span> test5a i
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> test5a size <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   beginTest <span class="fu">$</span> <span class="st">&quot;test5:&quot;</span><span class="fu">++</span>(show size)
+<span class="ot">&gt;</span>   fc1 <span class="ot">&lt;-</span> newFC size
+<span class="ot">&gt;</span>   fc2 <span class="ot">&lt;-</span> newFC <span class="dv">1</span>
+<span class="ot">&gt;</span>   forM [<span class="dv">1</span><span class="fu">..</span>nums] <span class="fu">$</span> \_ <span class="ot">-&gt;</span> forkIO (producer fc1)
+<span class="ot">&gt;</span>   forM [<span class="dv">1</span><span class="fu">..</span>nums] <span class="fu">$</span> \_ <span class="ot">-&gt;</span> forkIO (consumer fc1 fc2)
+<span class="ot">&gt;</span>   s <span class="ot">&lt;-</span> newIORef <span class="dv">0</span>
+<span class="ot">&gt;</span>   forM [<span class="dv">1</span><span class="fu">..</span>(nums<span class="fu">*</span>rounds)] <span class="fu">$</span> \_ <span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>     i <span class="ot">&lt;-</span> readFC fc2
+<span class="ot">&gt;</span>     modifyIORef s (<span class="fu">+</span>i)
+<span class="ot">&gt;</span>   result <span class="ot">&lt;-</span> readIORef s
+<span class="ot">&gt;</span>   assert (result<span class="fu">==</span> nums <span class="fu">*</span> (sum [<span class="dv">1</span><span class="fu">..</span>rounds])) <span class="st">&quot;total sent &lt;&gt; total received&quot;</span>
+<span class="ot">&gt;</span>   endTest
+<span class="ot">&gt;</span>  <span class="kw">where</span>
+<span class="ot">&gt;</span>   nums <span class="fu">=</span> <span class="dv">10</span> 
+<span class="ot">&gt;</span>   producer fc <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>     forM [<span class="dv">1</span><span class="fu">..</span>rounds] <span class="fu">$</span> \i <span class="ot">-&gt;</span> writeFC fc i
+<span class="ot">&gt;</span>     return ()
+<span class="ot">&gt;</span>   consumer fc1 fc2 <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>     forM [<span class="dv">1</span><span class="fu">..</span>rounds] <span class="fu">$</span> \_ <span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>       i <span class="ot">&lt;-</span> readFC fc1
+<span class="ot">&gt;</span>       writeFC fc2 i
+<span class="ot">&gt;</span>     return ()</code></pre></div>
+<p>The sixth test is like the third, this time with multiple producer threads.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> test6 <span class="fu">=</span> forM [<span class="dv">1</span><span class="fu">..</span><span class="dv">5</span>] <span class="fu">$</span> \i <span class="ot">-&gt;</span> test6a i
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> test6a size <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   beginTest <span class="fu">$</span> <span class="st">&quot;test6:&quot;</span><span class="fu">++</span>(show size)
+<span class="ot">&gt;</span>   fc <span class="ot">&lt;-</span> newFC size
+<span class="ot">&gt;</span>   forM [<span class="dv">1</span><span class="fu">..</span><span class="dv">5</span>] <span class="fu">$</span> \_ <span class="ot">-&gt;</span> forkIO (producer fc)
+<span class="ot">&gt;</span>   consumer fc
+<span class="ot">&gt;</span>   endTest
+<span class="ot">&gt;</span>  <span class="kw">where</span>
+<span class="ot">&gt;</span>   counter <span class="fu">=</span> unsafePerformIO (newMVar <span class="dv">0</span>)
+<span class="ot">&gt;</span>   producer fc <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>     forM [<span class="dv">1</span><span class="fu">..</span>rounds] <span class="fu">$</span> \i<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>       writeFC fc i
+<span class="ot">&gt;</span>       modifyMVar_ counter <span class="fu">$</span> \c<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>         <span class="co">-- putStrLn $ (show c) ++ &quot;&lt;&quot; ++ (show size)</span>
+<span class="ot">&gt;</span>         assert (c<span class="fu">&lt;</span>size) <span class="st">&quot;queue size not within limit&quot;</span>
+<span class="ot">&gt;</span>         return (c<span class="fu">+</span><span class="dv">1</span>)
+<span class="ot">&gt;</span>     return ()
+<span class="ot">&gt;</span>   consumer fc <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>     forM [<span class="dv">1</span><span class="fu">..</span><span class="dv">10</span>] <span class="fu">$</span> \i<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>       threadDelay delayUnit
+<span class="ot">&gt;</span>       modifyMVar_ counter <span class="fu">$</span> \c<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>          <span class="co">-- putStrLn $ (show c) ++ &quot;&lt;=&quot; ++ (show size)</span>
+<span class="ot">&gt;</span>          assert (c<span class="fu">==</span>size) <span class="st">&quot;queue should always be full with slow reader&quot;</span>
+<span class="ot">&gt;</span>          return (c<span class="fu">-</span><span class="dv">1</span>)
+<span class="ot">&gt;</span>       readFC fc
+<span class="ot">&gt;</span>     return ()</code></pre></div>
+<p>The final test is like the fourth, but with multiple consumer threads.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> test7 <span class="fu">=</span> forM [<span class="dv">1</span><span class="fu">..</span><span class="dv">5</span>] <span class="fu">$</span> \i <span class="ot">-&gt;</span> test7a i
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> test7a size <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   beginTest <span class="fu">$</span> <span class="st">&quot;test7:&quot;</span><span class="fu">++</span>(show size)
+<span class="ot">&gt;</span>   fc <span class="ot">&lt;-</span> newFC size
+<span class="ot">&gt;</span>   forM [<span class="dv">1</span><span class="fu">..</span><span class="dv">5</span>] <span class="fu">$</span> \_<span class="ot">-&gt;</span> forkIO (consumer fc)
+<span class="ot">&gt;</span>   producer fc
+<span class="ot">&gt;</span>   endTest
+<span class="ot">&gt;</span>  <span class="kw">where</span>
+<span class="ot">&gt;</span>   counter <span class="fu">=</span> unsafePerformIO (newMVar <span class="dv">0</span>)
+<span class="ot">&gt;</span>   producer fc <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>     forM [<span class="dv">1</span><span class="fu">..</span><span class="dv">10</span>] <span class="fu">$</span> \i<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>       threadDelay delayUnit
+<span class="ot">&gt;</span>       modifyMVar_ counter <span class="fu">$</span> \c<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>         <span class="co">-- putStrLn $ (show c) ++ &quot;&lt;&quot; ++ (show size)</span>
+<span class="ot">&gt;</span>         assert (c<span class="fu">==</span><span class="dv">0</span>) <span class="st">&quot;queue should always be empty with slow writer&quot;</span>
+<span class="ot">&gt;</span>         return (c<span class="fu">+</span><span class="dv">1</span>)
+<span class="ot">&gt;</span>       writeFC fc i
+<span class="ot">&gt;</span>     return ()
+<span class="ot">&gt;</span>   consumer fc <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>     forM [<span class="dv">1</span><span class="fu">..</span>rounds] <span class="fu">$</span> \i<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>       j <span class="ot">&lt;-</span> readFC fc
+<span class="ot">&gt;</span>       modifyMVar_ counter <span class="fu">$</span> \c<span class="ot">-&gt;</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>          <span class="co">-- putStrLn $ (show c) ++ &quot;&lt;=&quot; ++ (show size)</span>
+<span class="ot">&gt;</span>          assert (c<span class="fu">&lt;=</span>size) <span class="st">&quot;queue size not within limit&quot;</span>
+<span class="ot">&gt;</span>          return (c<span class="fu">-</span><span class="dv">1</span>)
+<span class="ot">&gt;</span>     return ()
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> testFiniteChannel <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   test1
+<span class="ot">&gt;</span>   test2
+<span class="ot">&gt;</span>   test3
+<span class="ot">&gt;</span>   test4
+<span class="ot">&gt;</span>   test5  
+<span class="ot">&gt;</span>   test6
+<span class="ot">&gt;</span>   test7</code></pre></div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>This question is based on homeworks 10 and 11 from Benjamin Pierce’s <a href="http://www.cis.upenn.edu/~bcpierce/courses/552-2008/index.html">Advanced Programming</a> class at UPenn.<a href="#fnref1">↩</a></p></li>
+</ol>
+</div>
+    </body>
+
+    <div id="footer"> 
+      Site generated with <a href="http://jaspervdj.be/hakyll">hakyll</a>
+    </div> 
+</html>

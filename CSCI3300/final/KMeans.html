@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>CSCI:3300 - KMeans</title>
+        <link rel="stylesheet" type="text/css" href="../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../css/syntax-rj.css" />                
+    </head>
+    <body>
+      
+      <h1>CSCI:3300 - KMeans </h1>
+        <div id="navigation">
+        <a href="../index.html">Home</a>
+        <a href="../grades.html">Grading</a>
+		<a href="../lectures.html">Lectures</a>
+	    <a href="../assignments.html">Assignments</a>
+	    <a href="../links.html">Links</a>
+        <a href="https://piazza.com/class/i4kkvjdaoqj7aj#">Piazza</a>
+        </div>
+       
+	<br />
+	<br />
+	<h1 id="k-means-clustering">K-Means Clustering</h1>
+<div class="hidden">
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ LIQUID &quot;--short-names&quot;    @-}</span>
+<span class="ot">&gt;</span> <span class="co">{-@ LIQUID &quot;--no-termination&quot; @-}</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="kw">module</span> <span class="dt">KMeans</span> (kmeans, kmeans1, nearest, mergeCluster) <span class="kw">where</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Data.List</span> (minimumBy)
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">MapReduce</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Assert</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">List</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Prelude</span> <span class="kw">hiding</span> (map, repeat, foldr, zipWith)
+<span class="ot">&gt;</span> <span class="kw">import qualified</span> <span class="dt">Data.Map</span> <span class="kw">as</span> <span class="dt">M</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; centroid ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Point</span> <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Point</span>
+<span class="ot">&gt; distance ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Point</span> <span class="ot">-&gt;</span> <span class="dt">Point</span> <span class="ot">-&gt;</span> <span class="dt">Double</span>
+<span class="ot">&gt; nearest   ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Centering</span> <span class="ot">-&gt;</span> <span class="dt">Point</span> <span class="ot">-&gt;</span> <span class="dt">Center</span>
+<span class="ot">&gt; mergeCluster ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Cluster</span> <span class="ot">-&gt;</span> <span class="dt">Cluster</span> <span class="ot">-&gt;</span> <span class="dt">Cluster</span>
+<span class="ot">&gt; kmeans1   ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">List</span> <span class="dt">Point</span> <span class="ot">-&gt;</span> <span class="dt">Centering</span> <span class="ot">-&gt;</span> <span class="dt">Centering</span>
+<span class="ot">&gt; kmeans    ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">List</span> <span class="dt">Point</span> <span class="ot">-&gt;</span> <span class="dt">Centering</span> <span class="ot">-&gt;</span> <span class="dt">Centering</span></code></pre></div>
+</div>
+<p>Next, lets use our <code>MapReduce</code> library to implement <a href="http://en.wikipedia.org/wiki/K-means_clustering">K-Means Clustering</a></p>
+<h2 id="points-and-clusters">Points and Clusters</h2>
+<p>First, lets define the various types that model the key entities in clustering.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">-- | N-Dimensional Point</span>
+<span class="ot">&gt;</span> <span class="kw">type</span> <span class="dt">Point</span>   <span class="fu">=</span> <span class="dt">List</span> <span class="dt">Double</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">{-@ type PointN N = ListN Double N @-}</span></code></pre></div>
+<p><strong>A Center</strong> is a number between <code>0</code> and <code>k</code> (written <code>CenterK k</code>).</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="kw">type</span> <span class="dt">Center</span>  <span class="fu">=</span> <span class="dt">Int</span>
+<span class="ot">&gt;</span> <span class="co">{-@ type CenterK K = {v:Int | 0 &lt;= v &amp;&amp; v &lt; K} @-}</span></code></pre></div>
+<p><strong>A Centering</strong> is a map from <code>Center</code>s to <code>Point</code>s. Our clustering algorithm will aim to group a (large) set of <code>Point</code>s into <code>k</code> representatives. Thus, a <em>k-n-Centering</em> is a map from <code>CenterK k</code> to <code>PointN n</code>:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="kw">type</span> <span class="dt">Centering</span> <span class="fu">=</span> <span class="dt">M.Map</span> <span class="dt">Center</span> <span class="dt">Point</span>
+<span class="ot">&gt;</span> <span class="co">{-@ type CenteringKN K N = M.Map (CenterK K) (PointN N) @-}</span></code></pre></div>
+<p><strong>A Cluster</strong> is a pair of a <em>number</em> of points (denoting the cluster size) and the <em>co-ordinates</em> denoting the (sum of) the co-ordinates of all the points in the cluster. We represent <code>n</code>-dimensional clusters as <code>ClusterN n</code>; note that the cluster size is <em>strictly positive</em> as we will never represent empty clusters.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="kw">type</span> <span class="dt">Cluster</span> <span class="fu">=</span> (<span class="dt">Int</span>, <span class="dt">Point</span>)
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">{-@ type ClusterN N = (Pos, PointN N) @-}</span>
+<span class="ot">&gt;</span> <span class="co">{-@ type Pos        = {v:Int | v &gt; 0} @-}</span></code></pre></div>
+<h2 id="a-computing-euclidean-distance">(a) Computing Euclidean Distance</h2>
+<p>If you did the <code>zipWith</code> problem, then you should see an error in the implementation of <code>distance</code> which computes the <a href="http://en.wikipedia.org/wiki/Euclidean_distance">Euclidean Distance</a> between two points. Fix the <strong>specification</strong> (not the code) of <code>distance</code> so that the code is verified by LH:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ distance :: n:Nat -&gt; Point -&gt; Point -&gt; Double @-}</span>
+<span class="ot">&gt;</span> distance n px py <span class="fu">=</span> sqrt <span class="fu">$</span> foldr (<span class="fu">+</span>) <span class="dv">0</span> <span class="fu">$</span> zipWith (\x y <span class="ot">-&gt;</span> (x<span class="fu">-</span>y)<span class="fu">^</span><span class="dv">2</span>) px py</code></pre></div>
+<h2 id="b-map-points-to-nearest-center">(b) Map Points To Nearest Center</h2>
+<p>Use <code>distance</code> to fill in the <strong>implementation</strong> of <code>nearest</code> so that LH verifies the given type signature.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ nearest :: k:Nat -&gt; n:Nat -&gt; CenteringKN k n -&gt; PointN n -&gt; CenterK k @-}</span>
+<span class="ot">&gt;</span> nearest k n centers p <span class="fu">=</span> fixme <span class="st">&quot;nearest&quot;</span></code></pre></div>
+<p>You may want to use the helper <code>minKeyMap</code> that computes the key with the smallest value in a <code>Map</code>:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="fu">---</span> <span class="fu">&gt;&gt;&gt;</span> minKeyMap (M.fromList [(<span class="dv">0</span>, <span class="dv">12</span>), (<span class="dv">1</span>, <span class="dv">23</span>), (<span class="dv">2</span>, <span class="dv">7</span>), (<span class="dv">3</span>,<span class="dv">18</span>)])
+<span class="ot">&gt;</span> <span class="fu">---</span> <span class="dv">2</span>
+<span class="ot">&gt; minKeyMap  ::</span> (<span class="dt">Ord</span> v) <span class="ot">=&gt;</span> <span class="dt">M.Map</span> k v <span class="ot">-&gt;</span> k
+<span class="ot">&gt;</span> minKeyMap  <span class="fu">=</span> minKeyList <span class="fu">.</span> M.toList
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; minKeyList    ::</span> (<span class="dt">Ord</span> v) <span class="ot">=&gt;</span> [(k,v)] <span class="ot">-&gt;</span> k
+<span class="ot">&gt;</span> minKeyList xs <span class="fu">=</span> fst <span class="fu">$</span> minimumBy (\x1 x2 <span class="ot">-&gt;</span> compare (snd x1) (snd x2)) xs</code></pre></div>
+<p>When you are done, you should get the following behavior:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">-- &gt;&gt;&gt; test_nearest</span>
+<span class="ot">&gt;</span> <span class="co">-- 1</span>
+<span class="ot">&gt;</span> test_nearest <span class="fu">=</span> nearest <span class="dv">3</span> <span class="dv">2</span> (M.fromList [(<span class="dv">0</span>, p0), (<span class="dv">1</span>, p1), (<span class="dv">2</span>, p2)]) p
+<span class="ot">&gt;</span>   <span class="kw">where</span>
+<span class="ot">&gt;</span>     p, p0, p1,<span class="ot"> p2 ::</span> <span class="dt">Point</span>
+<span class="ot">&gt;</span>     p0 <span class="fu">=</span> add <span class="fl">0.0</span> (add <span class="fl">0.0</span> empty)
+<span class="ot">&gt;</span>     p1 <span class="fu">=</span> add <span class="fl">3.0</span> (add <span class="fl">0.0</span> empty)
+<span class="ot">&gt;</span>     p2 <span class="fu">=</span> add <span class="fl">0.0</span> (add <span class="fl">3.0</span> empty)
+<span class="ot">&gt;</span>     p  <span class="fu">=</span> add <span class="fl">2.9</span> (add <span class="fl">1.1</span> empty)</code></pre></div>
+<h2 id="c-reduce-clusters">(c) Reduce Clusters</h2>
+<p>Fix the <strong>specification</strong> below so that that LH verifies <code>mergeCluster</code> which takes two <code>Cluster</code> and merges them by adding up their points and centers. (Leave the code unmodified).</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ mergeCluster :: n:Nat -&gt; Cluster -&gt; Cluster -&gt; Cluster @-}</span>
+<span class="ot">&gt;</span> mergeCluster n (n1, p1) (n2, p2) <span class="fu">=</span> (n1 <span class="fu">+</span> n2, zipWith (<span class="fu">+</span>) p1 p2)</code></pre></div>
+<p><strong>Note:</strong> The code above uses <code>zipWith</code>; so you will only see the error and be able to fix it, <em>after</em> you solve that problem.</p>
+<h2 id="d-convert-cluster-into-centroid-point">(d) Convert Cluster into Centroid Point</h2>
+<p>The <code>centroid</code> function converts a <code>Cluster</code> into a single <code>Point</code> by dividing each co-ordinate with the cluster size. Fix the <strong>specification</strong> of <code>centroid</code> so that LH verifies the call to <code>divide</code>:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ centroid :: n:Nat -&gt; Point n -&gt; Pos -&gt; Point @-}</span>
+<span class="ot">&gt;</span> centroid n p sz <span class="fu">=</span> map (\x <span class="ot">-&gt;</span> x <span class="ot">`divide`</span> sz) p</code></pre></div>
+<p><strong>Note:</strong> The code below uses <code>map</code> from <code>List.lhs</code>; and hence your solution will only work if you solved that problem first.</p>
+<h2 id="e-iterative-clustering">(e) Iterative Clustering</h2>
+<p>The Kmeans clustering algorithm is shown below:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ kmeans :: Nat -&gt; k:Nat -&gt; n:Nat -&gt;</span>
+<span class="ot">&gt;</span><span class="co">               List (PointN n) -&gt; CenteringKN k n -&gt; CenteringKN k n</span>
+<span class="ot">&gt;</span><span class="co">   @-}</span>
+<span class="ot">&gt;</span> kmeans steps k n ps <span class="fu">=</span> repeat steps (kmeans1 k n ps)
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; repeat ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> a) <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a
+<span class="ot">&gt;</span> repeat <span class="dv">0</span> f x <span class="fu">=</span> x
+<span class="ot">&gt;</span> repeat n f x <span class="fu">=</span> repeat (n<span class="fu">-</span><span class="dv">1</span>) f (f x)</code></pre></div>
+<p>In essence we start with an initial <code>k</code> centering, and repeatedly update it by calling <code>kmeans1</code> which takes as input a list of <code>n</code> dimensional points, a centering and returns a new centering (with <code>k</code> centers and <code>n</code> dimensional points). The new centers are computed by:</p>
+<ol style="list-style-type: decimal">
+<li>Mapping each point to its <code>nearest</code> center,</li>
+<li>Grouping all the points mapped to a center into a new cluster,</li>
+<li>Reducing the clusters by adding up all the points inside them, and</li>
+<li>Normalizing each cluster to its <code>centroid</code>.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">{-@ kmeans1 :: k:Nat -&gt; n:Nat -&gt;</span>
+<span class="ot">&gt;</span><span class="co">                List (PointN n) -&gt; CenteringKN k n -&gt; CenteringKN k n</span>
+<span class="ot">&gt;</span><span class="co">   @-}</span>
+<span class="ot">&gt;</span> kmeans1 k n ps cs <span class="fu">=</span> normalize newClusters
+<span class="ot">&gt;</span>   <span class="kw">where</span>
+<span class="ot">&gt;     normalize     ::</span> <span class="dt">M.Map</span> a <span class="dt">Cluster</span> <span class="ot">-&gt;</span> <span class="dt">M.Map</span> a <span class="dt">Point</span>
+<span class="ot">&gt;</span>     normalize     <span class="fu">=</span> M.map (\(sz, p) <span class="ot">-&gt;</span> centroid n p sz)
+<span class="ot">&gt;</span>     newClusters   <span class="fu">=</span> mapReduce fm fr ps
+<span class="ot">&gt;</span>     fm p          <span class="fu">=</span> singleton (nearest k n cs p, (<span class="dv">1</span><span class="ot"> ::</span> <span class="dt">Int</span>, p))
+<span class="ot">&gt;</span>     fr wp1 wp2    <span class="fu">=</span> mergeCluster n wp1 wp2</code></pre></div>
+<p>Fix the code and specifications above so that LH verifies the the specification for <code>kmeans</code> and <code>kmeans1</code> (i.e. verifies this entire module.)</p>
+<p><strong>Hint:</strong> If you did the above problems correctly, you should have to do nothing here. Otherwise, think about what type <code>normalize</code> should have and try to work backwards to verify that type.</p>
+    </body>
+
+    <div id="footer"> 
+      Site generated with <a href="http://jaspervdj.be/hakyll">hakyll</a>
+    </div> 
+</html>

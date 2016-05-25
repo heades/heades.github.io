@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>CSCI:3300 - Introduction to Monads</title>
+        <link rel="stylesheet" type="text/css" href="../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../css/syntax-rj.css" />                
+    </head>
+    <body>
+      
+      <h1>CSCI:3300 - Introduction to Monads </h1>
+        <div id="navigation">
+        <a href="../index.html">Home</a>
+        <a href="../grades.html">Grading</a>
+		<a href="../lectures.html">Lectures</a>
+	    <a href="../assignments.html">Assignments</a>
+	    <a href="../links.html">Links</a>
+        <a href="https://piazza.com/class/i4kkvjdaoqj7aj#">Piazza</a>
+        </div>
+       
+	<br />
+	<br />
+	<div class="hidden">
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="kw">module</span> <span class="dt">LectMonads</span> <span class="kw">where</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">System.Random</span></code></pre></div>
+</div>
+<h1 id="why-no-side-effects">Why no side effects?</h1>
+<p>I have said many times during this semester that side effects can hinder reasoning about programs. For example, suppose we have a method in C#, say <code>foo</code>, whose input type in an <code>Int</code> and whose output type is an <code>Int</code>. Then try and describe all that <code>foo 2</code> could do. It could do a lot of things like call out to the network, read from state, write to state, print to the screen, read from the keyboard, throw an exception, catch an exception, and the list goes on and on. However, contrast this with a function, <code>foo :: Int -&gt; Int</code> written in Haskell. Now <code>foo 2</code> can only do so much. It can only apply operations with <em>no</em> side effects to <code>2</code>, and then eventually return an integer. That is it. This tells us that in a pure setting we get a lot of assurances right from the type.</p>
+<p>So that is the Ivory tower elevator pitch for purity in programming languages. The software engineer is now wondering how we actually get anything done. No side effects means no communication from the world, but what good are any programs that do not access the outside world. Again, I have another Ivory Tower pitch for the interesting things about pure programs, but from software engineering perspective no side effects means that the programs we write will not be very practically interesting.</p>
+<p>Luckily, Haskell does have a means of using side effects. The cool part about this is that we get side effects, but we also get strong assurances from our types.</p>
+<h1 id="side-effects-a-high-level-explanation">Side Effects: A High-level Explanation</h1>
+<p>First, let us consider how to do some simple IO. Consider the following hello world example:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; hello ::</span> <span class="dt">IO</span> ()
+<span class="ot">&gt;</span> hello <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   putStrLn <span class="st">&quot;Hello World!!&quot;</span></code></pre></div>
+<p>When we load and run this in GHCi we obtain the following:</p>
+<pre class=".{haskell}"><code>Hello World!</code></pre>
+<p>Note that the response is not surrounded by double quotes, because GHCi is not returning a <code>String</code>, but is actually showing us the result printed to STDOUT.</p>
+<p>Consider a second example:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; helloPizza ::</span> <span class="dt">IO</span> ()
+<span class="ot">&gt;</span> helloPizza <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   putStrLn <span class="st">&quot;Hello World!!&quot;</span>
+<span class="ot">&gt;</span>   putStrLn <span class="st">&quot;Bring me pizza!&quot;</span></code></pre></div>
+<p>The next function gets input from the user, and then returns a boolean indicating if the input was even or odd:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; evenOdd ::</span> <span class="dt">IO</span> <span class="dt">Bool</span>
+<span class="ot">&gt;</span> evenOdd <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   putStr <span class="st">&quot;Enter a number: &quot;</span>
+<span class="ot">&gt;</span>   s <span class="ot">&lt;-</span> getLine
+<span class="ot">&gt;</span>   <span class="kw">let</span> d <span class="fu">=</span> read<span class="ot"> s ::</span> <span class="dt">Integer</span>
+<span class="ot">&gt;</span>    <span class="kw">in</span> <span class="kw">if</span> (d <span class="ot">`mod`</span> <span class="dv">2</span> <span class="fu">==</span> <span class="dv">0</span>) <span class="kw">then</span>
+<span class="ot">&gt;</span>         return <span class="dt">True</span>
+<span class="ot">&gt;</span>       <span class="kw">else</span>
+<span class="ot">&gt;</span>         return <span class="dt">False</span></code></pre></div>
+<p>The type <code>IO Bool</code> tells us that the function <code>evenOdd</code> uses IO, but then it will eventually return a boolean. Thus, a function with the type <code>IO ()</code> only does IO and never returns a value. A function with a type of the form <code>IO a</code> says that the function will do IO, but will eventually return something of type <code>a</code>.</p>
+<p>Suppose we want to prompt the user to enter a string, and then output the strings reverse, but does not stop prompting until the user enters <code>done</code>. The following function gets the job done:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; reversal ::</span> <span class="dt">IO</span> ()
+<span class="ot">&gt;</span> reversal <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   putStr <span class="st">&quot;String? &quot;</span>
+<span class="ot">&gt;</span>   s <span class="ot">&lt;-</span> getLine
+<span class="ot">&gt;</span>   <span class="kw">if</span> s <span class="fu">==</span> <span class="st">&quot;done&quot;</span> <span class="kw">then</span>
+<span class="ot">&gt;</span>       return ()
+<span class="ot">&gt;</span>   <span class="kw">else</span>
+<span class="ot">&gt;</span>       <span class="kw">do</span> putStrLn<span class="fu">.</span>reverse <span class="fu">$</span> s
+<span class="ot">&gt;</span>          reversal</code></pre></div>
+<p>This function is a little more complex. When we test to see if <code>s == &quot;done&quot;</code> then we must define the <code>then</code> and the <code>else</code> parts of the <code>if</code>-expression which both have type <code>IO ()</code>, and thus, in the second we are forced to use a nested do-block to first output the reverse of the input, and then loop back. The expression <code>return ()</code> indicates that we are ready to exit the function, but return nothing. For our purposes we can think of <code>()</code> as void or null.</p>
+<p>Now we look at a different use of IO which is to generate random numbers using a random number generator. The following example requires that we import the System.Random library. To do this place the following import expression at the top of the file you are working in:</p>
+<pre class=".{haskell}"><code>import System.Random</code></pre>
+<p>Our objective is to write a function <code>rollDie</code> that models rolling an <code>n :: Integer</code> sided die <code>r :: Int</code> times. We will return the <code>r</code> rolls as a list of <code>Integer</code>s. System.Random provides a function <code>newStdGen :: IO StdGen</code> that returns a new psuedo random number generator that uses the system. Once we have a generator we can use <code>randomRs :: RandomGen g =&gt; (a, a) -&gt; g -&gt; [a]</code> The first argument is a pair <code>(lo,hi)</code>, which repesents the range of the random values, and the second argument is a random generator which we will obtain from <code>newStdGen</code>. Finally, <code>randomRs</code> returns an infinite list of random values between <code>hi</code> and <code>lo</code>. The final function is defined as follows:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; rollDie ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> [<span class="dt">Integer</span>]
+<span class="ot">&gt;</span> rollDie n r <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   gtr <span class="ot">&lt;-</span> newStdGen
+<span class="ot">&gt;</span>   return <span class="fu">$</span> take r (randomRs (<span class="dv">1</span>,n) gtr)</code></pre></div>
+<p>One thing to note about this example is that we actually return something while doing IO. Thus, the return type is <code>IO [Integer]</code>, and the definition explicitly uses <code>return</code>.</p>
+<p>The protypical example of a monad is <code>IO</code>, but this is not the only example. There are lots and lots of monads. Perhaps the simpliest example is that of partial functions. If a function does not return a value, then we can think of that as a side effect. It is the side effect of being undefined.</p>
+<p>Every function in Haskell is a total function. That is, it is one function that is defined for every possible value of the input type. Thus, to be able to define a partial function we need a way to indicate that for a particular input there is no defined output. We capture this by the following parameterized datatype:</p>
+<pre class=".{haskell}"><code>data Maybe a = Nothing | Just a</code></pre>
+<p>This datatype is used as the return type to partial functions. The construct <code>Nothing</code> indicates that the function is undefined, and the constructor <code>Just x</code> indicates that the function is defined and the output is <code>x</code>. This as it turns out is a monad, and in fact, we define functions on it in the same way that we do for <code>IO</code>:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; myLookUp ::</span> <span class="dt">Eq</span> a <span class="ot">=&gt;</span> [(a,b)] <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">Maybe</span> b
+<span class="ot">&gt;</span> myLookUp l x <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>    r <span class="ot">&lt;-</span> lookup x l
+<span class="ot">&gt;</span>    return <span class="fu">$</span> r</code></pre></div>
+<p>At this point it is time to take a peak under the hood of monads.</p>
+<h1 id="side-effects-a-peak-under-the-hood">Side Effects: A Peak Under the Hood</h1>
+<p>We can now give a full definition of monads:</p>
+<table>
+<tbody>
+<tr class="odd">
+<td>A <strong>monad</strong> is a parameterized datatype <code>m a</code> such that the following</td>
+</tr>
+<tr class="even">
+<td>functions can be defined:</td>
+</tr>
+<tr class="odd">
+<td>- (Return) <code>return :: a -&gt; m a</code></td>
+</tr>
+<tr class="even">
+<td>- (Bind) <code>bind :: m a -&gt; (a -&gt; m b) -&gt; m b</code></td>
+</tr>
+<tr class="odd">
+<td>- where <code>return</code> and <code>bind</code> are subject to several laws, but they are</td>
+</tr>
+<tr class="even">
+<td>not important for our purposes. However, if one defines a new monad,</td>
+</tr>
+<tr class="odd">
+<td>then they must make sure the laws hold.</td>
+</tr>
+</tbody>
+</table>
+<p>In Haskell the there is a built <code>bind</code> whose name is <code>(&gt;&gt;=)</code> which is an infix binary operator. As for <code>return</code> the bultin name is <code>return</code>. Throughout our examples below we use the naming scheme <code>ri</code> and <code>bi</code> for some natural number <code>i</code>. The former will stand for <code>return</code> and the later will stand for <code>bind</code>.</p>
+<p>The type <code>m a</code> should be thought of as the type of <strong>computations</strong> of type <code>a</code>. Computations allow for all the crazy stuff we love while programming like IO, continuations, generating random number, being partial, and lot of other handy notions of computation. However, the type <code>a</code> should be considered the type of <strong>pure</strong> values that do not allow for any funny business.</p>
+<p>By and large Haskell is pure, but monads give us a means of working with computations. The function <code>return :: a -&gt; m a</code> allows one to take a pure value and call it a computation. Thus, we can move everything we do in Haskell into any monad. This is important because we want to separate our computations from our values. Doing as much work as possible using values is much safer. Another prespective is that values are pure computations, and thus, <code>return</code> allows us to make this explicit.</p>
+<p>So if something of type <code>m a</code> is a computation that eventually returns a value of type <code>a</code>, then we need a way to define a means of composing monad together to compute complex computations. This is the purpose of <code>bind :: m a -&gt; (a -&gt; m b) -&gt; m b</code>. The type of <code>bind</code> requires that we have two computations each of type <code>m a</code> and <code>m b</code> respectively. The computation of type <code>m b</code> depends on a value of type <code>a</code>, and hence, we can repsesent this by a function <code>a -&gt; m b</code>. What <code>bind</code> allows us to do is to run the computation of <code>m a</code> until it eventually reaches a value of type <code>a</code>, and then it pipes that value into the computation of type <code>m b</code> and continues evaluating until we reach a computation of type <code>m b</code>.</p>
+<p>To help solidify our understanding of the definition of a monad we will prove that some datatypes are monads. The following two functions prove that <code>Maybe a</code> is indeed a monad.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; r1 ::</span> a <span class="ot">-&gt;</span> <span class="dt">Maybe</span> a
+<span class="ot">&gt;</span> r1 x <span class="fu">=</span> <span class="dt">Just</span> x
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; b1 ::</span> <span class="dt">Maybe</span> a <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> <span class="dt">Maybe</span> b) <span class="ot">-&gt;</span> <span class="dt">Maybe</span> b
+<span class="ot">&gt;</span> b1 <span class="dt">Nothing</span> f <span class="fu">=</span> <span class="dt">Nothing</span>
+<span class="ot">&gt;</span> b1 (<span class="dt">Just</span> x) f <span class="fu">=</span> f x</code></pre></div>
+<p>The function <code>r1</code> defines return for <code>Maybe a</code> and the function <code>b1</code> defines bind.</p>
+<p>We motivated <code>Maybe a</code> as the return type of partial functions, and so what if we have two partial functions <code>f :: a -&gt; Maybe b</code> and <code>g : b -&gt; Maybe c</code> how do we compose them together to obtain a new function <code>a -&gt; Maybe c</code>? We can use bind, <code>b1</code>, for that.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; comp ::</span> (a <span class="ot">-&gt;</span> <span class="dt">Maybe</span> b) <span class="ot">-&gt;</span> (b <span class="ot">-&gt;</span> <span class="dt">Maybe</span> c) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> <span class="dt">Maybe</span> c)
+<span class="ot">&gt;</span> comp f g x <span class="fu">=</span> (f x) <span class="ot">`b1`</span> g</code></pre></div>
+<p>This indeed shows that bind really does just pipe the value of one computation into another.</p>
+<p>It so happens that lists are monads! We show this as follows:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; r2 ::</span> a <span class="ot">-&gt;</span> [a]
+<span class="ot">&gt;</span> r2 x <span class="fu">=</span> [x]
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; b2 ::</span> [a] <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> [b]) <span class="ot">-&gt;</span> [b]
+<span class="ot">&gt;</span> b2 [] f <span class="fu">=</span> []
+<span class="ot">&gt;</span> b2 (x<span class="fu">:</span>xs) f <span class="fu">=</span> (f x)<span class="fu">++</span>(b2 xs f)</code></pre></div>
+<p>Return for lists is pretty easy, to inject a value of type <code>a</code> into the list monad <code>[a]</code> we simply return the singleton list. Bind is a little more interesting. Given a computation of type <code>l :: [a]</code> and a function <code>f :: a -&gt; [b]</code> we are supposed to return a computation of type <code>[b]</code>. To do this we first map <code>f</code> across <code>l</code> to obtain a computation of type <code>[[b]]</code>, but then we flatten this list using append. In fact, all <code>b2</code> does is <code>map</code> <code>f</code> across <code>l</code> followed by `concat :: [[a]] -&gt; a’, and so, we can give a much nicer definition of bind for lists as follows:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; b2' ::</span> [a] <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> [b]) <span class="ot">-&gt;</span> [b]
+<span class="ot">&gt;</span> b2' l f <span class="fu">=</span> concat <span class="fu">$</span> map f l</code></pre></div>
+<p>Bind for lists is prefect for any situation where you want to take the generalized union of a list of lists. In fact, you will try this out in your homework.</p>
+<p>Haskell has return and bind already defined for a number of datatypes. The names and types are as follows:</p>
+<pre class=".{haskell}"><code> return :: a -&gt; m a
+ (&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b</code></pre>
+<p>For example, here are two expressions using them for <code>Maybe Integer</code>:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> exp1 <span class="fu">=</span> (<span class="dt">Just</span> <span class="dv">42</span>) <span class="fu">&gt;&gt;=</span> (\x <span class="ot">-&gt;</span> return <span class="fu">$</span> x <span class="fu">+</span> <span class="dv">5</span>)
+<span class="ot">&gt;</span> exp2 <span class="fu">=</span> <span class="dt">Nothing</span> <span class="fu">&gt;&gt;=</span> (\x <span class="ot">-&gt;</span> return <span class="fu">$</span> x <span class="fu">+</span> <span class="dv">5</span>)</code></pre></div>
+<p>If you run <code>exp1</code> in GHCi it will return <code>Just 47</code>, and then <code>exp2</code> will return <code>Nothing</code>. The first definition really makes the piping behavior of bind. Run the following expression in GHCi:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> exp3 <span class="fu">=</span> (<span class="dt">Just</span> <span class="dv">42</span>) <span class="fu">&gt;&gt;=</span> (\x <span class="ot">-&gt;</span> return x)</code></pre></div>
+<p>Notice that we obtain <code>Just 42</code>, and this is because ‘x’ gets replaced by <code>42</code> in <code>return x</code> yielding <code>return 42</code>, but the latter is equal by definition to <code>Just 42</code>. Thus, we really are piping the values from the Maybe monad into the next computation.</p>
+<p>Consider the following expression:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> exp4 <span class="fu">=</span> [[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>],[<span class="dv">5</span>,<span class="dv">6</span>]] <span class="fu">&gt;&gt;=</span> (\l <span class="ot">-&gt;</span> return <span class="fu">$</span> (l <span class="fu">&gt;&gt;=</span> (\x <span class="ot">-&gt;</span> return <span class="fu">$</span> x<span class="fu">^</span><span class="dv">2</span>)))</code></pre></div>
+<p>Running this expression will return <code>[[1,4],[9,16],[25,36]]</code>, but now that we understand bind and return for this this is easy to see from the definition.</p>
+<h1 id="a-peak-under-the-hood-the-do-notation">A Peak Under the Hood: The do-Notation</h1>
+<p>The do-notation that we started with provides a very nice interface to programming monads. This notation can be used for any monad, but what does this do-notation really correspond to?</p>
+<p>We will incrementally introduce the desugaring of the do-notation. First, in the simplest example the do-notation provides a means of imperatively sequencing operations. There is a monadic bind-like operator for sequencing operations that we can define in terms of bind:</p>
+<pre class=".{haskell}"><code>(&gt;&gt;) :: m a -&gt; m b -&gt; m b
+c1 &gt;&gt; c2 = c1 &gt;&gt;= (\_ -&gt; c2)</code></pre>
+<p>Thus, <code>c1 &gt;&gt; c2</code> means first evaluate the computation <code>c1</code>, and then when it is done ignore its return value and continue evaluating the computation <code>c2</code> returning its final value.</p>
+<p>We can now desugar the do-notation for sequencing. A do-block of the form:</p>
+<pre class=".{haskell}"><code>do 
+  c1
+  c2
+  ...
+  ci</code></pre>
+<p>Is equivalent to the following:</p>
+<pre class=".{haskell}"><code>c1 &gt;&gt; c2 &gt;&gt; ... &gt;&gt; ci</code></pre>
+<p>Thus, the final computation returned after evaluating the do-block is the final computation returned by the last computation in the block.</p>
+<p>As an example we can see that:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> exp5 <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   putStrLn <span class="st">&quot;1&quot;</span>
+<span class="ot">&gt;</span>   putStrLn <span class="st">&quot;2&quot;</span>
+<span class="ot">&gt;</span>   putStrLn <span class="st">&quot;3&quot;</span></code></pre></div>
+<p>Is equivalent to the following:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> exp6 <span class="fu">=</span> (putStrLn <span class="st">&quot;1&quot;</span>) <span class="fu">&gt;&gt;</span> (putStrLn <span class="st">&quot;2&quot;</span>) <span class="fu">&gt;&gt;</span> (putStrLn <span class="st">&quot;3&quot;</span>)</code></pre></div>
+<p>The do notation allows us to do more than just sequence operations it allows us to <strong>assign</strong> a return value from a computation, something of type <code>m a</code>, to a variable and use it later in the computation. A do-block of the form:</p>
+<pre class=".{haskell}"><code>do 
+  x1 &lt;- c1
+  ...
+  xi &lt;- ci
+  c x1...xi</code></pre>
+<p>Is equivalent to the monadic expression:</p>
+<pre class=".{haskell}"><code>c1 &gt;&gt;= (\x1 -&gt;
+    c2 &gt;&gt;= (\x2 -&gt;
+        c3 &gt;&gt;= (\x3 -&gt; 
+            ...
+            ci &gt;&gt;= (\xi -&gt; 
+                c x1 ... x3)...)))</code></pre>
+<p>Consider the following example:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> exp7 <span class="fu">=</span> <span class="kw">do</span>
+<span class="ot">&gt;</span>   putStr <span class="st">&quot;Enter a number: &quot;</span>
+<span class="ot">&gt;</span>   x <span class="ot">&lt;-</span> getLine
+<span class="ot">&gt;</span>   putStrLn <span class="fu">$</span> <span class="st">&quot;You entered &quot;</span> <span class="fu">++</span>(show x)<span class="fu">++</span><span class="st">&quot;!&quot;</span></code></pre></div>
+<p>Is equivalent to the following:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> exp8 <span class="fu">=</span> (putStr <span class="st">&quot;Enter a number: &quot;</span>) <span class="fu">&gt;&gt;=</span> (\_ <span class="ot">-&gt;</span> 
+<span class="ot">&gt;</span>          getLine <span class="fu">&gt;&gt;=</span> (\x <span class="ot">-&gt;</span> 
+<span class="ot">&gt;</span>                   putStrLn <span class="fu">$</span> <span class="st">&quot;You entered &quot;</span> <span class="fu">++</span>(show x)<span class="fu">++</span><span class="st">&quot;!&quot;</span>))</code></pre></div>
+<p>Using the sequencing operator we can rewrite <code>exp8</code> as follows:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> exp9 <span class="fu">=</span> (putStr <span class="st">&quot;Enter a number: &quot;</span>) <span class="fu">&gt;&gt;</span>  
+<span class="ot">&gt;</span>          getLine <span class="fu">&gt;&gt;=</span>
+<span class="ot">&gt;</span>            (\x <span class="ot">-&gt;</span> putStrLn <span class="fu">$</span> <span class="st">&quot;You entered &quot;</span> <span class="fu">++</span>(show x)<span class="fu">++</span><span class="st">&quot;!&quot;</span>)</code></pre></div>
+<p>One thing to make a note of with regards to the desugaring of the do-notation is that the desugared form reveals that each operation in a do-block must be of the same type of computation. That is, they all must be of the form <code>m a</code> for some type of computation <code>m</code>, but the type of the values returned my vary. For example, in <code>exp7</code> we make use of computations of type <code>IO ()</code> and of type <code>IO String</code>, but all computations are from <code>IO</code>. An example of violating this is the following:</p>
+<pre class=".{haskell}"><code>exp10 = do
+  x &lt;- Just 1
+  c &lt;- getLine
+  return 42</code></pre>
+<p>The program <code>exp10</code> tries to mix both the Maybe monad and the IO monad, but if we desugar this into:</p>
+<pre class=".{haskell}"><code>exp11 = (Just 1) &gt;&gt;= (\x -&gt; 
+                  getLine &gt;&gt;= (\y -&gt; 
+                           return 42))</code></pre>
+<p>We can see that the type of bind enforces that all of the first arguments of bind must be from the same monad. Thus, we will hit a type error.</p>
+<div class="hidden">
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="co">-- data State a =</span>
+<span class="ot">&gt;</span> <span class="co">--   State (Int -&gt; (a, Int))</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">-- put :: Int -&gt; State ()</span>
+<span class="ot">&gt;</span> <span class="co">-- put n = State $ \_ -&gt; ((), n)</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">-- get :: State Int </span>
+<span class="ot">&gt;</span> <span class="co">-- get = State $ \n -&gt; (n,n)</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">-- r3 :: a -&gt; State a</span>
+<span class="ot">&gt;</span> <span class="co">-- r3 x = State $ \s -&gt; (x, s)</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">-- b3 :: State a -&gt; (a -&gt; State b) -&gt; State b</span>
+<span class="ot">&gt;</span> <span class="co">-- b3 st f = State $ b3' st f</span>
+<span class="ot">&gt;</span> <span class="co">--   where</span>
+<span class="ot">&gt;</span> <span class="co">--     b3' :: State a -&gt; (a -&gt; State b) -&gt; (Int -&gt; (b,Int))</span>
+<span class="ot">&gt;</span> <span class="co">--     b3' (State f) g s = h s'</span>
+<span class="ot">&gt;</span> <span class="co">--       where</span>
+<span class="ot">&gt;</span> <span class="co">--         (x, s') = f s</span>
+<span class="ot">&gt;</span> <span class="co">--         (State h) = g x</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">-- instance Functor State where</span>
+<span class="ot">&gt;</span> <span class="co">--   fmap f s = s `b3` (\x -&gt; r3 $ f x)</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">-- instance Applicative State where</span>
+<span class="ot">&gt;</span> <span class="co">--     pure = r3</span>
+<span class="ot">&gt;</span> <span class="co">--     (&lt;*&gt;) s s' = s `b3` (\f -&gt; s' `b3` (\x -&gt; r3 $ f x))</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">-- instance Monad State where</span>
+<span class="ot">&gt;</span> <span class="co">--   return = r3</span>
+<span class="ot">&gt;</span> <span class="co">--   (&gt;&gt;=) = b3</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">-- evens :: [Int] -&gt; State Int</span>
+<span class="ot">&gt;</span> <span class="co">-- evens [] = get</span>
+<span class="ot">&gt;</span> <span class="co">-- evens (n:ns) | n `mod` 2 == 0 =</span>
+<span class="ot">&gt;</span> <span class="co">--                   do m &lt;- get</span>
+<span class="ot">&gt;</span> <span class="co">--                      put (m+1)</span>
+<span class="ot">&gt;</span> <span class="co">--                      evens ns</span>
+<span class="ot">&gt;</span> <span class="co">--               | otherwise = evens ns</span>
+<span class="ot">&gt;</span>                     
+<span class="ot">&gt;</span> <span class="co">-- evens' :: [Int] -&gt; State Int</span>
+<span class="ot">&gt;</span> <span class="co">-- evens' [] = get</span>
+<span class="ot">&gt;</span> <span class="co">-- evens' (n:ns) | n `mod` 2 == 0 =</span>
+<span class="ot">&gt;</span> <span class="co">--                    get</span>
+<span class="ot">&gt;</span> <span class="co">--                  `b3` (\m -&gt; ((</span>
+<span class="ot">&gt;</span> <span class="co">--                    put (m+1)</span>
+<span class="ot">&gt;</span> <span class="co">--                  ) `b3` (\_ -&gt;</span>
+<span class="ot">&gt;</span> <span class="co">--                    evens' ns)</span>
+<span class="ot">&gt;</span> <span class="co">--                  ))</span>
+<span class="ot">&gt;</span> <span class="co">--              | otherwise = evens' ns</span>
+<span class="ot">&gt;</span> 
+<span class="ot">&gt;</span> <span class="co">-- evalState :: State a -&gt; Int -&gt; a</span>
+<span class="ot">&gt;</span> <span class="co">-- evalState (State t) n = fst $ t n</span></code></pre></div>
+</div>
+    </body>
+
+    <div id="footer"> 
+      Site generated with <a href="http://jaspervdj.be/hakyll">hakyll</a>
+    </div> 
+</html>

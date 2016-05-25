@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>CSCI:3300 - SOE on Ubuntu 12.04</title>
+        <link rel="stylesheet" type="text/css" href="../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../css/syntax-rj.css" />                
+    </head>
+    <body>
+      
+      <h1>CSCI:3300 - SOE on Ubuntu 12.04 </h1>
+        <div id="navigation">
+        <a href="../index.html">Home</a>
+        <a href="../grades.html">Grading</a>
+		<a href="../lectures.html">Lectures</a>
+	    <a href="../assignments.html">Assignments</a>
+	    <a href="../links.html">Links</a>
+        <a href="https://piazza.com/class/i4kkvjdaoqj7aj#">Piazza</a>
+        </div>
+       
+	<br />
+	<br />
+	<p>To install SOE on Ubuntu 12.04 simply do the following.</p>
+<ol style="list-style-type: decimal">
+<li>Install Haskell Platform</li>
+</ol>
+<pre><code>$ sudo apt-get install haskell-platform</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Install the Graphics Libraries</li>
+</ol>
+<pre><code>$ cabal install OpenGL
+$ cabal install GLFW </code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Grab <a href="../static/SOE-CSE230-wi13.tgz">SOE</a></li>
+</ol>
+<pre><code>$ wget http://cseweb.ucsd.edu/classes/wi13/cse230-a/static/SOE-CSE230-wi13.tgz
+$ tar -zxvf SOE-CSE230-wi13.tgz</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>To test your install, run <code>ghci</code> with the extended <em>search path</em></li>
+</ol>
+<pre><code>$ ghci -i./SOE/src</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>Grab and load <a href="../static/soe-test.hs">soe-test.hs</a></li>
+</ol>
+<pre><code>Prelude&gt; :load soe-test.hs 
+[1 of 1] Compiling Main             ( soe-test.hs, interpreted )
+Ok, modules loaded: Main.</code></pre>
+<p>Finally, test the code with the following</p>
+<pre><code>*Main&gt; test </code></pre>
+<p>You should see a window that looks like this</p>
+<div class="figure">
+<img src="../static/SOE-test.png" alt="bullseye" />
+<p class="caption">bullseye</p>
+</div>
+<p>(Hit any key over the window to close it.)</p>
+    </body>
+
+    <div id="footer"> 
+      Site generated with <a href="http://jaspervdj.be/hakyll">hakyll</a>
+    </div> 
+</html>
