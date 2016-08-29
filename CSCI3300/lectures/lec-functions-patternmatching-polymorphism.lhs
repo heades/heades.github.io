@@ -29,4 +29,4 @@ name x1 x2 ... xi = y
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here the type of `x1` is `a1`, the type of `x2` is `a2`, and so on
-until finally the type of `xi` is `ai` and the type of `y` is `b`.
+until the type of `xi` is `ai`, and finally, the type of `y` is `b`.
