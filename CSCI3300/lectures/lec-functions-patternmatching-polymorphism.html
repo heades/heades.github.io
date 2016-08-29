@@ -47,9 +47,7 @@ False</code></pre>
 <li>If <code>k^2 &gt; n</code>, then <code>ldf k n = n</code></li>
 <li>Otherwise <code>ldf k n = ldf (k+1) n</code></li>
 </ol>
-<p>So we need to find a way to write a function which uses a condition,<br />
-and a means of doing recursion, because the previous description calls<br />
-<code>ldf</code> again in the result.</p>
+<p>So we need to find a way to write a function which uses a condition, and a means of doing recursion, because the previous description calls <code>ldf</code> again in the result.</p>
 <p>There are two ways to define <code>ldf</code>. The first way is as follows:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; ldf1 ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Integer</span>
 <span class="ot">&gt;</span> ldf1 k n <span class="fu">=</span> <span class="kw">if</span> (divides k n)

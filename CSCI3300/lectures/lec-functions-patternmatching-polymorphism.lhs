@@ -64,8 +64,8 @@ threshold `k`.  The algorithm is as follows:
 2. If `k^2 > n`, then `ldf k n = n`
 3. Otherwise `ldf k n = ldf (k+1) n`
 
-So we need to find a way to write a function which uses a condition,   
-and a means of doing recursion, because the previous description calls    
+So we need to find a way to write a function which uses a condition,
+and a means of doing recursion, because the previous description calls
 `ldf` again in the result.
 
 There are two ways to define `ldf`.  The first way is as follows:
