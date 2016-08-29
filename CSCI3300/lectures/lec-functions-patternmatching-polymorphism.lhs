@@ -91,3 +91,8 @@ ldf k n | divides k n = k
 ldf k n | k^2 > n =n
 ldf k n | otherwise = ldf1 (k+1) n
 \end{code}
+
+This is called a *guard equation* which of the general form:
+~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+
+~~~~~~~~~~~~~~~~~~~~~~~
