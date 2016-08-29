@@ -31,22 +31,22 @@ name x1 x2 ... xi = y
 Here the type of `x1` is `a1`, the type of `x2` is `a2`, and so on
 until the type of `xi` is `ai`, and finally, the type of `y` is `b`. 
 
-For example, here is the doubling function:
+For example, here is the divides function:
 
 \begin{code}
-double :: Int -> Int
-double x = 2 * x
+divides :: Integer -> Integer -> Bool
+divides d n = rem n d == 0
 \end{code}
 
-This function takes in an integer, and simply doubles it.  For example,
+This function takes in two integers, and returns `True` when `n`
+divided by `d` has a remainder of `0`.  For example,
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
-ghci> double 1
-2
-ghci> double 2
-4
-ghci> double 3
-6
-ghci> double 4
-8
+ghci> divides 2 6
+True
+ghci> divides 3 12
+True
+ghci> divides 4 9
+False
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
