@@ -54,3 +54,11 @@ False
 Guards
 ------
 
+The next step of our prime number test is to define a means of
+computing the least divisor of a number `n` that is greater than `1`.
+The algorithm is a bit eaiser if we define it interms of one that
+computes the least divisor of `n` greater than or equalt to a
+threshold `k`.  The algorithm is as follows:
+
+1. If `divides k n`, then `ldf k n = k`
+2. 
