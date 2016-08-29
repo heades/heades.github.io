@@ -61,4 +61,6 @@ computes the least divisor of `n` greater than or equalt to a
 threshold `k`.  The algorithm is as follows:
 
 1. If `divides k n`, then `ldf k n = k`
-2. 
+2. If `k^2 > n`, then `ldf k n = n`
+3. Otherwise `ldf k n = ldf (k+1) n`
+

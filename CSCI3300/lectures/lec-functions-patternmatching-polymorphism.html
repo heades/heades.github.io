@@ -44,7 +44,8 @@ False</code></pre>
 <p>The next step of our prime number test is to define a means of computing the least divisor of a number <code>n</code> that is greater than <code>1</code>. The algorithm is a bit eaiser if we define it interms of one that computes the least divisor of <code>n</code> greater than or equalt to a threshold <code>k</code>. The algorithm is as follows:</p>
 <ol style="list-style-type: decimal">
 <li>If <code>divides k n</code>, then <code>ldf k n = k</code></li>
-<li></li>
+<li>If <code>k^2 &gt; n</code>, then <code>ldf k n = n</code></li>
+<li>Otherwise <code>ldf k n = ldf (k+1) n</code></li>
 </ol>
     </body>
 
