@@ -30,6 +30,18 @@
 <pre class=".(haskell)"><code>name :: a1 -&gt; a2 -&gt; ... -&gt; ai -&gt; b
 name x1 x2 ... xi = y</code></pre>
 <p>Here the type of <code>x1</code> is <code>a1</code>, the type of <code>x2</code> is <code>a2</code>, and so on until the type of <code>xi</code> is <code>ai</code>, and finally, the type of <code>y</code> is <code>b</code>.</p>
+<p>For example, here is the doubling function:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; double ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span>
+<span class="ot">&gt;</span> double x <span class="fu">=</span> <span class="dv">2</span> <span class="fu">*</span> x</code></pre></div>
+<p>This function takes in an integer, and simply doubles it. For example,</p>
+<pre class=".(haskell)"><code>ghci&gt; double 1
+2
+ghci&gt; double 2
+4
+ghci&gt; double 3
+6
+ghci&gt; double 4
+8</code></pre>
     </body>
 
     <div id="footer"> 
