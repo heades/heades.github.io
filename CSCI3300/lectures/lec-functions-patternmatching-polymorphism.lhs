@@ -9,4 +9,7 @@ module LectFuns where
 \end{code}
 </div>
 
+Functions
+---------
+
 
