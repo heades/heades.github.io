@@ -79,6 +79,6 @@ ldf1 k n = if (divides k n)
                 else ldf1 (k+1) n
 \end{code}
 
-This function definition uses the if-then-else expression `if b then     
-e1 else e2` where `b` is a boolean, `e1` has some type `a`, and `e2`   
+This function definition uses the if-then-else expression `if b then
+e1 else e2` where `b` is a boolean, `e1` has some type `a`, and `e2`
 has the same type `a`.
