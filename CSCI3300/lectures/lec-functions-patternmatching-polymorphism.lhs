@@ -88,7 +88,7 @@ However, there is a better way using what are called *guards*.
 \begin{code}
 ldf :: Integer -> Integer -> Integer
 ldf k n | divides k n = k
-ldf k n | k^2 > n =n
+ldf k n | k^2 > n = n
 ldf k n | otherwise = ldf1 (k+1) n
 \end{code}
 
