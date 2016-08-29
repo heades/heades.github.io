@@ -41,7 +41,7 @@ True
 ghci&gt; divides 4 9
 False</code></pre>
 <h2 id="guards">Guards</h2>
-<p>The next step of our prime number test is to define a means of computing the least divisor of a number <code>n</code> that is greater than <code>1</code>. The algorithm is a bit eaiser if we define it interms of one that computes the least divisor of <code>n</code> greater than or equalt to a threshold <code>k</code>. The algorithm is as follows:</p>
+<p>The next step of our prime number test is to define a means of computing the least divisor of a number <code>n</code> that is greater than <code>1</code>. The algorithm is a bit eaiser if we define it in terms of one that computes the least divisor of <code>n</code> greater than or equalt to a threshold <code>k</code>. The algorithm is as follows:</p>
 <ol style="list-style-type: decimal">
 <li>If <code>divides k n</code>, then <code>ldf k n = k</code></li>
 <li>If <code>k^2 &gt; n</code>, then <code>ldf k n = n</code></li>
@@ -56,6 +56,11 @@ False</code></pre>
 <span class="ot">&gt;</span>                 <span class="kw">then</span> n
 <span class="ot">&gt;</span>                 <span class="kw">else</span> ldf1 (k<span class="fu">+</span><span class="dv">1</span>) n</code></pre></div>
 <p>This function definition uses the if-then-else expression <code>if b then e1 else e2</code> where <code>b</code> is a boolean, <code>e1</code> has some type <code>a</code>, and <code>e2</code> has the same type <code>a</code>.</p>
+<p>However, there is a better way using what are called <em>guards</em>.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; ldf ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Integer</span>
+<span class="ot">&gt;</span> ldf k n <span class="fu">|</span> divides k n <span class="fu">=</span> k
+<span class="ot">&gt;</span> ldf k n <span class="fu">|</span> k<span class="fu">^</span><span class="dv">2</span> <span class="fu">&gt;</span> n <span class="fu">=</span>n
+<span class="ot">&gt;</span> ldf k n <span class="fu">|</span> otherwise <span class="fu">=</span> ldf1 (k<span class="fu">+</span><span class="dv">1</span>) n</code></pre></div>
     </body>
 
     <div id="footer"> 

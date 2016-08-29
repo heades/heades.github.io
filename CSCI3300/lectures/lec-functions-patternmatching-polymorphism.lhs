@@ -56,7 +56,7 @@ Guards
 
 The next step of our prime number test is to define a means of
 computing the least divisor of a number `n` that is greater than `1`.
-The algorithm is a bit eaiser if we define it interms of one that
+The algorithm is a bit eaiser if we define it in terms of one that
 computes the least divisor of `n` greater than or equalt to a
 threshold `k`.  The algorithm is as follows:
 
@@ -82,3 +82,12 @@ ldf1 k n = if (divides k n)
 This function definition uses the if-then-else expression `if b then
 e1 else e2` where `b` is a boolean, `e1` has some type `a`, and `e2`
 has the same type `a`.
+
+However, there is a better way using what are called *guards*.
+
+\begin{code}
+ldf :: Integer -> Integer -> Integer
+ldf k n | divides k n = k
+ldf k n | k^2 > n =n
+ldf k n | otherwise = ldf1 (k+1) n
+\end{code}
