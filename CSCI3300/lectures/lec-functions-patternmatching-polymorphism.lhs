@@ -39,7 +39,8 @@ divides d n = rem n d == 0
 \end{code}
 
 This function takes in two integers, and returns `True` when `n`
-divided by `d` has a remainder of `0`.  For example,
+divided by `d` has a remainder of `0`.  Here the function `rem` is the
+remainder function which is equivalent to `n % d` in C#. For example,
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
 ghci> divides 2 6

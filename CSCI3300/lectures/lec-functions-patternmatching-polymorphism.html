@@ -33,7 +33,7 @@ name x1 x2 ... xi = y</code></pre>
 <p>For example, here is the divides function:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; divides ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
 <span class="ot">&gt;</span> divides d n <span class="fu">=</span> rem n d <span class="fu">==</span> <span class="dv">0</span></code></pre></div>
-<p>This function takes in two integers, and returns <code>True</code> when <code>n</code> divided by <code>d</code> has a remainder of <code>0</code>. For example,</p>
+<p>This function takes in two integers, and returns <code>True</code> when <code>n</code> divided by <code>d</code> has a remainder of <code>0</code>. Here the function <code>rem</code> is the remainder function which is equivalent to <code>n % d</code> in C#. For example,</p>
 <pre class=".(haskell)"><code>ghci&gt; divides 2 6
 True
 ghci&gt; divides 3 12
