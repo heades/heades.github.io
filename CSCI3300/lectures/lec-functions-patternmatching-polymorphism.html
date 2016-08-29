@@ -41,7 +41,7 @@ True
 ghci&gt; divides 4 9
 False</code></pre>
 <h2 id="guards">Guards</h2>
-<p>The next step of our prime number test is to define a means of computing the least divisor of a number <code>n</code> that is greater than <code>1</code>. The algorithm is a bit eaiser if we define it in terms of one that computes the least divisor of <code>n</code> greater than or equalt to a threshold <code>k</code>. The algorithm is as follows:</p>
+<p>The next step of our prime number test is to define a means of computing the least divisor of a number <code>n</code> that is greater than <code>1</code>. The algorithm is a bit eaiser if we define it in terms of one that computes the least divisor of <code>n</code> greater than or equal to a threshold <code>k</code>. The algorithm is as follows:</p>
 <ol style="list-style-type: decimal">
 <li>If <code>divides k n</code>, then <code>ldf k n = k</code></li>
 <li>If <code>k^2 &gt; n</code>, then <code>ldf k n = n</code></li>
