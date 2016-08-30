@@ -92,7 +92,7 @@ ldf k n | k^2 > n = n
 ldf k n | otherwise = ldf1 (k+1) n
 \end{code}
 
-This is called a *guard equation* which of the general form:
+This is called a *guarded equation* which has the general form:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
 name x1 x2 ... xi | b1 = y1
@@ -102,3 +102,11 @@ name x1 x2 ... xi | b4 = y4
 ...
 name x1 x2 ... xi | bj = yj
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Each of the `x1 ... xi` are the arguments to the function, and each
+`b1 ... bj` are booleans.  Finally, each of `y1 ... yj` are the
+respective bodies of the functions.  Haskell evaluates this function
+by starting at the first equation, and determining if `b1` is true, if
+it is, then the function returns `y1`, but if it is false, then
+Haskell movies on to the second equation and determines if `b2` is
+true, and it is, then returns `y2`, and so on.

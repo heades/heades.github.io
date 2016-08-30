@@ -61,13 +61,14 @@ False</code></pre>
 <span class="ot">&gt;</span> ldf k n <span class="fu">|</span> divides k n <span class="fu">=</span> k
 <span class="ot">&gt;</span> ldf k n <span class="fu">|</span> k<span class="fu">^</span><span class="dv">2</span> <span class="fu">&gt;</span> n <span class="fu">=</span> n
 <span class="ot">&gt;</span> ldf k n <span class="fu">|</span> otherwise <span class="fu">=</span> ldf1 (k<span class="fu">+</span><span class="dv">1</span>) n</code></pre></div>
-<p>This is called a <em>guard equation</em> which of the general form:</p>
+<p>This is called a <em>guarded equation</em> which has the general form:</p>
 <pre class=".(haskell)"><code>name x1 x2 ... xi | b1 = y1
 name x1 x2 ... xi | b2 = y2
 name x1 x2 ... xi | b3 = y3
 name x1 x2 ... xi | b4 = y4
 ...
 name x1 x2 ... xi | bj = yj</code></pre>
+<p>Each of the <code>x1 ... xi</code> are the arguments to the function, and each <code>b1 ... bj</code> are booleans. Finally, each of <code>y1 ... yj</code> are the respective bodies of the functions. Haskell evaluates this function by starting at the first equation, and determining if <code>b1</code> is true, if it is, then the function returns <code>y1</code>, but if it is false, then Haskell movies on to the second equation and determines if <code>b2</code> is true, and it is, then returns <code>y2</code>, and so on.</p>
     </body>
 
     <div id="footer"> 
