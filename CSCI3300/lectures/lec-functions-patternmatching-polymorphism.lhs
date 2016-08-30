@@ -179,5 +179,5 @@ The `error` function tells Haskell to throw an exception and output
 its argument to STDOUT -- the screen -- the message.  For example,
 
 ~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
-ghci> isPrime (-1)
+ghci> isPrime
 ~~~~~~~~~~~~~~~~~~~~~~ 
