@@ -127,3 +127,13 @@ runs is the third equation, because that is the catch all case. Thus,
 recursive call which increases the first argument by one.  Finally, we
 can see that `divides 8 2224` is true, and hence, `ldf 7 2224 = ldf 8
 2224 = 8`.
+
+Note that in Haskell doing recursive calls is easy, because we can
+simply call the function again within the body of the function.  This
+is just like mathematics!  In this class all functions we define must
+be terminating, and thus, one must make sure that when making a
+recursive call to increase or decrease at least one argument to the
+function so that it tends towards the base cases.  In `ldf` we
+increase by one, because we know from algebra that it is a property of
+the least divisor that we will eventually find the least divisor
+greater than `k`.
