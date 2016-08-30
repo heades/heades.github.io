@@ -110,7 +110,7 @@ this function by starting at the first equation, and determining if
 `b1` is true, if it is, then the function returns `y1`, but if it is
 false, then Haskell movies on to the second equation and determines if
 `b2` is true, and if it is, then returns `y2`, and so on.  Notice that
-the guard in the last equation is `otherwise` this is the "catch all"
+the guard in the last equation is `otherwise`, this is the "catch all"
 case.  That is, it is exactly like `else` in an if-then-else
 expression, and thus, if all the guards on the previous equations are
 false, then this equation is chosen.
