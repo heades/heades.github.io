@@ -135,5 +135,5 @@ be terminating, and thus, one must make sure that when making a
 recursive call to increase or decrease at least one argument to the
 function, so that it tends towards the base cases.  In `ldf` we
 increase by one, because we know from algebra that it is a property of
-the least divisor that we will eventually find the least divisor
-greater than `k`.
+the least divisor function that we will eventually find the least
+divisor greater than `k`.
