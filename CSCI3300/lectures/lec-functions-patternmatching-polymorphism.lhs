@@ -98,6 +98,5 @@ name x1 x2 ... xi | b1 = y1
 name x1 x2 ... xi | b2 = y2
 name x1 x2 ... xi | b3 = y3
 name x1 x2 ... xi | b4 = y4
-...
 name x1 x2 ... xi | bj = yj
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
