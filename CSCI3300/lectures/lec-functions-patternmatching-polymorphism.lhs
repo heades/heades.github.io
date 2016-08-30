@@ -118,8 +118,12 @@ false, then this equation is chosen.
 So consider `ldf 7 24`.  First, ghci checks to see if `divides 7 24`
 is true, but it is false, and so abandons that equation and moves onto
 the second one, and asks if `k^2 > n`, and it is, and so `ldf 7 24 =
-24`. `ldf 7 224`  
+24`.
 
 As a second example consider `ldf 7 2224`.  Notice that `7` is does
-not divide `224`, nor is `7^2 > 2224`, and thus, the equation ghci
-runs is the third equation, because that is the catch all case. 
+not divide `2224`, nor is `7^2 > 2224`, and thus, the equation ghci
+runs is the third equation, because that is the catch all case. Thus,
+`ldf 7 2224 = ldf (7+1) 2224 = ldf 8 2224`.  In this branch we make a
+recursive call which increases the first argument by one.  Finally, we
+can see that `divides 8 2224` is true, and hence, `ldf 7 2224 = ldf 8
+2224 = 8`.
