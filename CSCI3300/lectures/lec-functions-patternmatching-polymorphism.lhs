@@ -100,18 +100,26 @@ name x1 x2 ... xi | b2 = y2
 name x1 x2 ... xi | b3 = y3
 name x1 x2 ... xi | b4 = y4
 ...
-name x1 x2 ... xi | bj = yj
+name x1 x2 ... xi | otherwise = yj
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Each of the `x1 ... xi` are the arguments to the function, and each
-`b1 ... bj` are booleans.  Finally, each of `y1 ... yj` are the
-respective bodies of the function.  Ghci evaluates this function by
-starting at the first equation, and determining if `b1` is true, if it
-is, then the function returns `y1`, but if it is false, then Haskell
-movies on to the second equation and determines if `b2` is true, and
-if it is, then returns `y2`, and so on.
+`b1 ... bj` are booleans and are called *guards*.  Finally, each of
+`y1 ... yj` are the respective bodies of the function.  Ghci evaluates
+this function by starting at the first equation, and determining if
+`b1` is true, if it is, then the function returns `y1`, but if it is
+false, then Haskell movies on to the second equation and determines if
+`b2` is true, and if it is, then returns `y2`, and so on.  Notice that
+the guard in the last equation is `otherwise` this is the "catch all"
+case.  That is, it is exactly like `else` in an if-then-else
+expression, and thus, if all the guards on the previous equations are
+false, then this equation is chosen.
 
 So consider `ldf 7 24`.  First, ghci checks to see if `divides 7 24`
 is true, but it is false, and so abandons that equation and moves onto
 the second one, and asks if `k^2 > n`, and it is, and so `ldf 7 24 =
-24`.
+24`. `ldf 7 224`  
+
+As a second example consider `ldf 7 2224`.  Notice that `7` is does
+not divide `224`, nor is `7^2 > 2224`, and thus, the equation ghci
+runs is the third equation, because that is the catch all case. 

@@ -67,9 +67,10 @@ name x1 x2 ... xi | b2 = y2
 name x1 x2 ... xi | b3 = y3
 name x1 x2 ... xi | b4 = y4
 ...
-name x1 x2 ... xi | bj = yj</code></pre>
-<p>Each of the <code>x1 ... xi</code> are the arguments to the function, and each <code>b1 ... bj</code> are booleans. Finally, each of <code>y1 ... yj</code> are the respective bodies of the function. Ghci evaluates this function by starting at the first equation, and determining if <code>b1</code> is true, if it is, then the function returns <code>y1</code>, but if it is false, then Haskell movies on to the second equation and determines if <code>b2</code> is true, and if it is, then returns <code>y2</code>, and so on.</p>
-<p>So consider <code>ldf 7 24</code>. First, ghci checks to see if <code>divides 7 24</code> is true, but it is false, and so abandons that equation and moves onto the second one, and asks if <code>k^2 &gt; n</code>, and it is, and so <code>ldf 7 24 = 24</code>.</p>
+name x1 x2 ... xi | otherwise = yj</code></pre>
+<p>Each of the <code>x1 ... xi</code> are the arguments to the function, and each <code>b1 ... bj</code> are booleans and are called <em>guards</em>. Finally, each of <code>y1 ... yj</code> are the respective bodies of the function. Ghci evaluates this function by starting at the first equation, and determining if <code>b1</code> is true, if it is, then the function returns <code>y1</code>, but if it is false, then Haskell movies on to the second equation and determines if <code>b2</code> is true, and if it is, then returns <code>y2</code>, and so on. Notice that the guard in the last equation is <code>otherwise</code> this is the “catch all” case. That is, it is exactly like <code>else</code> in an if-then-else expression, and thus, if all the guards on the previous equations are false, then this equation is chosen.</p>
+<p>So consider <code>ldf 7 24</code>. First, ghci checks to see if <code>divides 7 24</code> is true, but it is false, and so abandons that equation and moves onto the second one, and asks if <code>k^2 &gt; n</code>, and it is, and so <code>ldf 7 24 = 24</code>. <code>ldf 7 224</code></p>
+<p>As a second example consider <code>ldf 7 2224</code>. Notice that <code>7</code> is does not divide <code>224</code>, nor is <code>7^2 &gt; 2224</code>, and thus, the equation ghci runs is the third equation, because that is the catch all case.</p>
     </body>
 
     <div id="footer"> 
