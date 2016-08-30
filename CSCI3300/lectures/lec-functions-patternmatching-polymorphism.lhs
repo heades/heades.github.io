@@ -206,7 +206,7 @@ or1 b1 b2 | b1 = True
           | otherwise = False
 \end{code}
 
-This works, but consider the a second way:
+This works, but consider a second way:
 
 \begin{code}
 or2 :: Bool -> Bool -> Bool
