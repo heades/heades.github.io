@@ -180,6 +180,4 @@ its argument to STDOUT -- the screen -- the message.  For example,
 
 ~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
 ghci> isPrime (-1)
-Exception: not a positive integer
-CallStack (from HasCallStack): 
 ~~~~~~~~~~~~~~~~~~~~~~ 
