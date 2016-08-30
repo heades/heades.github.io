@@ -185,3 +185,13 @@ CallStack (from HasCallStack):
   error, called at lectures/lec-functions-patternmatching-polymorphism.lhs:164:21 in main:LectFuns
 ghci> 
 ~~~~~~~~~~~~~~~~~~~~~~~
+
+Pattern Matching
+----------------
+
+There is one extremely powerful tool Haskell -- as well as many other
+functional programming languages -- provides called *pattern
+matching*.  This allows one to case split on the shape of a value.
+First, we will concentrate on pattern matching on input values, and
+then discuss a more general form which allows for one to case split on
+output values.
