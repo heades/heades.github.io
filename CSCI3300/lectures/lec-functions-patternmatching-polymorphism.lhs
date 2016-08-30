@@ -93,6 +93,7 @@ ldf k n | otherwise = ldf1 (k+1) n
 \end{code}
 
 This is called a *guard equation* which of the general form:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
 name x1 x2 ... xi | b1 = y1
 name x1 x2 ... xi | b2 = y2
