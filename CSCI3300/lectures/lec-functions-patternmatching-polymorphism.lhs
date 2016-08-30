@@ -184,4 +184,4 @@ ghci> isPrime (-1)
 CallStack (from HasCallStack):
   error, called at lectures/lec-functions-patternmatching-polymorphism.lhs:164:21 in main:LectFuns
 ghci> 
-~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~ 
