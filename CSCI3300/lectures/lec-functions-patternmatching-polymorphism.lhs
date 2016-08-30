@@ -180,4 +180,4 @@ its argument to STDOUT -- the screen -- the message.  For example,
 
 ~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
 ghci> isPrime
-~~~~~~~~~~~~~~~~~~~~~~ 
+~~~~~~~~~~~~~~~~~~~~~~~
