@@ -179,9 +179,11 @@ The `error` function tells Haskell to throw an exception and output
 its argument to STDOUT -- the screen -- the message.  For example,
 
 ~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+
 ghci> isPrime (-1)
 *** Exception: not a positive integer
 CallStack (from HasCallStack):
   error, called at lectures/lec-functions-patternmatching-polymorphism.lhs:164:21 in main:LectFuns
 ghci> 
+
 ~~~~~~~~~~~~~~~~~~~~~~ 
