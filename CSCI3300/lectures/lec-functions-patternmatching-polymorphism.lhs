@@ -137,3 +137,41 @@ function, so that it tends towards the base cases.  In `ldf` we
 increase by one, because we know from algebra that it is a property of
 the least divisor function that we will eventually find the least
 divisor greater than `k`.
+
+Using `ldf` we can define the least common divisor function as follows:
+
+\begin{code}
+ld :: Integer -> Integer
+ld n = ldf 2 n
+\end{code}
+
+Here are a few examples:
+
+~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+ghci> ld 14
+2
+ghci> ld 15
+3
+ghci> ld 16
+2
+ghci> ld 55
+5
+~~~~~~~~~~~~~~~~~~~~~~
+
+At this point we have everything we need to define a prime number test.
+
+\begin{code}
+isPrime n | n < 1 = error "not a positive integer"
+          | n == 1 = False
+          | otherwise = ld n == n
+\end{code}
+
+In the definition of `isPrime` we used a bit a simplified form of the
+guards.  This definition is equivalent to the following one:
+
+~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+isPrime n | n < 1 = error "not a positive integer"
+isPrime n | n == 1 = False
+isPrime n | otherwise = ld n == n
+~~~~~~~~~~~~~~~~~~~~~~~~
+

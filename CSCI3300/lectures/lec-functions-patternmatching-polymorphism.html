@@ -72,6 +72,26 @@ name x1 x2 ... xi | otherwise = yj</code></pre>
 <p>So consider <code>ldf 7 24</code>. First, ghci checks to see if <code>divides 7 24</code> is true, but it is false, and so abandons that equation and moves onto the second one, and asks if <code>k^2 &gt; n</code>, and it is, and so <code>ldf 7 24 = 24</code>.</p>
 <p>As a second example, consider <code>ldf 7 2224</code>. Notice that <code>7</code> does not divide <code>2224</code>, nor is <code>7^2 &gt; 2224</code>, and thus, the equation ghci runs is the third equation, because that is the catch all case. Thus, <code>ldf 7 2224 = ldf (7+1) 2224 = ldf 8 2224</code>. In this branch we make a recursive call which increases the first argument by one. Finally, we can see that <code>divides 8 2224</code> is true, and hence, <code>ldf 7 2224 = ldf 8 2224 = 8</code>.</p>
 <p>Note that in Haskell doing recursive calls is easy, because we can simply call the function again within the body of the function. This is just like mathematics! In this class all functions we define must be terminating, and thus, one must make sure that when making a recursive call to increase or decrease at least one argument to the function, so that it tends towards the base cases. In <code>ldf</code> we increase by one, because we know from algebra that it is a property of the least divisor function that we will eventually find the least divisor greater than <code>k</code>.</p>
+<p>Using <code>ldf</code> we can define the least common divisor function as follows:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; ld ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Integer</span>
+<span class="ot">&gt;</span> ld n <span class="fu">=</span> ldf <span class="dv">2</span> n</code></pre></div>
+<p>Here are a few examples:</p>
+<pre class=".(haskell)"><code>ghci&gt; ld 14
+2
+ghci&gt; ld 15
+3
+ghci&gt; ld 16
+2
+ghci&gt; ld 55
+5</code></pre>
+<p>At this point we have everything we need to define a prime number test.</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> isPrime n <span class="fu">|</span> n <span class="fu">&lt;</span> <span class="dv">1</span> <span class="fu">=</span> error <span class="st">&quot;not a positive integer&quot;</span>
+<span class="ot">&gt;</span>           <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">1</span> <span class="fu">=</span> <span class="dt">False</span>
+<span class="ot">&gt;</span>           <span class="fu">|</span> otherwise <span class="fu">=</span> ld n <span class="fu">==</span> n</code></pre></div>
+<p>In the definition of <code>isPrime</code> we used a bit a simplified form of the guards. This definition is equivalent to the following one:</p>
+<pre class=".(haskell)"><code>isPrime n | n &lt; 1 = error &quot;not a positive integer&quot;
+isPrime n | n == 1 = False
+isPrime n | otherwise = ld n == n</code></pre>
     </body>
 
     <div id="footer"> 
