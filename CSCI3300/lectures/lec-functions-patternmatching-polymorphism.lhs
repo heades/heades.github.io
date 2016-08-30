@@ -175,3 +175,5 @@ isPrime n | n == 1 = False
 isPrime n | otherwise = ld n == n
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
+The `error` function tells Haskell to throw an exception and output to
+STDOUT -- the screen -- the message.
