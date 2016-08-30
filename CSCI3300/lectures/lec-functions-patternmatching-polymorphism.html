@@ -99,7 +99,18 @@ CallStack (from HasCallStack):
   error, called at lectures/lec-functions-patternmatching-polymorphism.lhs:164:21 in main:LectFuns
 ghci&gt; </code></pre>
 <h2 id="pattern-matching">Pattern Matching</h2>
-<p>There is one extremely powerful tool Haskell – as well as many other functional programming languages – provides called <em>pattern matching</em>. This allows one to case split on the shape of a value. First, we will concentrate on pattern matching on input values, and then discuss a more general form which allows for one to case split on output values.</p>
+<p>There is one extremely powerful tool Haskell – as well as many other functional programming languages – provides called <em>pattern matching</em>. This allows one to case split on the shape of a data type. First, we will concentrate on pattern matching on input arguments, and then discuss a more general form which allows for one to case split on the outputs of function calls.</p>
+<p>We begin with an example. Suppose we wished to define disjunction over the booleans. One way would be to use guards:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; or1 ::</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+<span class="ot">&gt;</span> or1 b1 b2 <span class="fu">|</span> b1 <span class="fu">=</span> <span class="dt">True</span>
+<span class="ot">&gt;</span>           <span class="fu">|</span> b2 <span class="fu">=</span> <span class="dt">True</span>
+<span class="ot">&gt;</span>           <span class="fu">|</span> otherwise <span class="fu">=</span> <span class="dt">False</span></code></pre></div>
+<p>This works, but consider the a second way:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; or2 ::</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+<span class="ot">&gt;</span> or2 <span class="dt">True</span> b2 <span class="fu">=</span> <span class="dt">True</span>
+<span class="ot">&gt;</span> or2 b1 <span class="dt">True</span> <span class="fu">=</span> <span class="dt">True</span>
+<span class="ot">&gt;</span> or2 b1 b2 <span class="fu">=</span> <span class="dt">False</span></code></pre></div>
+<p>The function <code>or2</code> uses pattern matching on the input arguments by enforcing when either <code>b1</code> or <code>b2</code> are <code>True</code>. Consider the first equation of <code>or2</code>, this equation states that <code>b1</code> must be <code>True</code>, and if during evaluation it is not, then Haskell will move on to the next equation where it will check to see if <code>b2</code> is <code>True</code>. In the second equation, <code>b1</code> means that the first argument can be either <code>True</code> or <code>False</code>, but if during evaluation this argument is chosen, then it is necessarily the case that <code>b1</code> is <code>False</code>, or the first equation would have triggered.</p>
     </body>
 
     <div id="footer"> 

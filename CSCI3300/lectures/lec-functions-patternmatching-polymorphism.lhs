@@ -191,7 +191,36 @@ Pattern Matching
 
 There is one extremely powerful tool Haskell -- as well as many other
 functional programming languages -- provides called *pattern
-matching*.  This allows one to case split on the shape of a value.
-First, we will concentrate on pattern matching on input values, and
+matching*.  This allows one to case split on the shape of a data type.
+First, we will concentrate on pattern matching on input arguments, and
 then discuss a more general form which allows for one to case split on
-output values.
+the outputs of function calls.
+
+We begin with an example.  Suppose we wished to define disjunction over
+the booleans.  One way would be to use guards:
+
+\begin{code}
+or1 :: Bool -> Bool -> Bool
+or1 b1 b2 | b1 = True
+          | b2 = True
+          | otherwise = False
+\end{code}
+
+This works, but consider the a second way:
+
+\begin{code}
+or2 :: Bool -> Bool -> Bool
+or2 True b2 = True
+or2 b1 True = True
+or2 b1 b2 = False
+\end{code}
+
+The function `or2` uses pattern matching on the input arguments by
+enforcing when either `b1` or `b2` are `True`.  Consider the first
+equation of `or2`, this equation states that `b1` must be `True`, and
+if during evaluation it is not, then Haskell will move on to the next
+equation where it will check to see if `b2` is `True`.  In the second
+equation, `b1` means that the first argument can be either `True` or
+`False`, but if during evaluation this argument is chosen, then it is
+necessarily the case that `b1` is `False`, or the first equation would
+have triggered.
