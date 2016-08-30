@@ -109,4 +109,4 @@ respective bodies of the function.  Haskell evaluates this function
 by starting at the first equation, and determining if `b1` is true, if
 it is, then the function returns `y1`, but if it is false, then
 Haskell movies on to the second equation and determines if `b2` is
-true, and it is, then returns `y2`, and so on.
+true, and if it is, then returns `y2`, and so on.
