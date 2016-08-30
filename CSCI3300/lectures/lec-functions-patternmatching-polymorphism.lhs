@@ -105,7 +105,7 @@ name x1 x2 ... xi | bj = yj
 
 Each of the `x1 ... xi` are the arguments to the function, and each
 `b1 ... bj` are booleans.  Finally, each of `y1 ... yj` are the
-respective bodies of the functions.  Haskell evaluates this function
+respective bodies of the function.  Haskell evaluates this function
 by starting at the first equation, and determining if `b1` is true, if
 it is, then the function returns `y1`, but if it is false, then
 Haskell movies on to the second equation and determines if `b2` is
