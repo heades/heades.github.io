@@ -181,7 +181,5 @@ its argument to STDOUT -- the screen -- the message.  For example,
 ~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
 ghci> isPrime (-1)
 Exception: not a positive integer
-CallStack (from HasCallStack):
-  error, called at lectures/lec-functions-patternmatching-polymorphism.lhs
-ghci> 
+CallStack (from HasCallStack): 
 ~~~~~~~~~~~~~~~~~~~~~~ 
