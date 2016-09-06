@@ -130,6 +130,12 @@ ghci&gt; </code></pre>
 <span class="ot">&gt;</span> or4 <span class="dt">False</span> <span class="dt">False</span> <span class="fu">=</span> <span class="dt">False</span>
 <span class="ot">&gt;</span> or4 _ _ <span class="fu">=</span> <span class="dt">True</span></code></pre></div>
 <p>Notice that in the definition of <code>or3</code> the second equation does not use the variables <code>b1</code> and <code>b2</code> in the body of the function. This new definition tells Haskell to ignore those inputs completely, because we are not going to use them. The <code>_</code> is called the “joker”. It can be read as “I don’t care what this argument is, in fact, I am not even going to use it.”</p>
+<p>Booleans are fun, but they do not have a lot of structure, and so it is hard to see just how powerful pattern matching is. Recall that every list <code>[x1,x2,x3,...,xi]</code> is just syntactic sugar for the list <code>x1 : x2 : x3 : ... : xi : []</code>. In addition, both of the previous lists are equivalent to <code>x1:[x2,x3,...,xi]</code>. It turns out that the latter form can be used to pattern match on lists.</p>
+<p>Consider the following example:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; firstInt ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> <span class="dt">Int</span>
+<span class="ot">&gt;</span> firstInt [] <span class="fu">=</span> error <span class="st">&quot;empty list has no first integer&quot;</span>
+<span class="ot">&gt;</span> firstInt (i<span class="fu">:</span>rest) <span class="fu">=</span> i</code></pre></div>
+<p>We know that either a list is empty or it has at least one element inside of it. The first equation in <code>firstInt</code> checks to see if the input list is empty, and if so, outputs an error. If during evaluation the second equation is hit, then we know that the list cannot be empty, because Haskell starts with the first equation and moves downward until it matches the pattern. The pattern <code>i:rest</code> tells Haskell to name the first element of the input list <code>i</code>, and the to name the remainder of the list <code>rest</code>. For example, suppose we applied <code>firstInt</code> to the list <code>[1,2,3]</code>, then we know that this list is equivalent to the list <code>1:[2,3]</code>. Haskell will then name <code>1</code> <code>i</code>, and the list <code>[2,3]</code> <code>rest</code>.</p>
     </body>
 
     <div id="footer"> 

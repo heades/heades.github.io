@@ -276,3 +276,30 @@ definition tells Haskell to ignore those inputs completely, because we
 are not going to use them.  The `_` is called the "joker".  It can be
 read as "I don't care what this argument is, in fact, I am not even
 going to use it."
+
+Booleans are fun, but they do not have a lot of structure, and so it
+is hard to see just how powerful pattern matching is.  Recall that
+every list `[x1,x2,x3,...,xi]` is just syntactic sugar for the list
+`x1 : x2 : x3 : ... : xi : []`.  In addition, both of the previous
+lists are equivalent to `x1:[x2,x3,...,xi]`.  It turns out that the
+latter form can be used to pattern match on lists.
+
+Consider the following example:
+
+\begin{code}
+firstInt :: [Int] -> Int
+firstInt [] = error "empty list has no first integer"
+firstInt (i:rest) = i
+\end{code}
+
+We know that either a list is empty or it has at least one element
+inside of it.  The first equation in `firstInt` checks to see if the
+input list is empty, and if so, outputs an error.  If during
+evaluation the second equation is hit, then we know that the list
+cannot be empty, because Haskell starts with the first equation and
+moves downward until it matches the pattern.  The pattern `i:rest`
+tells Haskell to name the first element of the input list `i`, and the
+to name the remainder of the list `rest`.  For example, suppose we
+applied `firstInt` to the list `[1,2,3]`, then we know that this list
+is equivalent to the list `1:[2,3]`.  Haskell will then name `1` `i`,
+and the list `[2,3]` `rest`.  
