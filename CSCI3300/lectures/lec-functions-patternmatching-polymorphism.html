@@ -144,7 +144,7 @@ ghci&gt; </code></pre>
 <p>Now we can run our test using <code>ext</code>:</p>
 <pre class=".(haskell)"><code>*LectFuns&gt; ext [1,2,3]
 (1,[2,3])</code></pre>
-<p>The real power of pattern matching comes in when it is mixed with recursion. First, notice that we can place an ordering on lists. The empty list is the smallest list. Then we have the following:</p>
+<p>The real power of pattern matching comes in when it is mixed with recursion. First, notice that we can place an ordering on lists. The empty list is the smallest list, and we have the following:</p>
 <pre class=".(haskell)"><code>x:xs &gt; xs</code></pre>
 <p>Consider the following example:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; double ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> [<span class="dt">Int</span>]
