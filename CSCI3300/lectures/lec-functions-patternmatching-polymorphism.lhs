@@ -336,7 +336,8 @@ x:xs > xs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We call an ordering like this a *structural ordering*, because it
-decreases with the structure of the data type.
+decreases with the structure of the data type.  Using this structural
+ordering we can write terminating structurally recursive functions.
 
 Consider the following example:
 
@@ -346,3 +347,10 @@ double [] = []
 double (x:xs) = 2*x : double xs
 \end{code}
 
+First, `double` pattern matches on the input list, and if it is empty,
+then it simply returns the empty list, but if the input is not empty
+then `double` returns a new list with the head set to `2*x`, but we
+compute the tail of the list by recursion effectively doubling the
+rest of the list.  Notice that the recursive call is applied to `xs`
+which is a structurally smaller list than the input.  This tells us
+that we know `double` will eventually terminate.

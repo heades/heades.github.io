@@ -146,11 +146,12 @@ ghci&gt; </code></pre>
 (1,[2,3])</code></pre>
 <p>The real power of pattern matching comes in when it is mixed with recursion. First, notice that we can place an ordering on lists. The empty list is the smallest list, and we have the following:</p>
 <pre class=".(haskell)"><code>x:xs &gt; xs</code></pre>
-<p>We call an ordering like this a <em>structural ordering</em>, because it decreases with the structure of the data type.</p>
+<p>We call an ordering like this a <em>structural ordering</em>, because it decreases with the structure of the data type. Using this structural ordering we can write terminating structurally recursive functions.</p>
 <p>Consider the following example:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; double ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> [<span class="dt">Int</span>]
 <span class="ot">&gt;</span> double [] <span class="fu">=</span> []
 <span class="ot">&gt;</span> double (x<span class="fu">:</span>xs) <span class="fu">=</span> <span class="dv">2</span><span class="fu">*</span>x <span class="fu">:</span> double xs</code></pre></div>
+<p>First, <code>double</code> pattern matches on the input list, and if it is empty, then it simply returns the empty list, but if the input is not empty then <code>double</code> returns a new list with the head set to <code>2*x</code>, but we compute the tail of the list by recursion effectively doubling the rest of the list. Notice that the recursive call is applied to <code>xs</code> which is a structurally smaller list than the input. This tells us that we know <code>double</code> will eventually terminate.</p>
     </body>
 
     <div id="footer"> 
