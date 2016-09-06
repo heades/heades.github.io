@@ -98,6 +98,7 @@ isPrime n | otherwise = ld n == n</code></pre>
 CallStack (from HasCallStack):
   error, called at lectures/lec-functions-patternmatching-polymorphism.lhs:164:21 in main:LectFuns
 ghci&gt; </code></pre>
+<p>Keep in mind that this exception cannot be caught, and it causes the current execution to be terminated.</p>
 <h2 id="pattern-matching">Pattern Matching</h2>
 <p>There is one extremely powerful tool Haskell – as well as many other functional programming languages – provides called <em>pattern matching</em>. This allows one to case split on the shape of a data type. First, we will concentrate on pattern matching on input arguments, and then discuss a more general form which allows for one to case split on the outputs of function calls.</p>
 <p>We begin with an example. Suppose we wished to define disjunction over the booleans. One way would be to use guards:</p>

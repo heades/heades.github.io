@@ -186,6 +186,9 @@ CallStack (from HasCallStack):
 ghci> 
 ~~~~~~~~~~~~~~~~~~~~~~~
 
+Keep in mind that this exception cannot be caught, and it causes the
+current execution to be terminated.
+
 Pattern Matching
 ----------------
 
