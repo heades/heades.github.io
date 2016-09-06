@@ -136,6 +136,14 @@ ghci&gt; </code></pre>
 <span class="ot">&gt;</span> firstInt [] <span class="fu">=</span> error <span class="st">&quot;empty list has no first integer&quot;</span>
 <span class="ot">&gt;</span> firstInt (i<span class="fu">:</span>rest) <span class="fu">=</span> i</code></pre></div>
 <p>We know that either a list is empty or it has at least one element inside of it. The first equation in <code>firstInt</code> checks to see if the input list is empty, and if so outputs an error. If during evaluation the second equation is hit, then we know that the list cannot be empty, because Haskell starts with the first equation and moves downward until it matches the pattern. The pattern <code>i:rest</code> tells Haskell to name the first element of the input list <code>i</code>, and to name the remainder of the list <code>rest</code>. For example, suppose we applied <code>firstInt</code> to the list <code>[1,2,3]</code>, then we know that this list is equivalent to the list <code>1:[2,3]</code>. Haskell will then set <code>i = 1</code>, and <code>rest = [2,3]</code>.</p>
+<p>Let us check to see if this is the case by writing a program to show us the values of <code>i</code> and <code>rest</code>:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; ext ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> (<span class="dt">Int</span>, [<span class="dt">Int</span>])
+<span class="ot">&gt;</span> ext [] <span class="fu">=</span> error <span class="st">&quot;ext doesn't like the empty list&quot;</span>
+<span class="ot">&gt;</span> ext (i<span class="fu">:</span>rest) <span class="fu">=</span> (i,rest)</code></pre></div>
+<p>The return type of the previous function is a pair type, and has the form <code>(a,b)</code> where <code>a</code> and <code>b</code> are some other types. It is simply the type of all pairs where the first projection is of type <code>a</code> and the second projection is of type <code>b</code>. Thus, <code>(1,2)</code> has type <code>(Int,Int)</code>, and the pair <code>(1,[2,3])</code> has type <code>(Int,[Int])</code>. The pair <code>(42,True)</code> has type <code>(Int, Bool)</code>.</p>
+<p>Now we can run our test using <code>ext</code>:</p>
+<pre class=".(haskell)"><code>*LectFuns&gt; ext [1,2,3]
+(1,[2,3])</code></pre>
     </body>
 
     <div id="footer"> 

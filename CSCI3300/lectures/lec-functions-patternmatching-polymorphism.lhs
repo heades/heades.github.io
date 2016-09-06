@@ -303,3 +303,28 @@ the remainder of the list `rest`.  For example, suppose we applied
 `firstInt` to the list `[1,2,3]`, then we know that this list is
 equivalent to the list `1:[2,3]`.  Haskell will then set `i = 1`, and
 `rest = [2,3]`.
+
+Let us check to see if this is the case by writing a program to show us
+the values of `i` and `rest`:
+
+\begin{code}
+ext :: [Int] -> (Int, [Int])
+ext [] = error "ext doesn't like the empty list"
+ext (i:rest) = (i,rest)
+\end{code}
+
+The return type of the previous function is a pair type, and has the
+form `(a,b)` where `a` and `b` are some other types.  It is simply the
+type of all pairs where the first projection is of type `a` and the
+second projection is of type `b`.  Thus, `(1,2)` has type `(Int,Int)`,
+and the pair `(1,[2,3])` has type `(Int,[Int])`.  The pair `(42,True)`
+has type `(Int, Bool)`.
+
+Now we can run our test using `ext`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+*LectFuns> ext [1,2,3]
+(1,[2,3])
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
