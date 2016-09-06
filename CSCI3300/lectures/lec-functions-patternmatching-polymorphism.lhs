@@ -229,6 +229,26 @@ necessarily the case that `b1` is `False`, or the first equation would
 have triggered.  Finally, if during evaluation the third equation is
 chosen, then both inputs must be `False`.
 
+Haskell's evaluation strategy is called "call-by-need evaluation."          
+This means that Haskell will only evaluate a program when it needs its     
+value and in all other cases it will leave the program completely      
+unevaluated.  Consider as an example the following two functions:
+
+\begin{code}
+foo :: Integer -> Bool
+foo 0 = False
+foo n = True
+
+bar :: Bool
+bar = or2 True (foo 5)
+\end{code}
+
+When evaluating `bar` Haskell will evaluate as little as possible to     
+determine the output of `or2`, and hence, since the first argument is          
+`True` Haskell does not have to evaluate `foo 5` at all, and in face,       
+it does not evaluate, and simply returns `True`, because that is all   
+it needs to determine the correct output.
+
 Here is a third way to define this function:
 
 \begin{code}
