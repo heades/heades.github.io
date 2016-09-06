@@ -301,5 +301,5 @@ downward until it matches the pattern.  The pattern `i:rest` tells
 Haskell to name the first element of the input list `i`, and to name
 the remainder of the list `rest`.  For example, suppose we applied
 `firstInt` to the list `[1,2,3]`, then we know that this list is
-equivalent to the list `1:[2,3]`.  Haskell will then name `1` `i`, and
-the list `[2,3]` `rest`.
+equivalent to the list `1:[2,3]`.  Haskell will then set `i = 1`, and
+`rest = [2,3]`.
