@@ -335,6 +335,9 @@ empty list is the smallest list, and we have the following:
 x:xs > xs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+We call an ordering like this a *structural ordering*, because it
+decreases with the structure of the data type.
+
 Consider the following example:
 
 \begin{code}

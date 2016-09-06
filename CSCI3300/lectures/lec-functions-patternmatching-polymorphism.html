@@ -146,6 +146,7 @@ ghci&gt; </code></pre>
 (1,[2,3])</code></pre>
 <p>The real power of pattern matching comes in when it is mixed with recursion. First, notice that we can place an ordering on lists. The empty list is the smallest list, and we have the following:</p>
 <pre class=".(haskell)"><code>x:xs &gt; xs</code></pre>
+<p>We call an ordering like this a <em>structural ordering</em>, because it decreases with the structure of the data type.</p>
 <p>Consider the following example:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; double ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> [<span class="dt">Int</span>]
 <span class="ot">&gt;</span> double [] <span class="fu">=</span> []
