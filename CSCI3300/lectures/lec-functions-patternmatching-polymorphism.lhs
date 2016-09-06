@@ -294,7 +294,7 @@ firstInt (i:rest) = i
 
 We know that either a list is empty or it has at least one element
 inside of it.  The first equation in `firstInt` checks to see if the
-input list is empty, and if so, outputs an error.  If during
+input list is empty, and if so outputs an error.  If during
 evaluation the second equation is hit, then we know that the list
 cannot be empty, because Haskell starts with the first equation and
 moves downward until it matches the pattern.  The pattern `i:rest`
