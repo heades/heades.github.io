@@ -294,12 +294,12 @@ firstInt (i:rest) = i
 
 We know that either a list is empty or it has at least one element
 inside of it.  The first equation in `firstInt` checks to see if the
-input list is empty, and if so outputs an error.  If during
-evaluation the second equation is hit, then we know that the list
-cannot be empty, because Haskell starts with the first equation and
-moves downward until it matches the pattern.  The pattern `i:rest`
-tells Haskell to name the first element of the input list `i`, and the
-to name the remainder of the list `rest`.  For example, suppose we
-applied `firstInt` to the list `[1,2,3]`, then we know that this list
-is equivalent to the list `1:[2,3]`.  Haskell will then name `1` `i`,
-and the list `[2,3]` `rest`.  
+input list is empty, and if so outputs an error.  If during evaluation
+the second equation is hit, then we know that the list cannot be
+empty, because Haskell starts with the first equation and moves
+downward until it matches the pattern.  The pattern `i:rest` tells
+Haskell to name the first element of the input list `i`, and to name
+the remainder of the list `rest`.  For example, suppose we applied
+`firstInt` to the list `[1,2,3]`, then we know that this list is
+equivalent to the list `1:[2,3]`.  Haskell will then name `1` `i`, and
+the list `[2,3]` `rest`.
