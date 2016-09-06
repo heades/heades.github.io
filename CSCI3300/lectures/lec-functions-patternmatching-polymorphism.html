@@ -122,12 +122,7 @@ unevaluated. Consider as an example the following two functions:</p>
 <span class="ot">&gt;</span> 
 <span class="ot">&gt; bar ::</span> <span class="dt">Bool</span>
 <span class="ot">&gt;</span> bar <span class="fu">=</span> or2 <span class="dt">True</span> (foo <span class="dv">5</span>)</code></pre></div>
-<p>When evaluating <code>bar</code> Haskell will evaluate as little as possible to<br />
-determine the output of <code>or2</code>, and hence, since the first argument is<br />
-<code>True</code> Haskell does not have to evaluate <code>foo 5</code> at all, and in face,<br />
-it does not evaluate, and simply returns <code>True</code>, because that is all<br />
-it needs to determine the correct output. This style of evaluation is<br />
-often called <em>lazy evaluation</em> for obvious reasons.</p>
+<p>When evaluating <code>bar</code> Haskell will evaluate as little as possible to determine the output of <code>or2</code>, and hence, since the first argument is <code>True</code> Haskell does not have to evaluate <code>foo 5</code> at all, and in face,it does not evaluate, and simply returns <code>True</code>, because that is all it needs to determine the correct output. This style of evaluation is often called <em>lazy evaluation</em> for obvious reasons.</p>
 <p>Here is a third way to define this function:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; or3 ::</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
 <span class="ot">&gt;</span> or3 <span class="dt">False</span> <span class="dt">False</span> <span class="fu">=</span> <span class="dt">False</span>

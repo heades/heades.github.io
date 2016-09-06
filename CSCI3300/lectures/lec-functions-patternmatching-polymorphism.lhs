@@ -243,12 +243,12 @@ bar :: Bool
 bar = or2 True (foo 5)
 \end{code}
 
-When evaluating `bar` Haskell will evaluate as little as possible to     
-determine the output of `or2`, and hence, since the first argument is          
-`True` Haskell does not have to evaluate `foo 5` at all, and in face,       
-it does not evaluate, and simply returns `True`, because that is all   
-it needs to determine the correct output.  This style of evaluation is   
-often called *lazy evaluation* for obvious reasons.
+When evaluating `bar` Haskell will evaluate as little as possible to
+determine the output of `or2`, and hence, since the first argument is
+`True` Haskell does not have to evaluate `foo 5` at all, and in
+face,it does not evaluate, and simply returns `True`, because that is
+all it needs to determine the correct output.  This style of
+evaluation is often called *lazy evaluation* for obvious reasons.
 
 Here is a third way to define this function:
 
