@@ -232,8 +232,26 @@ chosen, then both inputs must be `False`.
 Here is a third way to define this function:
 
 \begin{code}
-or2 :: Bool -> Bool -> Bool
-or2 True b2 = True
-or2 b1 True = True
-or2 b1 b2 = False
+or3 :: Bool -> Bool -> Bool
+or3 False False = False
+or3 b1 b2 = True
 \end{code}
+
+In this version we use pattern matching to determine when the function
+should be `False`, and then leave the catchall case to handle when it
+should return `True`.
+
+We can simplfy this function one last time:
+
+\begin{code}
+or4 :: Bool -> Bool -> Bool
+or4 False False = False
+or4 _ _ = True
+\end{code}
+
+Notice that in the definition of `or3` the second equation does not
+use the variables `b1` and `b2` in the body of the function.  This new
+definition tells Haskell to ignore those inputs completely, because we
+are not going to use them.  The `_` is called the "joker".  It can be
+read as "I don't care what this argument is, in fact, I am not even
+going to use it."

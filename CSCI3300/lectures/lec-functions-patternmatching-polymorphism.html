@@ -113,10 +113,15 @@ ghci&gt; </code></pre>
 <span class="ot">&gt;</span> or2 b1 b2 <span class="fu">=</span> <span class="dt">False</span></code></pre></div>
 <p>The function <code>or2</code> uses pattern matching on the input arguments by enforcing when either <code>b1</code> or <code>b2</code> are <code>True</code>. Consider the first equation of <code>or2</code>, this equation states that <code>b1</code> must be <code>True</code>, and if during evaluation it is not, then Haskell will move on to the next equation where it will check to see if <code>b2</code> is <code>True</code>. In the second equation, <code>b1</code> means that the first argument can be either <code>True</code> or <code>False</code>, but if during evaluation this argument is chosen, then it is necessarily the case that <code>b1</code> is <code>False</code>, or the first equation would have triggered. Finally, if during evaluation the third equation is chosen, then both inputs must be <code>False</code>.</p>
 <p>Here is a third way to define this function:</p>
-<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; or2 ::</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
-<span class="ot">&gt;</span> or2 <span class="dt">True</span> b2 <span class="fu">=</span> <span class="dt">True</span>
-<span class="ot">&gt;</span> or2 b1 <span class="dt">True</span> <span class="fu">=</span> <span class="dt">True</span>
-<span class="ot">&gt;</span> or2 b1 b2 <span class="fu">=</span> <span class="dt">False</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; or3 ::</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+<span class="ot">&gt;</span> or3 <span class="dt">False</span> <span class="dt">False</span> <span class="fu">=</span> <span class="dt">False</span>
+<span class="ot">&gt;</span> or3 b1 b2 <span class="fu">=</span> <span class="dt">True</span></code></pre></div>
+<p>In this version we use pattern matching to determine when the function should be <code>False</code>, and then leave the catchall case to handle when it should return <code>True</code>.</p>
+<p>We can simplfy this function one last time:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; or4 ::</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+<span class="ot">&gt;</span> or4 <span class="dt">False</span> <span class="dt">False</span> <span class="fu">=</span> <span class="dt">False</span>
+<span class="ot">&gt;</span> or4 _ _ <span class="fu">=</span> <span class="dt">True</span></code></pre></div>
+<p>Notice that in the definition of <code>or3</code> the second equation does not use the variables <code>b1</code> and <code>b2</code> in the body of the function. This new definition tells Haskell to ignore those inputs completely, because we are not going to use them. The <code>_</code> is called the “joker”. It can be read as “I don’t care what this argument is, in fact, I am not even going to use it.”</p>
     </body>
 
     <div id="footer"> 
