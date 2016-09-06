@@ -327,4 +327,19 @@ Now we can run our test using `ext`:
 (1,[2,3])
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+The real power of pattern matching comes in when it is mixed with
+recursion.  First, notice that we can place an ordering on lists.  The
+empty list is the smallest list.  Then we have the following:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+x:xs > xs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Consider the following example:
+
+\begin{code}
+double :: [Int] -> [Int]
+double [] = []
+double (x:xs) = 2*x : double xs
+\end{code}
 
