@@ -223,4 +223,14 @@ equation where it will check to see if `b2` is `True`.  In the second
 equation, `b1` means that the first argument can be either `True` or
 `False`, but if during evaluation this argument is chosen, then it is
 necessarily the case that `b1` is `False`, or the first equation would
-have triggered.
+have triggered.  Finally, if during evaluation the third equation is
+chosen, then both inputs must be `False`.
+
+Here is a third way to define this function:
+
+\begin{code}
+or2 :: Bool -> Bool -> Bool
+or2 True b2 = True
+or2 b1 True = True
+or2 b1 b2 = False
+\end{code}
