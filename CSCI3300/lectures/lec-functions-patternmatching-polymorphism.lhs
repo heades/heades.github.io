@@ -110,7 +110,7 @@ this function by starting at the first equation, and determining if
 `b1` is true, if it is, then the function returns `y1`, but if it is
 false, then Haskell movies on to the second equation and determines if
 `b2` is true, and if it is, then returns `y2`, and so on.  Notice that
-the guard in the last equation is `otherwise`, this is the "catch all"
+the guard in the last equation is `otherwise`, this is the "catch-all"
 case.  That is, it is exactly like `else` in an if-then-else
 expression, and thus, if all the guards on the previous equations are
 false, then this equation is chosen.
@@ -122,7 +122,7 @@ the second one, and asks if `k^2 > n`, and it is, and so `ldf 7 24 =
 
 As a second example, consider `ldf 7 2224`.  Notice that `7` does
 not divide `2224`, nor is `7^2 > 2224`, and thus, the equation ghci
-runs is the third equation, because that is the catch all case. Thus,
+runs is the third equation, because that is the catch-all case. Thus,
 `ldf 7 2224 = ldf (7+1) 2224 = ldf 8 2224`.  In this branch we make a
 recursive call which increases the first argument by one.  Finally, we
 can see that `divides 8 2224` is true, and hence, `ldf 7 2224 = ldf 8
@@ -238,7 +238,7 @@ or3 b1 b2 = True
 \end{code}
 
 In this version we use pattern matching to determine when the function
-should be `False`, and then leave the catchall case to handle when it
+should be `False`, and then leave the catch-all case to handle when it
 should return `True`.
 
 We can simplfy this function one last time:
