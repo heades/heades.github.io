@@ -229,9 +229,9 @@ necessarily the case that `b1` is `False`, or the first equation would
 have triggered.  Finally, if during evaluation the third equation is
 chosen, then both inputs must be `False`.
 
-Haskell's evaluation strategy is called "call-by-need evaluation."          
-This means that Haskell will only evaluate a program when it needs its     
-value and in all other cases it will leave the program completely      
+Haskell's evaluation strategy is called "call-by-need evaluation."
+This means that Haskell will only evaluate a program when it needs its
+value and in all other cases it will leave the program completely
 unevaluated.  Consider as an example the following two functions:
 
 \begin{code}
