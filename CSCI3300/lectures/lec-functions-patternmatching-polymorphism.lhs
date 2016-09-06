@@ -245,8 +245,8 @@ bar = or2 True (foo 5)
 
 When evaluating `bar` Haskell will evaluate as little as possible to
 determine the output of `or2`, and hence, since the first argument is
-`True` Haskell does not have to evaluate `foo 5` at all, and in
-face,it does not evaluate, and simply returns `True`, because that is
+`True` Haskell does not have to evaluate `foo 5` at all, and in fact,
+it does not evaluate it, and simply returns `True`, because that is
 all it needs to determine the correct output.  This style of
 evaluation is often called *lazy evaluation* for obvious reasons.
 
