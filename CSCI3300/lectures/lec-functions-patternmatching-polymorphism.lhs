@@ -612,6 +612,29 @@ foldr f x [x1,x2,x3,x4,x5,x6]
 ~> f x1 (f x2 (f x3 (f x4 (f x5 (f x6 x)))))
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+As an example, suppose we have a list of lists, and we want to flatten
+that list into a list of all the elements that occur in the inner
+lists.  We can do this using `foldr`:
+
+\begin{code}
+flatten :: [[a]] -> [a]
+flatten l = foldr (++) [] l
+\end{code}
+
+Here is an example evaluation:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+flatten [[1,2],[3,4],[42,24]]
+~> foldr (++) [] [[1,2],[3,4],[42,24]]
+~> [1,2] ++ (foldr (++) [] [[3,4],[42,24]])
+~> [1,2] ++ ([3,4] ++ (foldr (++) [] [[42,24]]))
+~> [1,2] ++ ([3,4] ++ ([42,24] ++ (foldr (++) [] [])))
+~> [1,2] ++ ([3,4] ++ ([42,24] ++ []))
+~> [1,2] ++ ([3,4] ++ [42,24])
+~> [1,2] ++ [3,4,42,24]
+~> [1,2,3,4,42,24]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Higher-order functions give rise to what is called *pointfree
 programming* where we try to use actual inputs as little as possible.
 First, we need the following higher-order function:

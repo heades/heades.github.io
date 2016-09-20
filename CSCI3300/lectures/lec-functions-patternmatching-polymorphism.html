@@ -269,6 +269,19 @@ zip [1] :: [Integer] -&gt; [(Integer, Integer)]</code></pre>
 ~&gt; f x1 (f x2 (f x3 (f x4 (f x5 (foldr f x [x6])))))
 ~&gt; f x1 (f x2 (f x3 (f x4 (f x5 (f x6 (foldr f x []))))))
 ~&gt; f x1 (f x2 (f x3 (f x4 (f x5 (f x6 x)))))</code></pre>
+<p>As an example, suppose we have a list of lists, and we want to flatten that list into a list of all the elements that occur in the inner lists. We can do this using <code>foldr</code>:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; flatten ::</span> [[a]] <span class="ot">-&gt;</span> [a]
+<span class="ot">&gt;</span> flatten l <span class="fu">=</span> foldr (<span class="fu">++</span>) [] l</code></pre></div>
+<p>Here is an example evaluation:</p>
+<pre class=".(haskell)"><code>flatten [[1,2],[3,4],[42,24]]
+~&gt; foldr (++) [] [[1,2],[3,4],[42,24]]
+~&gt; [1,2] ++ (foldr (++) [] [[3,4],[42,24]])
+~&gt; [1,2] ++ ([3,4] ++ (foldr (++) [] [[42,24]]))
+~&gt; [1,2] ++ ([3,4] ++ ([42,24] ++ (foldr (++) [] [])))
+~&gt; [1,2] ++ ([3,4] ++ ([42,24] ++ []))
+~&gt; [1,2] ++ ([3,4] ++ [42,24])
+~&gt; [1,2] ++ [3,4,42,24]
+~&gt; [1,2,3,4,42,24]</code></pre>
 <p>Higher-order functions give rise to what is called <em>pointfree programming</em> where we try to use actual inputs as little as possible. First, we need the following higher-order function:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; (.) ::</span> (b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> c)
 <span class="ot">&gt;</span> (g <span class="fu">.</span> f) a <span class="fu">=</span> g (f a)</code></pre></div>
