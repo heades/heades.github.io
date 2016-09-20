@@ -24,7 +24,7 @@
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> 
 <span class="ot">&gt;</span> <span class="kw">module</span> <span class="dt">LectFuns</span> <span class="kw">where</span>
 <span class="ot">&gt;</span> 
-<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Prelude</span> <span class="kw">hiding</span> (zip,zipWith,curry,uncurry)</code></pre></div>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Prelude</span> <span class="kw">hiding</span> (zip,zipWith,curry,uncurry,(.),foldr,foldrl,any,all,concatMap,map)</code></pre></div>
 </div>
 <h2 id="functions">Functions</h2>
 <p>In C# the predominant way to structure programs is by using objects and methods. Haskell is a bit different which uses <em>functions</em> to structure programs. Now do not think this means that Haskell lacks in the ability to structure large programs, because as we will see throughout the semester structuring programs using functions is very powerful.</p>
@@ -193,9 +193,40 @@ zip [1] :: [Integer] -&gt; [(Integer, Integer)]</code></pre>
 <span class="ot">&gt;</span> zipWith _ _ _ <span class="fu">=</span> []</code></pre></div>
 <p>This function takes as input a binary function <code>f : a -&gt; b -&gt; c</code>, a list of first arguments, and a list of second arguments, but then collects all of the outputs into a list.</p>
 <p>Functions that take in functions as arguments or returns arguments as output are called <em>higher-order functions</em> and they are the driving force of functional programming. The real power of functional programming comes from higher-order functions.</p>
+<p>We consider some further examples. The three most used functions in all of functional programming has to be <code>map</code>, <code>foldl</code>, and <code>foldr</code>. A map takes a function, and applied it accross a list:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; map ::</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b]
+<span class="ot">&gt;</span> map f [] <span class="fu">=</span> []
+<span class="ot">&gt;</span> map f (x<span class="fu">:</span>xs) <span class="fu">=</span> (f x) <span class="fu">:</span> map f xs</code></pre></div>
+<p>The recursive pattern of the definition of map pops up all the time in functional programming. Here is an example evaluation of <code>map</code>. Suppose we have the following function on characters:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; mangle ::</span> <span class="dt">Char</span> <span class="ot">-&gt;</span> <span class="dt">Char</span>
+<span class="ot">&gt;</span> mangle x <span class="fu">|</span> x <span class="fu">==</span> <span class="ch">'a'</span> <span class="fu">||</span> x <span class="fu">==</span> <span class="ch">'A'</span> <span class="fu">=</span> <span class="ch">'Z'</span>
+<span class="ot">&gt;</span> mangle x <span class="fu">|</span> x <span class="fu">==</span> <span class="ch">'h'</span> <span class="fu">||</span> x <span class="fu">==</span> <span class="ch">'H'</span> <span class="fu">=</span> <span class="ch">'*'</span>
+<span class="ot">&gt;</span> mangle x <span class="fu">|</span> x <span class="fu">==</span> <span class="ch">'l'</span> <span class="fu">||</span> x <span class="fu">==</span> <span class="ch">'L'</span> <span class="fu">=</span> <span class="ch">'$'</span>
+<span class="ot">&gt;</span> mangle x <span class="fu">=</span> x</code></pre></div>
+<p>Then <code>map</code> evaluates like so:</p>
+<pre class=".(haskell)"><code>map mangle &quot;Haskell&quot; 
+~&gt; (mangle 'H') : map mangle &quot;askell&quot;
+~&gt; (mangle 'H') : (mangle 'a') : map mangle &quot;skell&quot;
+~&gt; (mangle 'H') : (mangle 'a') : (mangle 's') : map mangle &quot;kell&quot;
+~&gt; (mangle 'H') : (mangle 'a') : (mangle 's') : (mangle 'k') : map mangle &quot;ell&quot;
+~&gt; (mangle 'H') : (mangle 'a') : (mangle 's') : (mangle 'k') : (mangle 'e') : map mangle &quot;ll&quot;
+~&gt; (mangle 'H') : (mangle 'a') : (mangle 's') : (mangle 'k') : (mangle 'e') : (mangle 'l') : map mangle &quot;l&quot;
+~&gt; (mangle 'H') : (mangle 'a') : (mangle 's') : (mangle 'k') : (mangle 'e') : (mangle 'l') : (mangle 'l') : map mangle &quot;&quot;
+~&gt; (mangle 'H') : (mangle 'a') : (mangle 's') : (mangle 'k') : (mangle 'e') : (mangle 'l') : (mangle 'l') : []
+~&gt; '*' : (mangle 'a') : (mangle 's') : (mangle 'k') : (mangle 'e') : (mangle 'l') : (mangle 'l') : []
+~&gt; '*' : 'Z' : (mangle 's') : (mangle 'k') : (mangle 'e') : (mangle 'l') : (mangle 'l') : []
+~&gt; '*' : 'Z' : 's' : (mangle 'k') : (mangle 'e') : (mangle 'l') : (mangle 'l') : []
+~&gt; '*' : 'Z' : 's' : 'k' : (mangle 'e') : (mangle 'l') : (mangle 'l') : []
+~&gt; '*' : 'Z' : 's' : 'k' : 'e' : (mangle 'l') : (mangle 'l') : []
+~&gt; '*' : 'Z' : 's' : 'k' : 'e' : 'l' : (mangle 'l') : []
+~&gt; '*' : 'Z' : 's' : 'k' : 'e' : '$' : '$' : []
+= &quot;*Zske$$&quot;</code></pre>
 <p>Higher-order functions give rise to what is called <em>pointfree programming</em> where we try to use actual inputs as little as possible. First, we need the following higher-order function:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; (.) ::</span> (b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> c)
 <span class="ot">&gt;</span> (g <span class="fu">.</span> f) a <span class="fu">=</span> g (f a)</code></pre></div>
+<p>Suppose</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; collapseDoulbe ::</span> [[<span class="dt">Integer</span>]] <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
+<span class="ot">&gt;</span> collapseDoulbe <span class="fu">=</span> (map (<span class="dv">2</span><span class="fu">*</span>))<span class="fu">.</span>(foldr (<span class="fu">++</span>) [])</code></pre></div>
 <p>It turns out that any higher-order function that returns a function as output, can be turned into an <span class="math inline"><em>n</em></span>-ary function using pairs as inputs:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; curry ::</span> ((a,b) <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c)
 <span class="ot">&gt;</span> curry f a b <span class="fu">=</span> f (a , b)
@@ -212,16 +243,7 @@ zip [1] :: [Integer] -&gt; [(Integer, Integer)]</code></pre>
 <span class="ot">&gt;</span> foldl <span class="fu">=</span> undefined
 <span class="ot">&gt;</span> 
 <span class="ot">&gt; foldr ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> b
-<span class="ot">&gt;</span> foldr <span class="fu">=</span> undefined
-<span class="ot">&gt;</span> 
-<span class="ot">&gt; concatMap ::</span> (a <span class="ot">-&gt;</span> [b]) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b]
-<span class="ot">&gt;</span> concatMap <span class="fu">=</span> undefined
-<span class="ot">&gt;</span> 
-<span class="ot">&gt; any ::</span> (a <span class="ot">-&gt;</span> <span class="dt">Bool</span>) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> <span class="dt">Bool</span>
-<span class="ot">&gt;</span> any <span class="fu">=</span> undefined
-<span class="ot">&gt;</span>       
-<span class="ot">&gt; all ::</span> (a <span class="ot">-&gt;</span> <span class="dt">Bool</span>) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> <span class="dt">Bool</span>
-<span class="ot">&gt;</span> all <span class="fu">=</span> undefined</code></pre></div>
+<span class="ot">&gt;</span> foldr <span class="fu">=</span> undefined</code></pre></div>
     </body>
 
     <div id="footer"> 

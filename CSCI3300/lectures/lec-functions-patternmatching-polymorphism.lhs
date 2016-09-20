@@ -6,7 +6,7 @@ title: Functions, Pattern Matching, and Polymorphism
 
 module LectFuns where
 
-import Prelude hiding (zip,zipWith,curry,uncurry)
+import Prelude hiding (zip,zipWith,curry,uncurry,(.),foldr,foldrl,any,all,concatMap,map)
 
 \end{code}
 </div>
@@ -459,6 +459,50 @@ output are called *higher-order functions* and they are the driving
 force of functional programming.  The real power of functional
 programming comes from higher-order functions.
 
+We consider some further examples.  The three most used functions in
+all of functional programming has to be `map`, `foldl`, and `foldr`.
+A map takes a function, and applied it accross a list:
+
+\begin{code}
+map :: (a -> b) -> [a] -> [b]
+map f [] = []
+map f (x:xs) = (f x) : map f xs
+\end{code}
+
+The recursive pattern of the definition of map pops up all the time in
+functional programming.  Here is an example evaluation of `map`.
+Suppose we have the following function on characters:
+
+\begin{code}
+mangle :: Char -> Char
+mangle x | x == 'a' || x == 'A' = 'Z'
+mangle x | x == 'h' || x == 'H' = '*'
+mangle x | x == 'l' || x == 'L' = '$'
+mangle x = x
+\end{code}
+
+Then `map` evaluates like so:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+map mangle "Haskell" 
+~> (mangle 'H') : map mangle "askell"
+~> (mangle 'H') : (mangle 'a') : map mangle "skell"
+~> (mangle 'H') : (mangle 'a') : (mangle 's') : map mangle "kell"
+~> (mangle 'H') : (mangle 'a') : (mangle 's') : (mangle 'k') : map mangle "ell"
+~> (mangle 'H') : (mangle 'a') : (mangle 's') : (mangle 'k') : (mangle 'e') : map mangle "ll"
+~> (mangle 'H') : (mangle 'a') : (mangle 's') : (mangle 'k') : (mangle 'e') : (mangle 'l') : map mangle "l"
+~> (mangle 'H') : (mangle 'a') : (mangle 's') : (mangle 'k') : (mangle 'e') : (mangle 'l') : (mangle 'l') : map mangle ""
+~> (mangle 'H') : (mangle 'a') : (mangle 's') : (mangle 'k') : (mangle 'e') : (mangle 'l') : (mangle 'l') : []
+~> '*' : (mangle 'a') : (mangle 's') : (mangle 'k') : (mangle 'e') : (mangle 'l') : (mangle 'l') : []
+~> '*' : 'Z' : (mangle 's') : (mangle 'k') : (mangle 'e') : (mangle 'l') : (mangle 'l') : []
+~> '*' : 'Z' : 's' : (mangle 'k') : (mangle 'e') : (mangle 'l') : (mangle 'l') : []
+~> '*' : 'Z' : 's' : 'k' : (mangle 'e') : (mangle 'l') : (mangle 'l') : []
+~> '*' : 'Z' : 's' : 'k' : 'e' : (mangle 'l') : (mangle 'l') : []
+~> '*' : 'Z' : 's' : 'k' : 'e' : 'l' : (mangle 'l') : []
+~> '*' : 'Z' : 's' : 'k' : 'e' : '$' : '$' : []
+= "*Zske$$"
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Higher-order functions give rise to what is called *pointfree
 programming* where we try to use actual inputs as little as possible.
 First, we need the following higher-order function:
@@ -466,6 +510,13 @@ First, we need the following higher-order function:
 \begin{code}
 (.) :: (b -> c) -> (a -> b) -> (a -> c)
 (g . f) a = g (f a)
+\end{code}
+
+Suppose 
+
+\begin{code}
+collapseDoulbe :: [[Integer]] -> [Integer]
+collapseDoulbe = (map (2*)).(foldr (++) [])
 \end{code}
 
 It turns out that any higher-order function that returns a function as
@@ -491,14 +542,5 @@ foldl = undefined
 
 foldr :: (a -> b -> b) -> b -> [a] -> b
 foldr = undefined
-
-concatMap :: (a -> [b]) -> [a] -> [b]
-concatMap = undefined
-
-any :: (a -> Bool) -> [a] -> Bool
-any = undefined
-      
-all :: (a -> Bool) -> [a] -> Bool
-all = undefined
 
 \end{code}
