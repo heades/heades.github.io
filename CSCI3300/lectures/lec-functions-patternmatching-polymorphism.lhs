@@ -411,4 +411,4 @@ zip' (a:as) =
 zip' _ = \l -> []    
 \end{code}
 
-The expression `\x -> e` is called a $$\lambda$$-expression.
+The expression `\x -> e` is called a $\lambda$-expression.
