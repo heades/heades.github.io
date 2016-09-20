@@ -413,7 +413,7 @@ zip' _ = \l -> []
 
 The expression `\x -> e` is called a $\lambda$-expression, which are
 the anonymous functions of Haskell; they are equivalent to
-$\mathsf{fun}\, \Rightarrow e$ in Functional Iffy.  The function
+`$\mathsf{fun}\, \Rightarrow e$` in Functional Iffy.  The function
 `zip'` takes a single input, and then outputs another function that is
 waiting for the second input.  In fact, the `zip` is syntactic sugar
 for `zip'`.
