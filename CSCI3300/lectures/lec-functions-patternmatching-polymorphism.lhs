@@ -403,7 +403,7 @@ zip _ _ = []
 The previous function is equivalent to the following one:
 
 \begin{code}
-zip' :: [a] -> [b] -> [(a,b)]
+zip' :: [a] -> ([b] -> [(a,b)])
 zip' (a:as) =
        \l -> case l of
                (b:bs) -> (a,b) : zip' as bs
@@ -411,4 +411,9 @@ zip' (a:as) =
 zip' _ = \l -> []    
 \end{code}
 
-The expression `\x -> e` is called a $\lambda$-expression.
+The expression `\x -> e` is called a $\lambda$-expression and they are
+anonymous functions; they are equivalent to $\mathsf{fun}\,x
+\Rightarrow e$ in Functional Iffy.  The function `zip'` takes a single
+input, and then outputs another function that is waiting for the
+second input.  In fact, the `zip` is syntactic sugar for `zip'`.
+
