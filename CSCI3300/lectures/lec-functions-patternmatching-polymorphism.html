@@ -24,7 +24,7 @@
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> 
 <span class="ot">&gt;</span> <span class="kw">module</span> <span class="dt">LectFuns</span> <span class="kw">where</span>
 <span class="ot">&gt;</span> 
-<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Prelude</span> <span class="kw">hiding</span> (zip,zipWith,curry,uncurry,(.),foldr,foldrl,any,all,concatMap,map)</code></pre></div>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Prelude</span> <span class="kw">hiding</span> (zip,zipWith,curry,uncurry,(.),foldr,foldl,any,all,concatMap,map)</code></pre></div>
 </div>
 <h2 id="functions">Functions</h2>
 <p>In C# the predominant way to structure programs is by using objects and methods. Haskell is a bit different which uses <em>functions</em> to structure programs. Now do not think this means that Haskell lacks in the ability to structure large programs, because as we will see throughout the semester structuring programs using functions is very powerful.</p>
@@ -221,12 +221,38 @@ zip [1] :: [Integer] -&gt; [(Integer, Integer)]</code></pre>
 ~&gt; '*' : 'Z' : 's' : 'k' : 'e' : 'l' : (mangle 'l') : []
 ~&gt; '*' : 'Z' : 's' : 'k' : 'e' : '$' : '$' : []
 = &quot;*Zske$$&quot;</code></pre>
+<p>So map allows one to apply an operation accross a collection of data, but folds allow one to reduce a collection to some other value. There are two types of folds: left folds and right folds.</p>
+<p>First, we consider the left fold:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; foldl ::</span> (b <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> b
+<span class="ot">&gt;</span> foldl f x [] <span class="fu">=</span> x
+<span class="ot">&gt;</span> foldl f x (a<span class="fu">:</span>as) <span class="fu">=</span> foldl f (f x a) as</code></pre></div>
+<p>Think of <code>x</code> in the definition of <code>foldl</code> as an accumilator which accumilates repeatedly applying <code>f</code> starting with <code>x</code>. Suppose we wanted to reverse a list. One way we saw to do it earlier in this course is to do the following:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; reverseBad ::</span> [a] <span class="ot">-&gt;</span> [a]
+<span class="ot">&gt;</span> reverseBad [] <span class="fu">=</span> []
+<span class="ot">&gt;</span> reverseBad (x<span class="fu">:</span>xs) <span class="fu">=</span> reverseBad xs <span class="fu">++</span> [x]</code></pre></div>
+<p>This version of <code>reverse</code> is bad, because it is not tail recrusive, and it has an expoential runtime, because the use of append requires us to go through the input list multiple times.</p>
+<p>If we use a well-known pattern called the <em>accumilator pattern</em> we can rewrite <code>reverse</code> so that it is tail recursive, and has a linear runtime cost. This pattern says to add an additional argument to the program we are interested in, and use it to <em>accumilate</em> the return value. First, we define an auxiliary function that computes the reverse of a list, but uses an accumilator:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; reverseAux ::</span> [a] <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [a]
+<span class="ot">&gt;</span> reverseAux acc [] <span class="fu">=</span> acc
+<span class="ot">&gt;</span> reverseAux acc (a<span class="fu">:</span>as) <span class="fu">=</span> reverseAux (a<span class="fu">:</span>acc) as</code></pre></div>
+<p>The second argument to <code>reverseAux</code> is the list we want to reverse, but the first argument is the accumilator. Its job is to accumilate the ultimate return value, which in this example happens to be the reversed list. This will force the step case to be tail recursive.</p>
+<p>Now we can define the reverse function interms of <code>reverseAux</code>:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; reverse' ::</span> [a] <span class="ot">-&gt;</span> [a]
+<span class="ot">&gt;</span> reverse' l <span class="fu">=</span> reverseAux [] l</code></pre></div>
+<p>We can think of the accumilator in <code>reverseAux</code> as a global variable. Then in <code>reverse'</code> we initialize this variable to the empty list. The runtime of <code>reverse</code> is indeed linear.</p>
+<p>The first argument to the function <code>revAux</code> is the accumilator. Now compare the structure of <code>foldl</code> and the structure of <code>reverseAux</code>. We can see a pattern. The left fold <code>foldl</code> embodies the accumilator pattern. Thus, we can use <code>foldl</code> whenever we want to accumilate, so for example, we can define <code>reverse</code> as follows:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; reverse ::</span> [a] <span class="ot">-&gt;</span> [a]
+<span class="ot">&gt;</span> reverse l <span class="fu">=</span> foldl revAux [] l
+<span class="ot">&gt;</span>  <span class="kw">where</span>
+<span class="ot">&gt;   revAux ::</span> [a] <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> [a]
+<span class="ot">&gt;</span>   revAux acc x <span class="fu">=</span> x<span class="fu">:</span>acc</code></pre></div>
+<p>When you think accumilator, think <code>foldl</code>.</p>
 <p>Higher-order functions give rise to what is called <em>pointfree programming</em> where we try to use actual inputs as little as possible. First, we need the following higher-order function:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; (.) ::</span> (b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> c)
 <span class="ot">&gt;</span> (g <span class="fu">.</span> f) a <span class="fu">=</span> g (f a)</code></pre></div>
 <p>Suppose</p>
-<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; collapseDoulbe ::</span> [[<span class="dt">Integer</span>]] <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
-<span class="ot">&gt;</span> collapseDoulbe <span class="fu">=</span> (map (<span class="dv">2</span><span class="fu">*</span>))<span class="fu">.</span>(foldr (<span class="fu">++</span>) [])</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; collapseDouble ::</span> [[<span class="dt">Integer</span>]] <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
+<span class="ot">&gt;</span> collapseDouble <span class="fu">=</span> (map (<span class="dv">2</span><span class="fu">*</span>))<span class="fu">.</span>(foldr (<span class="fu">++</span>) [])</code></pre></div>
 <p>It turns out that any higher-order function that returns a function as output, can be turned into an <span class="math inline"><em>n</em></span>-ary function using pairs as inputs:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; curry ::</span> ((a,b) <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c)
 <span class="ot">&gt;</span> curry f a b <span class="fu">=</span> f (a , b)
@@ -239,10 +265,7 @@ zip [1] :: [Integer] -&gt; [(Integer, Integer)]</code></pre>
 <span class="ot">&gt;</span> 
 <span class="ot">&gt; curryUncurry2 ::</span> <span class="dt">Eq</span> c <span class="ot">=&gt;</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> <span class="dt">Bool</span>
 <span class="ot">&gt;</span> curryUncurry2 f a b <span class="fu">=</span> (curry (uncurry f)) a b <span class="fu">==</span> f a b</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; foldl ::</span> (b <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> b
-<span class="ot">&gt;</span> foldl <span class="fu">=</span> undefined
-<span class="ot">&gt;</span> 
-<span class="ot">&gt; foldr ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> b
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; foldr ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> b
 <span class="ot">&gt;</span> foldr <span class="fu">=</span> undefined</code></pre></div>
     </body>
 

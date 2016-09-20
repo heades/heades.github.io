@@ -6,7 +6,7 @@ title: Functions, Pattern Matching, and Polymorphism
 
 module LectFuns where
 
-import Prelude hiding (zip,zipWith,curry,uncurry,(.),foldr,foldrl,any,all,concatMap,map)
+import Prelude hiding (zip,zipWith,curry,uncurry,(.),foldr,foldl,any,all,concatMap,map)
 
 \end{code}
 </div>
@@ -503,6 +503,78 @@ map mangle "Haskell"
 = "*Zske$$"
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+So map allows one to apply an operation accross a collection of data,
+but folds allow one to reduce a collection to some other value.  There
+are two types of folds: left folds and right folds.
+
+First, we consider the left fold:
+
+\begin{code}
+foldl :: (b -> a -> b) -> b -> [a] -> b
+foldl f x [] = x
+foldl f x (a:as) = foldl f (f x a) as
+\end{code}
+
+Think of `x` in the definition of `foldl` as an accumilator which
+accumilates repeatedly applying `f` starting with `x`.  Suppose we
+wanted to reverse a list.  One way we saw to do it earlier in this
+course is to do the following:
+
+\begin{code}
+reverseBad :: [a] -> [a]
+reverseBad [] = []
+reverseBad (x:xs) = reverseBad xs ++ [x]
+\end{code}
+
+This version of `reverse` is bad, because it is not tail recrusive,
+and it has an expoential runtime, because the use of append requires
+us to go through the input list multiple times.
+
+If we use a well-known pattern called the *accumilator pattern* we can
+rewrite `reverse` so that it is tail recursive, and has a linear
+runtime cost.  This pattern says to add an additional argument to the
+program we are interested in, and use it to *accumilate* the return
+value.  First, we define an auxiliary function that computes the
+reverse of a list, but uses an accumilator:
+
+\begin{code}
+reverseAux :: [a] -> [a] -> [a]
+reverseAux acc [] = acc
+reverseAux acc (a:as) = reverseAux (a:acc) as
+\end{code}
+
+The second argument to `reverseAux` is the list we want to reverse, but
+the first argument is the accumilator.  Its job is to accumilate the
+ultimate return value, which in this example happens to be the
+reversed list.  This will force the step case to be tail recursive.
+
+Now we can define the reverse function interms of `reverseAux`:
+
+\begin{code}
+reverse' :: [a] -> [a]
+reverse' l = reverseAux [] l
+\end{code}
+
+We can think of the accumilator in `reverseAux` as a global variable.
+Then in `reverse'` we initialize this variable to the empty list.  The
+runtime of `reverse` is indeed linear.
+
+The first argument to the function `revAux` is the accumilator. Now
+compare the structure of `foldl` and the structure of `reverseAux`.
+We can see a pattern.  The left fold `foldl` embodies the accumilator
+pattern.  Thus, we can use `foldl` whenever we want to accumilate, so
+for example, we can define `reverse` as follows:
+
+\begin{code}
+reverse :: [a] -> [a]
+reverse l = foldl revAux [] l
+ where
+  revAux :: [a] -> a -> [a]
+  revAux acc x = x:acc
+\end{code}
+
+When you think accumilator, think `foldl`.
+
 Higher-order functions give rise to what is called *pointfree
 programming* where we try to use actual inputs as little as possible.
 First, we need the following higher-order function:
@@ -512,11 +584,13 @@ First, we need the following higher-order function:
 (g . f) a = g (f a)
 \end{code}
 
+
+
 Suppose 
 
 \begin{code}
-collapseDoulbe :: [[Integer]] -> [Integer]
-collapseDoulbe = (map (2*)).(foldr (++) [])
+collapseDouble :: [[Integer]] -> [Integer]
+collapseDouble = (map (2*)).(foldr (++) [])
 \end{code}
 
 It turns out that any higher-order function that returns a function as
@@ -537,10 +611,6 @@ curryUncurry2 f a b = (curry (uncurry f)) a b == f a b
 \end{code}
 
 \begin{code}
-foldl :: (b -> a -> b) -> b -> [a] -> b
-foldl = undefined
-
 foldr :: (a -> b -> b) -> b -> [a] -> b
 foldr = undefined
-
 \end{code}
