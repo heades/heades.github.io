@@ -178,7 +178,7 @@ ghci&gt; </code></pre>
 <span class="ot">&gt;</span>                (b<span class="fu">:</span>bs) <span class="ot">-&gt;</span> (a,b) <span class="fu">:</span> zip' as bs
 <span class="ot">&gt;</span>                _ <span class="ot">-&gt;</span> []
 <span class="ot">&gt;</span> zip' _ <span class="fu">=</span> \l <span class="ot">-&gt;</span> []    </code></pre></div>
-<p>The expression <code>\x -&gt; e</code> is called a <span class="math inline"><em>λ</em></span>-expression, which are the anonymous functions of Haskell; they are equivalent to <code>$\mathsf{fun}\, \Rightarrow e$</code> in Functional Iffy. The function <code>zip'</code> takes a single input, and then outputs another function that is waiting for the second input. In fact, the <code>zip</code> is syntactic sugar for <code>zip'</code>.</p>
+<p>The expression <code>\x -&gt; e</code> is called a <span class="math inline"><em>λ</em></span>-expression, which are the anonymous functions of Haskell; they are equivalent to <span class="math inline">fun  ⇒ <em>e</em></span> in Functional Iffy. The function <code>zip'</code> takes a single input, and then outputs another function that is waiting for the second input. In fact, the <code>zip</code> is syntactic sugar for <code>zip'</code>.</p>
     </body>
 
     <div id="footer"> 
