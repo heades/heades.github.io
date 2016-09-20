@@ -603,6 +603,13 @@ following:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
 foldr f x [x1,x2,x3,x4,x5,x6]
+~> f x1 (foldr f x [x2,x3,x4,x5,x6])
+~> f x1 (f x2 (foldr f x [x3,x4,x5,x6]))
+~> f x1 (f x2 (f x3 (foldr f x [x4,x5,x6])))
+~> f x1 (f x2 (f x3 (f x4 (foldr f x [x5,x6]))))
+~> f x1 (f x2 (f x3 (f x4 (f x5 (foldr f x [x6])))))
+~> f x1 (f x2 (f x3 (f x4 (f x5 (f x6 (foldr f x []))))))
+~> f x1 (f x2 (f x3 (f x4 (f x5 (f x6 x)))))
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Higher-order functions give rise to what is called *pointfree

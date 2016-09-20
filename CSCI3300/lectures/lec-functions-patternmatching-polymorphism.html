@@ -261,7 +261,14 @@ zip [1] :: [Integer] -&gt; [(Integer, Integer)]</code></pre>
 <span class="ot">&gt;</span> foldr f x [] <span class="fu">=</span> x
 <span class="ot">&gt;</span> foldr f x (y<span class="fu">:</span>ys) <span class="fu">=</span> f y (foldr f x ys)</code></pre></div>
 <p>Suppose we have a list <code>[x1,x2,x3,x4,x5,x6]</code>, a <code>x : b</code>, and a function <code>f : a -&gt; b -&gt; b</code>, then the <code>foldr</code> function computes the following:</p>
-<pre class=".(haskell)"><code>foldr f x [x1,x2,x3,x4,x5,x6]</code></pre>
+<pre class=".(haskell)"><code>foldr f x [x1,x2,x3,x4,x5,x6]
+~&gt; f x1 (foldr f x [x2,x3,x4,x5,x6])
+~&gt; f x1 (f x2 (foldr f x [x3,x4,x5,x6]))
+~&gt; f x1 (f x2 (f x3 (foldr f x [x4,x5,x6])))
+~&gt; f x1 (f x2 (f x3 (f x4 (foldr f x [x5,x6]))))
+~&gt; f x1 (f x2 (f x3 (f x4 (f x5 (foldr f x [x6])))))
+~&gt; f x1 (f x2 (f x3 (f x4 (f x5 (f x6 (foldr f x []))))))
+~&gt; f x1 (f x2 (f x3 (f x4 (f x5 (f x6 x)))))</code></pre>
 <p>Higher-order functions give rise to what is called <em>pointfree programming</em> where we try to use actual inputs as little as possible. First, we need the following higher-order function:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; (.) ::</span> (b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> c)
 <span class="ot">&gt;</span> (g <span class="fu">.</span> f) a <span class="fu">=</span> g (f a)</code></pre></div>
