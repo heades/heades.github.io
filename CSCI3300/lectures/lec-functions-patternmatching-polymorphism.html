@@ -24,7 +24,7 @@
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> 
 <span class="ot">&gt;</span> <span class="kw">module</span> <span class="dt">LectFuns</span> <span class="kw">where</span>
 <span class="ot">&gt;</span> 
-<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Prelude</span> <span class="kw">hiding</span> (zip)</code></pre></div>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Prelude</span> <span class="kw">hiding</span> (zip,zipWith,curry,uncurry)</code></pre></div>
 </div>
 <h2 id="functions">Functions</h2>
 <p>In C# the predominant way to structure programs is by using objects and methods. Haskell is a bit different which uses <em>functions</em> to structure programs. Now do not think this means that Haskell lacks in the ability to structure large programs, because as we will see throughout the semester structuring programs using functions is very powerful.</p>
@@ -144,7 +144,7 @@ ghci&gt; </code></pre>
 <span class="ot">&gt;</span> ext (i<span class="fu">:</span>rest) <span class="fu">=</span> (i,rest)</code></pre></div>
 <p>The return type of the previous function is a pair type, and has the form <code>(a,b)</code> where <code>a</code> and <code>b</code> are some other types. It is simply the type of all pairs where the first projection is of type <code>a</code> and the second projection is of type <code>b</code>. Thus, <code>(1,2)</code> has type <code>(Int,Int)</code>, and the pair <code>(1,[2,3])</code> has type <code>(Int,[Int])</code>. The pair <code>(42,True)</code> has type <code>(Int, Bool)</code>.</p>
 <p>Now we can run our test using <code>ext</code>:</p>
-<pre class=".(haskell)"><code>*LectFuns&gt; ext [1,2,3]
+<pre class=".(haskell)"><code>ghci&gt; ext [1,2,3]
 (1,[2,3])</code></pre>
 <p>The real power of pattern matching comes in when it is mixed with recursion. First, notice that we can place an ordering on lists. The empty list is the smallest list, and we have the following:</p>
 <pre class=".(haskell)"><code>x:xs &gt; xs</code></pre>
@@ -178,7 +178,50 @@ ghci&gt; </code></pre>
 <span class="ot">&gt;</span>                (b<span class="fu">:</span>bs) <span class="ot">-&gt;</span> (a,b) <span class="fu">:</span> zip' as bs
 <span class="ot">&gt;</span>                _ <span class="ot">-&gt;</span> []
 <span class="ot">&gt;</span> zip' _ <span class="fu">=</span> \l <span class="ot">-&gt;</span> []    </code></pre></div>
-<p>The expression <code>\x -&gt; e</code> is called a <span class="math inline"><em>λ</em></span>-expression, which are the anonymous functions of Haskell; they are equivalent to <span class="math inline">fun  ⇒ <em>e</em></span> in Functional Iffy. The function <code>zip'</code> takes a single input, and then outputs another function that is waiting for the second input. In fact, the <code>zip</code> is syntactic sugar for <code>zip'</code>.</p>
+<p>The expression <code>\x -&gt; e</code> is called a <span class="math inline"><em>λ</em></span>-expression, which are the anonymous functions of Haskell; they are equivalent to <span class="math inline">fun  ⇒ <em>e</em></span> in Functional Iffy. The function <code>zip'</code> takes a single input, and then outputs another function that is waiting for the second input. In fact, <code>zip</code> is syntactic sugar for <code>zip'</code>.</p>
+<p>Every function being unary comes with a very nice property called <em>partial application</em>. This is where a function is applied to only a few inputs, and not all of them. For example,</p>
+<pre class=".(haskell)"><code>ghci&gt; :t zip [1]
+zip [1] :: [Integer] -&gt; [(Integer, Integer)]</code></pre>
+<p>Here we asked for the type of <code>zip [1]</code>, and we can see that it is indeed a function waiting for an integer-list input. Now checkout:</p>
+<pre class=".(haskell)"><code>ghci&gt; let z = zip [1] in z [2]
+[(1,2)]</code></pre>
+<p>So we can see that <code>zip [1]</code> is indeed a function, that can be applied to a second list.</p>
+<p>We have only considered functions that return functions as output, but what about functions that take functions as input? This is also supported in Haskell, and any other functional programming language.</p>
+<p>Consider the <code>zipWith</code> function:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; zipWith ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b] <span class="ot">-&gt;</span> [c]
+<span class="ot">&gt;</span> zipWith f (a<span class="fu">:</span>as) (b<span class="fu">:</span>bs) <span class="fu">=</span> (f a b) <span class="fu">:</span> zipWith f as bs
+<span class="ot">&gt;</span> zipWith _ _ _ <span class="fu">=</span> []</code></pre></div>
+<p>This function takes as input a binary function <code>f : a -&gt; b -&gt; c</code>, a list of first arguments, and a list of second arguments, but then collects all of the outputs into a list.</p>
+<p>Functions that take in functions as arguments or returns arguments as output are called <em>higher-order functions</em> and they are the driving force of functional programming. The real power of functional programming comes from higher-order functions.</p>
+<p>Higher-order functions give rise to what is called <em>pointfree programming</em> where we try to use actual inputs as little as possible. First, we need the following higher-order function:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; (.) ::</span> (b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> c)
+<span class="ot">&gt;</span> (g <span class="fu">.</span> f) a <span class="fu">=</span> g (f a)</code></pre></div>
+<p>It turns out that any higher-order function that returns a function as output, can be turned into an <span class="math inline"><em>n</em></span>-ary function using pairs as inputs:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; curry ::</span> ((a,b) <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c)
+<span class="ot">&gt;</span> curry f a b <span class="fu">=</span> f (a , b)
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; uncurry ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> ((a,b) <span class="ot">-&gt;</span> c)
+<span class="ot">&gt;</span> uncurry f (a,b) <span class="fu">=</span> f a b
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; curryUncurry1 ::</span> <span class="dt">Eq</span> c <span class="ot">=&gt;</span> ((a,b) <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+<span class="ot">&gt;</span> curryUncurry1 f a b <span class="fu">=</span> (uncurry (curry f)) (a,b) <span class="fu">==</span> f (a,b)
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; curryUncurry2 ::</span> <span class="dt">Eq</span> c <span class="ot">=&gt;</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+<span class="ot">&gt;</span> curryUncurry2 f a b <span class="fu">=</span> (curry (uncurry f)) a b <span class="fu">==</span> f a b</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; foldl ::</span> (b <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> b
+<span class="ot">&gt;</span> foldl <span class="fu">=</span> undefined
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; foldr ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> b
+<span class="ot">&gt;</span> foldr <span class="fu">=</span> undefined
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; concatMap ::</span> (a <span class="ot">-&gt;</span> [b]) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b]
+<span class="ot">&gt;</span> concatMap <span class="fu">=</span> undefined
+<span class="ot">&gt;</span> 
+<span class="ot">&gt; any ::</span> (a <span class="ot">-&gt;</span> <span class="dt">Bool</span>) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+<span class="ot">&gt;</span> any <span class="fu">=</span> undefined
+<span class="ot">&gt;</span>       
+<span class="ot">&gt; all ::</span> (a <span class="ot">-&gt;</span> <span class="dt">Bool</span>) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+<span class="ot">&gt;</span> all <span class="fu">=</span> undefined</code></pre></div>
     </body>
 
     <div id="footer"> 

@@ -6,7 +6,7 @@ title: Functions, Pattern Matching, and Polymorphism
 
 module LectFuns where
 
-import Prelude hiding (zip)
+import Prelude hiding (zip,zipWith,curry,uncurry)
 
 \end{code}
 </div>
@@ -325,7 +325,7 @@ has type `(Int, Bool)`.
 Now we can run our test using `ext`:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
-*LectFuns> ext [1,2,3]
+ghci> ext [1,2,3]
 (1,[2,3])
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -415,6 +415,90 @@ The expression `\x -> e` is called a $\lambda$-expression, which are
 the anonymous functions of Haskell; they are equivalent to
 $\mathsf{fun}\, \Rightarrow e$ in Functional Iffy.  The function
 `zip'` takes a single input, and then outputs another function that is
-waiting for the second input.  In fact, the `zip` is syntactic sugar
-for `zip'`.
+waiting for the second input.  In fact, `zip` is syntactic sugar for
+`zip'`.
 
+Every function being unary comes with a very nice property called
+*partial application*.  This is where a function is applied to only a
+few inputs, and not all of them.  For example,
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+ghci> :t zip [1]
+zip [1] :: [Integer] -> [(Integer, Integer)]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here we asked for the type of `zip [1]`, and we can see that it is
+indeed a function waiting for an integer-list input.  Now checkout:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+ghci> let z = zip [1] in z [2]
+[(1,2)]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+So we can see that `zip [1]` is indeed a function, that can be applied
+to a second list.
+
+We have only considered functions that return functions as output, but
+what about functions that take functions as input?  This is also
+supported in Haskell, and any other functional programming language.
+
+Consider the `zipWith` function:
+
+\begin{code}
+zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+zipWith f (a:as) (b:bs) = (f a b) : zipWith f as bs
+zipWith _ _ _ = []
+\end{code}
+
+This function takes as input a binary function `f : a -> b -> c`, a
+list of first arguments, and a list of second arguments, but then
+collects all of the outputs into a list.
+
+Functions that take in functions as arguments or returns arguments as
+output are called *higher-order functions* and they are the driving
+force of functional programming.  The real power of functional
+programming comes from higher-order functions.
+
+Higher-order functions give rise to what is called *pointfree
+programming* where we try to use actual inputs as little as possible.
+First, we need the following higher-order function:
+
+\begin{code}
+(.) :: (b -> c) -> (a -> b) -> (a -> c)
+(g . f) a = g (f a)
+\end{code}
+
+It turns out that any higher-order function that returns a function as
+output, can be turned into an $n$-ary function using pairs as inputs:
+
+\begin{code}
+curry :: ((a,b) -> c) -> (a -> b -> c)
+curry f a b = f (a , b)
+
+uncurry :: (a -> b -> c) -> ((a,b) -> c)
+uncurry f (a,b) = f a b
+
+curryUncurry1 :: Eq c => ((a,b) -> c) -> a -> b -> Bool
+curryUncurry1 f a b = (uncurry (curry f)) (a,b) == f (a,b)
+
+curryUncurry2 :: Eq c => (a -> b -> c) -> a -> b -> Bool
+curryUncurry2 f a b = (curry (uncurry f)) a b == f a b
+\end{code}
+
+\begin{code}
+foldl :: (b -> a -> b) -> b -> [a] -> b
+foldl = undefined
+
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr = undefined
+
+concatMap :: (a -> [b]) -> [a] -> [b]
+concatMap = undefined
+
+any :: (a -> Bool) -> [a] -> Bool
+any = undefined
+      
+all :: (a -> Bool) -> [a] -> Bool
+all = undefined
+
+\end{code}
