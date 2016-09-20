@@ -6,6 +6,8 @@ title: Functions, Pattern Matching, and Polymorphism
 
 module LectFuns where
 
+import Prelude hiding (zip)
+
 \end{code}
 </div>
 
@@ -354,3 +356,59 @@ compute the tail of the list by recursion effectively doubling the
 rest of the list.  Notice that the recursive call is applied to `xs`
 which is a structurally smaller list than the input.  This tells us
 that we know `double` will eventually terminate.
+
+Pattern matching can work with other data types as well.  For example,
+if we need to get access to the projections of a pair we can use
+pattern matching.
+
+\begin{code}
+proj1 :: (Int,Int) -> Int
+proj1 (x,y) = x
+
+proj2 :: (Int,Int) -> Int
+proj2 (x,y) = y
+\end{code}
+
+Every data type supports pattern matching.
+
+Higher-Order functions
+----------------------
+
+Recall that every a function type
+
+~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+a1 -> a2 -> ... -> a(i-1) -> ai
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+is full parenthesized as
+
+~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+a1 -> (a2 -> ... -> (a(i-1) -> ai))
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Hence, a type `a1 -> a2 -> a3 -> a4` is fully parenthesized as `a1 ->
+(a2 -> (a3 -> a4))`. This implies that every function in Haskell, and
+indeed in any functional programming language, is an unary function
+that takes in one input, and returns a function that may be waiting
+for another input.  
+
+Consider the following function:
+
+\begin{code}
+zip :: [a] -> [b] -> [(a,b)]
+zip (a:as) (b:bs) = (a,b) : zip as bs
+zip _ _ = []
+\end{code}
+
+The previous function is equivalent to the following one:
+
+\begin{code}
+zip' :: [a] -> [b] -> [(a,b)]
+zip' (a:as) =
+       \l -> case l of
+               (b:bs) -> (a,b) : zip' as bs
+               _ -> []
+zip' _ = \l -> []    
+\end{code}
+
+The expression `\x -> e` is called a \(\lambda\)-expression.
