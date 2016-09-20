@@ -573,7 +573,37 @@ reverse l = foldl revAux [] l
   revAux acc x = x:acc
 \end{code}
 
-When you think accumilator, think `foldl`.
+When you think accumilator, think `foldl`.  Now we can do an
+evaluation of `reverse` to see how `foldl` works:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+reverse [1,2,3]
+~> foldl revAux [] [1,2,3]
+~> foldl revAux (revAux [] 1) [2,3]
+~> foldl revAux (revAux (revAux [] 1) 2) [3]
+~> foldl revAux (revAux (revAux (revAux [] 1) 2) 3) []
+~> revAux (revAux (revAux [] 1) 2) 3
+~> revAux (revAux (1:[]) 2) 3
+~> revAux (2:1:[]) 3
+~> 3:2:1:[]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Another common fold is the *right fold* called `foldr`, and it is
+defined as follows:
+
+\begin{code}
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr f x [] = x
+foldr f x (y:ys) = f y (foldr f x ys)
+\end{code}
+
+Suppose we have a list `[x1,x2,x3,x4,x5,x6]`, a `x : b`, and a
+function `f : a -> b -> b`, then the `foldr` function computes the
+following:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+foldr f x [x1,x2,x3,x4,x5,x6]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Higher-order functions give rise to what is called *pointfree
 programming* where we try to use actual inputs as little as possible.
@@ -608,9 +638,4 @@ curryUncurry1 f a b = (uncurry (curry f)) (a,b) == f (a,b)
 
 curryUncurry2 :: Eq c => (a -> b -> c) -> a -> b -> Bool
 curryUncurry2 f a b = (curry (uncurry f)) a b == f a b
-\end{code}
-
-\begin{code}
-foldr :: (a -> b -> b) -> b -> [a] -> b
-foldr = undefined
 \end{code}
