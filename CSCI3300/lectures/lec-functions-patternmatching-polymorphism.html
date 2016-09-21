@@ -326,6 +326,7 @@ flatten l = foldr (++) [] l</code></pre>
 <span class="ot">&gt;</span> curryUncurry2 f a b <span class="fu">=</span> (curry (uncurry f)) a b <span class="fu">==</span> f a b</code></pre></div>
 <p>One important thing about currying is that we can view it as a test for whether or not a programming language supports general higher-order functions, and hence, functional programming. Any programming language that doesn’t cannot be called functional.</p>
 <p>Currying and uncurrying also allow us to pick a choose a representation to fit the problem we might be modeling. For example, if I am programming with a point system, then I would use functions of type <code>(a,b) -&gt; c</code>, but then this doesn’t fit the type of functions for some of the higher-order operations we have been studying, but I know that I can always uncurry my function to put it in the write form.</p>
+<h2 id="polymorphism">Polymorphism</h2>
     </body>
 
     <div id="footer"> 

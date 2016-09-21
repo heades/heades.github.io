@@ -756,3 +756,6 @@ type `(a,b) -> c`, but then this doesn't fit the type of functions for
 some of the higher-order operations we have been studying, but I know
 that I can always uncurry my function to put it in the write form.
 
+Polymorphism
+------------
+
