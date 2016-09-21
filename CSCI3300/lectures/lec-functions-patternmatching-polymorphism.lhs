@@ -754,11 +754,17 @@ fit the problem we might be modeling.  For example, if I am
 programming with a coordinate system, then I would use functions of
 type `(a,b) -> c`, but then this doesn't fit the type of functions for
 some of the higher-order operations we have been studying, but I know
-that I can always curry my function to put its type in the right
-form.
+that I can always curry my function to put its type in the right form.
 
 Polymorphism
 ------------
+
+Recall the curry function:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+curry :: ((a,b) -> c) -> (a -> b -> c)
+curry f a b = f (a , b)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
