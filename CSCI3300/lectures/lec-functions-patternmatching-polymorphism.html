@@ -289,20 +289,21 @@ flatten l = foldr (++) [] l</code></pre>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; flattenPF ::</span> [[a]] <span class="ot">-&gt;</span> [a]
 <span class="ot">&gt;</span> flattenPF <span class="fu">=</span> foldr (<span class="fu">++</span>) []</code></pre></div>
 <p>Notice that we do not name the input list, that is, we do not require a point. Let’s think about this from a type perspective. The type of <code>flattenPF</code> is <code>[[a]] -&gt; [a]</code>, but the type of <code>flattenPF l</code> – we are naming the input <code>l</code> – is <code>[a]</code>. Furthermore, the type of <code>foldr (++) []</code> is <code>[[a]] -&gt; [a]</code>, and thus, we really do not need to name the input, because we have a function with the same type as <code>flattenPF</code>.</p>
-<p>We need the following higher-order function:</p>
+<p>Constructing complex point-free programs requires the use of function composition, which is another example of a higher-order function. We need the following higher-order function:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; (.) ::</span> (b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> c)
 <span class="ot">&gt;</span> (g <span class="fu">.</span> f) a <span class="fu">=</span> g (f a)</code></pre></div>
-<p>Suppose</p>
+<p>Function composition allows us to chain several functions together like a pipe. For example, if I have four functions <code>f :: a -&gt; b</code>, <code>g :: b -&gt; c</code>, <code>h :: c -&gt; d</code>, and <code>i :: d -&gt; e</code>, then suppose I want to first run <code>f</code>, and then run <code>g</code> on the output of <code>f</code>, but then run <code>h</code> on the output of that, and so on, but this is equivalent to defining a function from <code>a -&gt; e</code> by chaining each of the functions together. So we can do this using function composition as follows:</p>
+<pre class=".(haskell)"><code>i.h.g.f :: a -&gt; e</code></pre>
+<p>Suppose we want to take a list of lists of integers, and first flatten it, but then double each element. Then we can do this in point-free style as follows:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; collapseDouble ::</span> [[<span class="dt">Integer</span>]] <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
-<span class="ot">&gt;</span> collapseDouble <span class="fu">=</span> (map (<span class="dv">2</span><span class="fu">*</span>))<span class="fu">.</span>(foldr (<span class="fu">++</span>) [])</code></pre></div>
+<span class="ot">&gt;</span> collapseDouble <span class="fu">=</span> (map (<span class="dv">2</span><span class="fu">*</span>))<span class="fu">.</span>flatten</code></pre></div>
 <p>It turns out that any higher-order function that returns a function as output, can be turned into an <span class="math inline"><em>n</em></span>-ary function using pairs as inputs:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; curry ::</span> ((a,b) <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c)
-<span class="ot">&gt;</span> curry f a b <span class="fu">=</span> f (a , b)
-<span class="ot">&gt;</span> 
-<span class="ot">&gt; uncurry ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> ((a,b) <span class="ot">-&gt;</span> c)
-<span class="ot">&gt;</span> uncurry f (a,b) <span class="fu">=</span> f a b
-<span class="ot">&gt;</span> 
-<span class="ot">&gt; curryUncurry1 ::</span> <span class="dt">Eq</span> c <span class="ot">=&gt;</span> ((a,b) <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+<span class="ot">&gt;</span> curry f a b <span class="fu">=</span> f (a , b)</code></pre></div>
+<p>This operation is called <em>currying</em> after the mathematician and logician <a href="https://en.wikipedia.org/wiki/Haskell_Curry">Haskell Curry</a>. This operation also has an inverse called <code>uncurrying</code>:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; uncurry ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> ((a,b) <span class="ot">-&gt;</span> c)
+<span class="ot">&gt;</span> uncurry f (a,b) <span class="fu">=</span> f a b</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; curryUncurry1 ::</span> <span class="dt">Eq</span> c <span class="ot">=&gt;</span> ((a,b) <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> <span class="dt">Bool</span>
 <span class="ot">&gt;</span> curryUncurry1 f a b <span class="fu">=</span> (uncurry (curry f)) (a,b) <span class="fu">==</span> f (a,b)
 <span class="ot">&gt;</span> 
 <span class="ot">&gt; curryUncurry2 ::</span> <span class="dt">Eq</span> c <span class="ot">=&gt;</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> <span class="dt">Bool</span>

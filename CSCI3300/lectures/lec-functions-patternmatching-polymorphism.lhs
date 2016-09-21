@@ -661,18 +661,34 @@ naming the input `l` -- is `[a]`.  Furthermore, the type of `foldr
 the input, because we have a function with the same type as
 `flattenPF`.
 
-We need the following higher-order function:
+Constructing complex point-free programs requires the use of function
+composition, which is another example of a higher-order function.  We
+need the following higher-order function:
 
 \begin{code}
 (.) :: (b -> c) -> (a -> b) -> (a -> c)
 (g . f) a = g (f a)
 \end{code}
 
-Suppose 
+Function composition allows us to chain several functions together
+like a pipe.  For example, if I have four functions `f :: a -> b`, `g
+:: b -> c`, `h :: c -> d`, and `i :: d -> e`, then suppose I want to
+first run `f`, and then run `g` on the output of `f`, but then run `h`
+on the output of that, and so on, but this is equivalent to defining a
+function from `a -> e` by chaining each of the functions together.  So
+we can do this using function composition as follows:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+i.h.g.f :: a -> e
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Suppose we want to take a list of lists of integers, and first flatten
+it, but then double each element.  Then we can do this in point-free
+style as follows:
 
 \begin{code}
 collapseDouble :: [[Integer]] -> [Integer]
-collapseDouble = (map (2*)).(foldr (++) [])
+collapseDouble = (map (2*)).flatten
 \end{code}
 
 It turns out that any higher-order function that returns a function as
@@ -681,10 +697,18 @@ output, can be turned into an $n$-ary function using pairs as inputs:
 \begin{code}
 curry :: ((a,b) -> c) -> (a -> b -> c)
 curry f a b = f (a , b)
+\end{code}
 
+This operation is called *currying* after the mathematician and
+logician [Haskell Curry](https://en.wikipedia.org/wiki/Haskell_Curry).
+This operation also has an inverse called `uncurrying`:
+
+\begin{code}
 uncurry :: (a -> b -> c) -> ((a,b) -> c)
 uncurry f (a,b) = f a b
+\end{code}
 
+\begin{code}
 curryUncurry1 :: Eq c => ((a,b) -> c) -> a -> b -> Bool
 curryUncurry1 f a b = (uncurry (curry f)) (a,b) == f (a,b)
 
