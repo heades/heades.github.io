@@ -1,13 +1,10 @@
 ---
 title: QuickCheck':' Type-directed Property Testing
 ---
+
 > module Testing where 
 > import Test.QuickCheck hiding ((===))
-> import Control.Monad
 > import Data.List
-> import qualified Data.Map as M 
-> import Control.Monad.State hiding (when)
-> import Control.Applicative ((<$>))
 
 This note was originally authored by [Ranjit Jhala][12], but slightly
 modified by Harley Eades.

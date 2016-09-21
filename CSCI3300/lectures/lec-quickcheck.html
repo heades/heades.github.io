@@ -22,11 +22,7 @@
 	<br />
 	<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="kw">module</span> <span class="dt">Testing</span> <span class="kw">where</span> 
 <span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Test.QuickCheck</span> <span class="kw">hiding</span> ((===))
-<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Control.Monad</span>
-<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Data.List</span>
-<span class="ot">&gt;</span> <span class="kw">import qualified</span> <span class="dt">Data.Map</span> <span class="kw">as</span> <span class="dt">M</span> 
-<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Control.Monad.State</span> <span class="kw">hiding</span> (when)
-<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Control.Applicative</span> ((&lt;$&gt;))</code></pre></div>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Data.List</span></code></pre></div>
 <p>This note was originally authored by <a href="https://ranjitjhala.github.io/">Ranjit Jhala</a>, but slightly modified by Harley Eades.</p>
 <p>In this lecture, we will look at <a href="http://www.cse.chalmers.se/~rjmh/QuickCheck/">QuickCheck</a>, a technique that cleverly exploits typeclasses and monads to deliver a powerful automatic testing methodology.</p>
 <p>Quickcheck was developed by <a href="http://www.cse.chalmers.se/~koen/">Koen Claessen</a> and <a href="http://www.cse.chalmers.se/~rjmh">John Hughes</a> more than ten years ago, and has since been ported to other languages and is currently used, among other things to find subtle <a href="http://video.google.com/videoplay?docid=4655369445141008672#">concurrency bugs</a> in <a href="http://www.erlang-factory.com/upload/presentations/55/TestingErlangProgrammesforMulticore.pdf">telecommunications code</a>.</p>
