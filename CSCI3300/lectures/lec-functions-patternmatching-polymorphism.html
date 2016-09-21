@@ -303,11 +303,29 @@ flatten l = foldr (++) [] l</code></pre>
 <p>This operation is called <em>currying</em> after the mathematician and logician <a href="https://en.wikipedia.org/wiki/Haskell_Curry">Haskell Curry</a>. This operation also has an inverse called <code>uncurrying</code>:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; uncurry ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> ((a,b) <span class="ot">-&gt;</span> c)
 <span class="ot">&gt;</span> uncurry f (a,b) <span class="fu">=</span> f a b</code></pre></div>
+<p>We can proof that these are bijections. Suppose <span class="math inline"><em>f</em> : :(<em>a</em>, <em>b</em>)− &gt; <em>c</em></span>, $x :: a, and <span class="math inline"><em>y</em> : :<em>b</em></span>, then we can see show that <code>uncurry</code> is the inverse of <code>curry</code> as follows:</p>
+<pre class=".(haskell)"><code>uncurry (curry f) a b
+= (curry f) a b
+= curry f a b
+= f (a, b)</code></pre>
+<dl>
+<dt>Thus, <code>uncurry (curry f) = f</code>. We can show the opposite. Suppose $f</dt>
+<dd>a -&gt; b -&gt; c$:
+</dd>
+</dl>
+<pre class=".(haskell)"><code>curry (uncurry f) a b
+= (uncurry f) a b
+= uncurry f a b
+= f a b</code></pre>
+<p>Therefore, <code>curry (uncurry f) = f</code>. These two proofs show that functions of type <code>a -&gt; (b -&gt; c)</code> are isomorphic – essentially equivalent to functions of type <code>(a,b) -&gt; c</code>.</p>
+<p>We can phrase these mutual inverse properties as test cases as follows:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; curryUncurry1 ::</span> <span class="dt">Eq</span> c <span class="ot">=&gt;</span> ((a,b) <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> <span class="dt">Bool</span>
 <span class="ot">&gt;</span> curryUncurry1 f a b <span class="fu">=</span> (uncurry (curry f)) (a,b) <span class="fu">==</span> f (a,b)
 <span class="ot">&gt;</span> 
 <span class="ot">&gt; curryUncurry2 ::</span> <span class="dt">Eq</span> c <span class="ot">=&gt;</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> <span class="dt">Bool</span>
 <span class="ot">&gt;</span> curryUncurry2 f a b <span class="fu">=</span> (curry (uncurry f)) a b <span class="fu">==</span> f a b</code></pre></div>
+<p>One important thing about currying is that we can view it as a test for whether or not a programming language supports general higher-order functions, and hence, functional programming. Any programming language that doesn’t cannot be called functional.</p>
+<p>Currying and uncurrying also allow us to pick a choose a representation to fit the problem we might be modeling. For example, if I am programming with a point system, then I would use functions of type <code>(a,b) -&gt; c</code>, but then this doesn’t fit the type of functions for some of the higher-order operations we have been studying, but I know that I can always uncurry my function to put it in the write form.</p>
     </body>
 
     <div id="footer"> 

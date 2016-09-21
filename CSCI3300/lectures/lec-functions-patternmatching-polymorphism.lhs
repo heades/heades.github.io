@@ -708,6 +708,34 @@ uncurry :: (a -> b -> c) -> ((a,b) -> c)
 uncurry f (a,b) = f a b
 \end{code}
 
+We can proof that these are bijections.  Suppose $f :: (a,b) -> c$, $x
+:: a, and $y :: b$, then we can see show that `uncurry` is the inverse
+of `curry` as follows:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+uncurry (curry f) a b
+= (curry f) a b
+= curry f a b
+= f (a, b)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Thus, `uncurry (curry f) = f`.  We can show the opposite.  Suppose $f
+: a -> b -> c$:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+curry (uncurry f) a b
+= (uncurry f) a b
+= uncurry f a b
+= f a b
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Therefore, `curry (uncurry f) = f`. These two proofs show that
+functions of type `a -> (b -> c)` are isomorphic -- essentially
+equivalent to functions of type `(a,b) -> c`.
+
+We can phrase these mutual inverse properties as test cases as
+follows:
+
 \begin{code}
 curryUncurry1 :: Eq c => ((a,b) -> c) -> a -> b -> Bool
 curryUncurry1 f a b = (uncurry (curry f)) (a,b) == f (a,b)
@@ -715,3 +743,16 @@ curryUncurry1 f a b = (uncurry (curry f)) (a,b) == f (a,b)
 curryUncurry2 :: Eq c => (a -> b -> c) -> a -> b -> Bool
 curryUncurry2 f a b = (curry (uncurry f)) a b == f a b
 \end{code}
+
+One important thing about currying is that we can view it as a test
+for whether or not a programming language supports general
+higher-order functions, and hence, functional programming.  Any
+programming language that doesn't cannot be called functional.
+
+Currying and uncurrying also allow us to pick a choose a
+representation to fit the problem we might be modeling.  For example,
+if I am programming with a point system, then I would use functions of
+type `(a,b) -> c`, but then this doesn't fit the type of functions for
+some of the higher-order operations we have been studying, but I know
+that I can always uncurry my function to put it in the write form.
+
