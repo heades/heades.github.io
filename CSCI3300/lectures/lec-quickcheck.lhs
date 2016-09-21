@@ -7,7 +7,7 @@ title: QuickCheck':' Type-directed Property Testing
 > import Data.List
 
 This note was originally authored by [Ranjit Jhala][12], but slightly
-modified by Harley Eades.
+modified by [Harley Eades](13).
 
 In this lecture, we will look at [QuickCheck][1], a technique that
 cleverly exploits typeclasses and monads to deliver a powerful 
@@ -461,3 +461,4 @@ beefy list that is ordered are rather small indeed!
 [10]: http://community.moertel.com/~thor/talks/pgh-pm-talk-lectrotest.pdf
 [11]: http://www.cse.chalmers.se/~rjmh
 [12]: https://ranjitjhala.github.io/
+[13]: https://metatheorem.org/
