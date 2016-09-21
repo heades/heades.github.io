@@ -816,3 +816,32 @@ f x = x
 We don't know what `x` is, because it has a generic type, and thus, we
 cannot perform any operations on it, hence the only thing `f` could
 possibly do is return `x` as is.
+
+Recall composition from above:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+(.) :: (b -> c) -> (a -> b) -> (a -> c)
+(g . f) a = g (f a)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We can see that this function also only has one implementation,
+because the type is so generic it forces us to implement as we did.
+
+However, when the type is more specific the number of implementations
+increase.  Consider append:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+append :: [a] -> [a] -> [a]
+append [] l2 = l2
+append l1 [] = l1
+append (x:xs) l2 = x : append xs l2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The number of implementations for this is quite a lot, but our
+specification of what append must do kicks in and we are able to write
+it, but the type of `x` is generic, and hence, we cannot alter `x` in
+the implementation.
+
+The lesson is that the more general a functions type the less number
+of implementations it will have, but the more specific the type the
+more implementations.

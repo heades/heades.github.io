@@ -341,6 +341,17 @@ curry f x y = f (x , y)</code></pre>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> f <span class="fu">:</span> a <span class="ot">-&gt;</span> a
 <span class="ot">&gt;</span> f x <span class="fu">=</span> x</code></pre></div>
 <p>We don’t know what <code>x</code> is, because it has a generic type, and thus, we cannot perform any operations on it, hence the only thing <code>f</code> could possibly do is return <code>x</code> as is.</p>
+<p>Recall composition from above:</p>
+<pre class=".(haskell)"><code>(.) :: (b -&gt; c) -&gt; (a -&gt; b) -&gt; (a -&gt; c)
+(g . f) a = g (f a)</code></pre>
+<p>We can see that this function also only has one implementation, because the type is so generic it forces us to implement as we did.</p>
+<p>However, when the type is more specific the number of implementations increase. Consider append:</p>
+<pre class=".(haskell)"><code>append :: [a] -&gt; [a] -&gt; [a]
+append [] l2 = l2
+append l1 [] = l1
+append (x:xs) l2 = x : append xs l2</code></pre>
+<p>The number of implementations for this is quite a lot, but our specification of what append must do kicks in and we are able to write it, but the type of <code>x</code> is generic, and hence, we cannot alter <code>x</code> in the implementation.</p>
+<p>The lesson is that the more general a functions type the less number of implementations it will have, but the more specific the type the more implementations.</p>
     </body>
 
     <div id="footer"> 
