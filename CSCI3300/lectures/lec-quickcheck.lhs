@@ -461,4 +461,4 @@ beefy list that is ordered are rather small indeed!
 [10]: http://community.moertel.com/~thor/talks/pgh-pm-talk-lectrotest.pdf
 [11]: http://www.cse.chalmers.se/~rjmh
 [12]: https://ranjitjhala.github.io/
-[13]: https://metatheorem.org
+[13]: http://metatheorem.org
