@@ -776,6 +776,43 @@ curry1 :: ((Integer,Bool) -> String) -> (Integer -> Bool -> String)
 curry1 f x y = f (x , y)
 \end{code}
 
-Notice that the implementation of `curry` didn't change only the type
-did.  This is the main property of a polymorphic function.
+Take note that that the type of `curry` changed, but the
+implementation stayed the same.  This is the main property of a
+polymorphic function.  That is, a function is polymorphic if a portion
+of its type is generic in that it can be instantiated with more than
+one type without the implementation changing.
 
+Here is another example of a polymorphic function:
+
+\begin{code}
+append :: [a] -> [a] -> [a]
+append [] l2 = l2
+append l1 [] = l1
+append (x:xs) l2 = x : append xs l2
+\end{code}
+
+This time, the input and output are not as arbitrary as the previous
+example, but the type of the elements of the input and output lists
+are generic.  This is because when appending two lists together the
+implementation does not need to actually know what kind of elements
+are in the list.
+
+One thing to remember is to try and make functions as polymorphic as
+possible, because it facilitates the notion of writing one
+implementation that can be used in many different situations.
+
+The polymorphism in Haskell is very powerful, and it can also steer
+what the implementation must be.  For example, say we have just the
+type `f : a -> a`, then what possible implementations could `f` have?
+In languages like C# it could have many, because one could use side
+effects to do just about anything, but in Haskell we have no side
+effects.  Thus, `f` can really only do one thing:
+
+\begin{code}
+f : a -> a
+f x = x
+\end{code}
+
+We don't know what `x` is, because it has a generic type, and thus, we
+cannot perform any operations on it, hence the only thing `f` could
+possibly do is return `x` as is.

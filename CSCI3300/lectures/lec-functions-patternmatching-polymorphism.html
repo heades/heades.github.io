@@ -329,7 +329,18 @@ curry f x y = f (x , y)</code></pre>
 <p>This is an example of a polymorphic function. The variables <code>a</code>, <code>b</code>, and <code>c</code> are called <em>type variables</em>. Think of them as holes which any type at all can fill. For example, the following is an <em>instantiation</em> of the type variables in the type of <code>curry</code>:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; curry1 ::</span> ((<span class="dt">Integer</span>,<span class="dt">Bool</span>) <span class="ot">-&gt;</span> <span class="dt">String</span>) <span class="ot">-&gt;</span> (<span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">String</span>)
 <span class="ot">&gt;</span> curry1 f x y <span class="fu">=</span> f (x , y)</code></pre></div>
-<p>Notice that the implementation of <code>curry</code> didn’t change only the type did. This is the main property of a polymorphic function.</p>
+<p>Take note that that the type of <code>curry</code> changed, but the implementation stayed the same. This is the main property of a polymorphic function. That is, a function is polymorphic if a portion of its type is generic in that it can be instantiated with more than one type without the implementation changing.</p>
+<p>Here is another example of a polymorphic function:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; append ::</span> [a] <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [a]
+<span class="ot">&gt;</span> append [] l2 <span class="fu">=</span> l2
+<span class="ot">&gt;</span> append l1 [] <span class="fu">=</span> l1
+<span class="ot">&gt;</span> append (x<span class="fu">:</span>xs) l2 <span class="fu">=</span> x <span class="fu">:</span> append xs l2</code></pre></div>
+<p>This time, the input and output are not as arbitrary as the previous example, but the type of the elements of the input and output lists are generic. This is because when appending two lists together the implementation does not need to actually know what kind of elements are in the list.</p>
+<p>One thing to remember is to try and make functions as polymorphic as possible, because it facilitates the notion of writing one implementation that can be used in many different situations.</p>
+<p>The polymorphism in Haskell is very powerful, and it can also steer what the implementation must be. For example, say we have just the type <code>f : a -&gt; a</code>, then what possible implementations could <code>f</code> have? In languages like C# it could have many, because one could use side effects to do just about anything, but in Haskell we have no side effects. Thus, <code>f</code> can really only do one thing:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> f <span class="fu">:</span> a <span class="ot">-&gt;</span> a
+<span class="ot">&gt;</span> f x <span class="fu">=</span> x</code></pre></div>
+<p>We don’t know what <code>x</code> is, because it has a generic type, and thus, we cannot perform any operations on it, hence the only thing <code>f</code> could possibly do is return <code>x</code> as is.</p>
     </body>
 
     <div id="footer"> 
