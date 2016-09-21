@@ -303,16 +303,12 @@ flatten l = foldr (++) [] l</code></pre>
 <p>This operation is called <em>currying</em> after the mathematician and logician <a href="https://en.wikipedia.org/wiki/Haskell_Curry">Haskell Curry</a>. This operation also has an inverse called <code>uncurrying</code>:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; uncurry ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> ((a,b) <span class="ot">-&gt;</span> c)
 <span class="ot">&gt;</span> uncurry f (a,b) <span class="fu">=</span> f a b</code></pre></div>
-<p>We can proof that these are bijections. Suppose <span class="math inline"><em>f</em> : :(<em>a</em>, <em>b</em>)− &gt; <em>c</em></span>, $x :: a, and <span class="math inline"><em>y</em> : :<em>b</em></span>, then we can see show that <code>uncurry</code> is the inverse of <code>curry</code> as follows:</p>
+<p>We can proof that these are bijections. Suppose <code>f :: (a,b) -&gt; c</code>, <code>x :: a</code>, and <code>y :: b</code>, then we can see show that <code>uncurry</code> is the inverse of <code>curry</code> as follows:</p>
 <pre class=".(haskell)"><code>uncurry (curry f) a b
 = (curry f) a b
 = curry f a b
 = f (a, b)</code></pre>
-<dl>
-<dt>Thus, <code>uncurry (curry f) = f</code>. We can show the opposite. Suppose $f</dt>
-<dd>a -&gt; b -&gt; c$:
-</dd>
-</dl>
+<p>Thus, <code>uncurry (curry f) = f</code>. We can show the opposite. Suppose <code>f :: a -&gt; b -&gt; c</code>.</p>
 <pre class=".(haskell)"><code>curry (uncurry f) a b
 = (uncurry f) a b
 = uncurry f a b

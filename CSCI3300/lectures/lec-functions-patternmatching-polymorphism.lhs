@@ -708,8 +708,8 @@ uncurry :: (a -> b -> c) -> ((a,b) -> c)
 uncurry f (a,b) = f a b
 \end{code}
 
-We can proof that these are bijections.  Suppose $f :: (a,b) -> c$, $x
-:: a, and $y :: b$, then we can see show that `uncurry` is the inverse
+We can proof that these are bijections.  Suppose `f :: (a,b) -> c`, `x
+:: a`, and `y :: b`, then we can see show that `uncurry` is the inverse
 of `curry` as follows:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
@@ -719,8 +719,8 @@ uncurry (curry f) a b
 = f (a, b)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Thus, `uncurry (curry f) = f`.  We can show the opposite.  Suppose $f
-: a -> b -> c$:
+Thus, `uncurry (curry f) = f`.  We can show the opposite.  Suppose `f
+:: a -> b -> c`.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
 curry (uncurry f) a b
