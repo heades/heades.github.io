@@ -40,6 +40,9 @@ sitemap:
               {% elsif publication.resource.type == 'pdf-report' %}
 	        [<a href="{{ publication.resource.pdf-url }}">PDF</a>]
                 [<a href="{{ publication.resource.report-url }}">PDF ({{ publication.resource.report-note }})</a>]
+              {% elsif publication.resource.type == 'doi-report' %}
+                <a href="http://dx.doi.org/{{ publication.resource.value }}">doi: {{ publication.resource.value }}</a>
+                [<a href="{{ publication.resource.report-url }}">PDF ({{ publication.resource.report-note }})</a>]                
               {% elsif publication.resource.type == 'pdf' %}
 	        [<a href="{{ publication.resource.pdf-url }}">PDF</a>]
               {% endif %}
