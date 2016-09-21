@@ -282,7 +282,14 @@ zip [1] :: [Integer] -&gt; [(Integer, Integer)]</code></pre>
 ~&gt; [1,2] ++ ([3,4] ++ [42,24])
 ~&gt; [1,2] ++ [3,4,42,24]
 ~&gt; [1,2,3,4,42,24]</code></pre>
-<p>Higher-order functions give rise to what is called <em>pointfree programming</em> where we try to use actual inputs as little as possible. First, we need the following higher-order function:</p>
+<p>Higher-order functions give rise to what is called <em>pointfree programming</em> where we try to use actual inputs as little as possible. Recall the following example from above:</p>
+<pre class=".(haskell)"><code>flatten :: [[a]] -&gt; [a]
+flatten l = foldr (++) [] l</code></pre>
+<p>Input variables like <code>l</code> are called points. We can turn the definition of <code>flatten</code> into point-free style by not naming any of the inputs, and simply construct a function as follows:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; flattenPF ::</span> [[a]] <span class="ot">-&gt;</span> [a]
+<span class="ot">&gt;</span> flattenPF <span class="fu">=</span> foldr (<span class="fu">++</span>) []</code></pre></div>
+<p>Notice that we do not name the input list, that is, we do not require a point. Let’s think about this from a type perspective. The type of <code>flattenPF</code> is <code>[[a]] -&gt; [a]</code>, but the type of <code>flattenPF l</code> – we are naming the input <code>l</code> – is <code>[a]</code>. Furthermore, the type of <code>foldr (++) []</code> is <code>[[a]] -&gt; [a]</code>, and thus, we really do not need to name the input, because we have a function with the same type as <code>flattenPF</code>.</p>
+<p>We need the following higher-order function:</p>
 <div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; (.) ::</span> (b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> c)
 <span class="ot">&gt;</span> (g <span class="fu">.</span> f) a <span class="fu">=</span> g (f a)</code></pre></div>
 <p>Suppose</p>

@@ -637,14 +637,36 @@ flatten [[1,2],[3,4],[42,24]]
 
 Higher-order functions give rise to what is called *pointfree
 programming* where we try to use actual inputs as little as possible.
-First, we need the following higher-order function:
+Recall the following example from above:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
+flatten :: [[a]] -> [a]
+flatten l = foldr (++) [] l
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Input variables like `l` are called points. We can turn the definition
+of `flatten` into point-free style by not naming any of the inputs,
+and simply construct a function as follows:
+
+\begin{code}
+flattenPF :: [[a]] -> [a]
+flattenPF = foldr (++) []
+\end{code}
+
+Notice that we do not name the input list, that is, we do not require
+a point.  Let's think about this from a type perspective.  The type of
+`flattenPF` is `[[a]] -> [a]`, but the type of `flattenPF l` -- we are
+naming the input `l` -- is `[a]`.  Furthermore, the type of `foldr
+(++) []` is `[[a]] -> [a]`, and thus, we really do not need to name
+the input, because we have a function with the same type as
+`flattenPF`.
+
+We need the following higher-order function:
 
 \begin{code}
 (.) :: (b -> c) -> (a -> b) -> (a -> c)
 (g . f) a = g (f a)
 \end{code}
-
-
 
 Suppose 
 
