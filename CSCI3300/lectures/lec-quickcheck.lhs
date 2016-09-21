@@ -7,7 +7,7 @@ title: QuickCheck':' Type-directed Property Testing
 > import Data.List
 
 This note was originally authored by [Ranjit Jhala][12], but slightly
-modified by [Harley Eades](13).
+modified by [Harley Eades][13].
 
 In this lecture, we will look at [QuickCheck][1], a technique that
 cleverly exploits typeclasses and monads to deliver a powerful 
