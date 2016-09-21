@@ -325,7 +325,11 @@ flatten l = foldr (++) [] l</code></pre>
 <h2 id="polymorphism">Polymorphism</h2>
 <p>Recall the curry function:</p>
 <pre class=".(haskell)"><code>curry :: ((a,b) -&gt; c) -&gt; (a -&gt; b -&gt; c)
-curry f a b = f (a , b)</code></pre>
+curry f x y = f (x , y)</code></pre>
+<p>This is an example of a polymorphic function. The variables <code>a</code>, <code>b</code>, and <code>c</code> are called <em>type variables</em>. Think of them as holes which any type at all can fill. For example, the following is an <em>instantiation</em> of the type variables in the type of <code>curry</code>:</p>
+<div class="sourceCode"><pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt; curry1 ::</span> ((<span class="dt">Integer</span>,<span class="dt">Bool</span>) <span class="ot">-&gt;</span> <span class="dt">String</span>) <span class="ot">-&gt;</span> (<span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span> <span class="ot">-&gt;</span> <span class="dt">String</span>)
+<span class="ot">&gt;</span> curry1 f x y <span class="fu">=</span> f (x , y)</code></pre></div>
+<p>Notice that the implementation of <code>curry</code> didn’t change only the type did. This is the main property of a polymorphic function.</p>
     </body>
 
     <div id="footer"> 

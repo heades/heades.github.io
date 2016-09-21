@@ -763,8 +763,19 @@ Recall the curry function:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.(haskell)
 curry :: ((a,b) -> c) -> (a -> b -> c)
-curry f a b = f (a , b)
+curry f x y = f (x , y)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+This is an example of a polymorphic function.  The variables `a`, `b`,
+and `c` are called *type variables*.  Think of them as holes which any
+type at all can fill.  For example, the following is an
+*instantiation* of the type variables in the type of `curry`:
 
+\begin{code}
+curry1 :: ((Integer,Bool) -> String) -> (Integer -> Bool -> String)
+curry1 f x y = f (x , y)
+\end{code}
+
+Notice that the implementation of `curry` didn't change only the type
+did.  This is the main property of a polymorphic function.
 
