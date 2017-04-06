@@ -1,4 +1,5 @@
 name: Harley Eades III
+markdown: redcarpet
 highlighter: rouge
 collections:
   pubs:
