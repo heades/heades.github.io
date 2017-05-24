@@ -1,5 +1,5 @@
 ---
-type: draft
+type: unpublished
 authors:
   - Harley Eades III
   - Michael Townsend
