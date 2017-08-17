@@ -6,22 +6,21 @@ title: QuickCheck':' Type-directed Property Testing
 > import Test.QuickCheck hiding ((===))
 > import Data.List
 
-This note was originally authored by [Ranjit Jhala][12], but slightly
-modified by [Harley Eades][13].
+This note was originally authored by [Ranjit Jhala][12], but modified
+by [Harley Eades][13].
 
 In this lecture, we will look at [QuickCheck][1], a technique that
-cleverly exploits typeclasses and monads to deliver a powerful 
-automatic testing methodology. 
+cleverly delivers a powerful automatic testing methodology.
 
 Quickcheck was developed by [Koen Claessen][0] and [John Hughes][11] more
 than ten years ago, and has since been ported to other languages and
 is currently used, among other things to find subtle [concurrency bugs][3]
 in [telecommunications code][4].
 
-The key idea on which QuickCheck is founded, is *property-based testing*. 
-That is, instead of writing individual test cases (eg unit tests 
-corresponding to input-output pairs for particular functions) one 
-should write *properties* that are desired of the functions, and 
+The key idea on which QuickCheck is founded, is *property-based
+testing*.  That is, instead of writing individual test cases (eg unit
+tests corresponding to input-output pairs for particular functions)
+one should write *properties* that are desired of the functions, and
 then *automatically* generate *random* tests which can be run to
 verify (or rather, falsify) the property.
 
