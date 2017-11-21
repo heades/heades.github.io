@@ -1,13 +1,13 @@
 ---
 type: article
 authors:
-  - Daniel Zeman
-  - Martin Popel
-title: "Multilingual Parsing from Raw Text to Universal Dependencies"
-journal: "Proceedings of the CoNLL 2017 Shared Task"
-note: "Vancouver, Canada"
-date: 2017-08-03
+  - Valeria de Paiva
+  - Harley Eades III
+title: "Constructive Temporal Logic, Categorically"
+journal: "IFCoLog Journal of Logic and its Applications"
+note: "Volume 4, Number 4, <a href=\"http://www.collegepublications.co.uk/journals/ifcolog/?00013\">Special Issue Dedicated to the Memory of Grigori Mints</a>"
+date: 2017-02-01
 resource:
   type: pdf
-  pdf-url: includes/pubs/2017-sharedtask.pdf
+  pdf-url: includes/pubs/IFCoLog17.pdf
 ---
