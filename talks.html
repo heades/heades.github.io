@@ -14,9 +14,12 @@ sitemap:
           <strong>{{ talk.title }}</strong>.
           {% if talk.venue %} {{ talk.venue }}. {% endif %}
           {% if talk.year %} {{ talk.year }}. {% endif %}
-            {% if talk.slides %}
-	        [<a href="{{ talk.slides }}">Slides</a>]
-            {% endif %}            
+          {% if talk.slides %}
+	  [<a href="{{ talk.slides }}">Slides</a>]
+          {% endif %}
+          {% if talk.slides-pdf %}
+	  [<a href="{{ talk.slides-pdf }}">PDF Slides</a>]
+          {% endif %}            
         </li>
 {% endfor %}
 </ul>        
