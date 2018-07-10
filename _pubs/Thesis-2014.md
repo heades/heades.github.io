@@ -8,5 +8,5 @@ date: 2014-08-01
 year: 2014
 resource:
   type: pdf
-  pdf-url: includes/pubs/Thesis.pdf
+  pdf-url: includes/pubs/thesis.pdf
 ---
