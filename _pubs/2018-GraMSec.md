@@ -8,8 +8,7 @@ title: "On Linear Logic, Functional Programming, and Attack Trees"
 note: "In: Cybenko G., Pym D., Fila B. (eds) Graphical Models for Security. GraMSec 2018. Lecture Notes in Computer Science, vol 11086. Springer, Cham."
 date: 2018-07-29
 resource:
-  type: doi-report
+  type: doi-pdf
   value: 10.1007/978-3-030-15465-3_5
-  report-url: includes/pubs/GraMSec18.pdf
-  report-note: PDF
+  pdf-url: includes/pubs/GraMSec18.pdf
 ---
