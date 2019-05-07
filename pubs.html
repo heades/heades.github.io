@@ -91,7 +91,10 @@ sitemap:
 	      <a href="http://dx.doi.org/{{ publication.resource.value }}">doi: {{ publication.resource.value }}</a>
             {% elsif publication.resource.type == 'doi-report' %}
               <a href="http://dx.doi.org/{{ publication.resource.value }}">doi: {{ publication.resource.value }}</a>
-              [<a href="{{ publication.resource.report-url }}">PDF ({{ publication.resource.report-note }})</a>]          
+              [<a href="{{ publication.resource.report-url }}">PDF ({{ publication.resource.report-note }})</a>]
+            {% elsif publication.resource.type == 'doi-pdf' %}
+              <a href="http://dx.doi.org/{{ publication.resource.value }}">doi: {{ publication.resource.value }}</a>
+              [<a href="{{ publication.resource.pdf-url }}">PDF</a>]                              
 	    {% elsif publication.resource.type == 'url' %}
 	      <a href="{{ publication.resource.value }}">{{ publication.resource.value }}</a>
             {% elsif publication.resource.type == 'pdf-report' %}
@@ -133,23 +136,26 @@ sitemap:
           {% if publication.note %}<i>{{ publication.note }}.</i>{% endif %}
           {% if publication.resource %}
             {% if publication.resource.bibtex %}
-	      [<a href="{{ publication.resource.bibtex }}">Bibtex</a>]
+	       [<a href="{{ publication.resource.bibtex }}">Bibtex</a>]
             {% endif %}
             {% if publication.resource.slides %}
-	      [<a href="{{ publication.resource.slides }}">Slides</a>]
+	       [<a href="{{ publication.resource.slides }}">Slides</a>]
             {% endif %} 
 	    {% if publication.resource.type == 'doi' %}
 	       <a href="http://dx.doi.org/{{ publication.resource.value }}">doi: {{ publication.resource.value }}</a>
             {% elsif publication.resource.type == 'doi-report' %}
                <a href="http://dx.doi.org/{{ publication.resource.value }}">doi: {{ publication.resource.value }}</a>
-               [<a href="{{ publication.resource.report-url }}">PDF ({{ publication.resource.report-note }})</a>]          
+               [<a href="{{ publication.resource.report-url }}">PDF ({{ publication.resource.report-note }})</a>]
+            {% elsif publication.resource.type == 'doi-pdf' %}
+               <a href="http://dx.doi.org/{{ publication.resource.value }}">doi: {{ publication.resource.value }}</a>
+               [<a href="{{ publication.resource.pdf-url }}">PDF</a>]                               
 	    {% elsif publication.resource.type == 'url' %}
-	      <a href="{{ publication.resource.value }}">{{ publication.resource.value }}</a>
+	       <a href="{{ publication.resource.value }}">{{ publication.resource.value }}</a>
             {% elsif publication.resource.type == 'pdf-report' %}
-	      [<a href="{{ publication.resource.pdf-url }}">PDF</a>]
-              [<a href="{{ publication.resource.report-url }}">PDF ({{ publication.resource.report-note }})</a>]
+	       [<a href="{{ publication.resource.pdf-url }}">PDF</a>]
+               [<a href="{{ publication.resource.report-url }}">PDF ({{ publication.resource.report-note }})</a>]
             {% elsif publication.resource.type == 'pdf' %}
-	      [<a href="{{ publication.resource.pdf-url }}">PDF</a>]
+	       [<a href="{{ publication.resource.pdf-url }}">PDF</a>]
             {% endif %}
           {% endif %}
         </li>
