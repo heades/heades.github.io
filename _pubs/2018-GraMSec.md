@@ -9,7 +9,7 @@ note: "In: Cybenko G., Pym D., Fila B. (eds) Graphical Models for Security. GraM
 date: 2018-07-29
 resource:
   type: doi-report
-  value: 10.1007/978-3-319-27683-0_7
+  value: 10.1007/978-3-030-15465-3_5
   report-url: includes/pubs/GraMSec18.pdf
   report-note: PDF
 ---
