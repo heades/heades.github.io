@@ -8,9 +8,10 @@ sitemap:
 
 <img src="images/heades.jpg" style="float:left;padding:10px;" width="30%" alt="Harley Eades's photo">
 
-<h4>Welcome!</h4>
+Welcome!
+===
 
-I am an Assistant Professor in the <a href="https://www.augusta.edu/ccs/">School of Computer and Cyber
+I am an Associate Professor in the <a href="https://www.augusta.edu/ccs/">School of Computer and Cyber
 Sciences</a> at <a href="http://www.augusta.edu" target="_blank">Augusta
   University</a>.
 <br><br>
@@ -20,18 +21,21 @@ On this page you will find my research interests, contact
 information, and <a href="includes/cv.pdf">CV</a> (Updated
 May 2020).
 
-<h4>Current Projects</h4>
+#### Current Projects
+
 My current project is
 on <a href="https://granule-project.github.io/">The Granule
 Project</a> where I am studying graded logics, models, and type theories.
-<br>
-<h4>Research interests</h4>
-Programming languages, type theory, category theory, and logic in computer science.
-<br><br>
-<h4>Conference and workshop service</h4>
+
+#### Research interests
+
+- Keywords: Programming languages, type theory, category theory, and logic in computer science.
+- [AMS Classes](/AMS-classes.html)
+
+#### Conference and workshop service
+
 <div class="list-group">
   <a href="http://gramsec.uni.lu/" class="list-group-item">coChair for GraMSec 2020</a>
-  <a href="https://the-au-forml-lab.github.io/SERPL" class="list-group-item">coChair for SERPL 2020</a>
   <a href="https://lipn.univ-paris13.fr/LinearityTLLA2020/" class="list-group-item">Program committee member for LINEARITY && TLLA 2020</a>
   <a href="https://the-au-forml-lab.github.io/SERPL2019" class="list-group-item">coChair for SERPL 2019</a>
   <a href="http://gramsec.uni.lu/https://gramsec.uni.lu/2019/organization.php" class="list-group-item">Program committee member for GraMSec 2019</a>
@@ -44,6 +48,6 @@ Programming languages, type theory, category theory, and logic in computer scien
 
 <div class="list-group">
   <a class="list-group-item">Office: Allgood Hall E-132</a>
-  <a href="mailto:heades@augusta.edu" class="list-group-item">Email: heades@augusta.edu</a>
+  <a href="mailto:harley.eades@gmail.com" class="list-group-item">Email: harley.eades@gmail.com</a>
 </div>  
 
