@@ -35,6 +35,7 @@ Project</a> where I am studying graded logics, models, and type theories.
 #### Conference and workshop service
 
 <div class="list-group">
+  <a href="https://icfp19.sigplan.org/series/icfp" class="list-group-item">Program committee member for ICFP 2021</a>
   <a href="http://gramsec.uni.lu/" class="list-group-item">coChair for GraMSec 2020</a>
   <a href="https://lipn.univ-paris13.fr/LinearityTLLA2020/" class="list-group-item">Program committee member for LINEARITY && TLLA 2020</a>
   <a href="https://the-au-forml-lab.github.io/SERPL2019" class="list-group-item">coChair for SERPL 2019</a>
@@ -47,7 +48,7 @@ Project</a> where I am studying graded logics, models, and type theories.
 <h4>Contact Information</h4>
 
 <div class="list-group">
-  <a class="list-group-item">Office: Allgood Hall E-132</a>
+  <a class="list-group-item">Office: University Hall</a>
   <a href="mailto:harley.eades@gmail.com" class="list-group-item">Email: harley.eades@gmail.com</a>
 </div>  
 
