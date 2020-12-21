@@ -19,7 +19,7 @@ Sciences</a> at <a href="http://www.augusta.edu" target="_blank">Augusta
 <br><br>
 On this page you will find my research interests, contact
 information, and <a href="includes/cv.pdf">CV</a> (Updated
-May 2020).
+December 2020).
 
 #### Current Projects
 
