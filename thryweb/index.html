@@ -6,7 +6,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>Syllabus - Theory of Computation</title>
-        <link rel="stylesheet" href="/plweb/includes/css/default.css" />
+        <link rel="stylesheet" href="/thryweb/includes/css/default.css" />
               <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script> 
         </head>
     <body>
@@ -31,9 +31,13 @@
  <li>Course webpage: <a href="http://metatheorem.org/thryweb" class="uri">http://metatheorem.org/thryweb</a></li>
  </ul>
  <h2 id="description">Description</h2>
+ <p>Welcome! The core of computer science deals in the area of problem solving using mathematical precise tools called computational devices, e.g. computers, cell phones, cars, air planes, and any other device with an embedded computer inside. These devices are tools of the computer scientist, and it is their job to understand how best to use them, and even more importantly what the limits of their power are. Yes, that is right, computers do have limits. However, to be able to understand what these limits are one must be able to know how to mathematically define computation. In fact, what does it mean for a function to be computable? These are the core questions studied in the field of theory of computation, and this is the topic of this course.</p>
+ <p>We will begin by trying to understand basic mathematical devices for recognizing formal languages called finite state automata, and regular expressions. Regular expressions are a very useful tool for describing languages, for example, <span class="math inline">\(\verb|&lt;([^&quot;&gt;]+(?:&quot;[^&quot;]+&quot;)*[^&gt;]+)&gt;|\)</span> is a Perl regular expression that matches every HTML tag with an attribute. HTML is an example of a formal language. How would you write a program that takes a regular expression and a string, and then test if that string falls within the language the regular expression generates? This is one practical example of a finite state automata. We will see that regular expressions and finite automata are intimately related.</p>
+ <p>Finite state automata are really fascinating, but they have limits. In fact, there are formal languages that cannot be recognized by any regular expression! These are called context-free languages, and these are the types of formal languages that correspond to most programming languages. We will see that context-free languages can be described by what are called context-free grammars.</p>
+ <p>Following our stint into formal language theory is the part of theory of computation that is very fun and interesting. We will see that all of computation can be described by two very simple formal theories one called Turing machines, and the other called the <span class="math inline">\(\lambda\)</span>-calculus. These are actually equivalent, and it can be shown that all of what modern computational devices can be do, can be done by these simple theories. If time permits we may discuss a bit about how Turing machines can be used to describe the limits of computation.</p>
  <ul>
- <li>Book: ??</li>
- <li>Course Calendar: ??</li>
+ <li><a href="https://www.cs.virginia.edu/~robins/Sipser_2006_Second_Edition_Problems.pdf">Book</a></li>
+ <li><a href="https://calendar.google.com/calendar/embed?src=lnqcllvu7lbceq63n1crjed0a4%40group.calendar.google.com&amp;ctz=America%2FNew_York">Course Calendar</a></li>
  </ul>
  <h2 id="prerequisites">Prerequisites</h2>
  <ul>
@@ -43,13 +47,19 @@
  <h2 id="office-hours">Office Hours</h2>
  <p>Office hours will be held virtually by appointment. Please schedule using Slack.</p>
  <h2 id="course-goals">Course Goals</h2>
+ <p>The goals of this course consist of global goals and specialized goals. The former is a set of goals that I believe will benefit the student in a wider area of life than this course, while the specialized goals are the goals of understanding the basic theory of computation.</p>
  <h3 id="global-goals">Global Goals</h3>
+ <p>The global goals seek to help the student with broad knowledge that will help them throughout life. For example, in other courses and in their future (or current) jobs. It could be argued that all of this course fits this perspective, but not every student will become theoretical computer scientists.</p>
+ <p>The global goals can be summarized as goals that aim to train the student in critical thinking, and mathematical and logical reasoning. Specifically, we will attempt to understand some of mathematical proof and logic.</p>
  <h3 id="specialized-goals">Specialized Goals</h3>
  <p>Specialized goals amount to the content of the course. This can be found in the <a href="/lectures.html">Course Schedule</a>.</p>
  <h2 id="graded-work">Graded Work</h2>
- <p>A perfect score is <span class="math inline">\(??\)</span> total points:</p>
+ <p>A perfect score is <span class="math inline">\(200\)</span> total points:</p>
  <ul>
- <li>??</li>
+ <li>(<span class="math inline">\(20\%\)</span>) 6 10-point graded homework assignments.</li>
+ <li>(<span class="math inline">\(20\%\)</span>) Video lecture quiz due at the start of each lecture.</li>
+ <li>(<span class="math inline">\(30\%\)</span>) A take-home midterm exam released on 02/22 and due on 02/24 by 11:59pm.</li>
+ <li>(<span class="math inline">\(30\%\)</span>) A final take-home exam released on 4/28 and due on 5/7 by 7:00pm.</li>
  </ul>
  <p>No scores will be curved throughout the semester. Please use the following scoring table:</p>
  <ul>
@@ -67,7 +77,7 @@
  <li>No inapprorpiate messages will be tolerated.</li>
  <li>You must add your fullname (First and Last) to your profile.</li>
  <li>All course annoucements will be shared in <a href="https://theoryau.slack.com/archives/C01H92W8CQ7">#annoucements</a>.</li>
- <li>Course discussion will take place in the channel <a href="https://theoryau.slack.com/archives/C01HQ23J3PV">#office_hours</a>.</li>
+ <li>All course related questions/discussion should be asked in <a href="https://theoryau.slack.com/archives/C01HQ23J3PV">#office_hours</a>.</li>
  <li>For fun I’ve created <a href="https://theoryau.slack.com/archives/C01JDLTNA4Q">#random</a> for sharing all the gifs and memes.</li>
  </ul>
  <h2 id="attendance">Attendance</h2>
