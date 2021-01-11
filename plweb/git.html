@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Installing and using Git - Programming Languages</title>
+        <link rel="stylesheet" href="/plweb/includes/css/default.css" />
+            </head>
+    <body>
+      <h1>Installing and using Git - Programming Languages </h1>
+        <div id="navigation">
+        <a href="/plweb/index.html">Home</a>
+	<a href="/plweb/lectures.html">Lectures</a>
+        <a href="/plweb/includes/syllabus.pdf">PDF Syllabus</a>
+        <a href="/plweb/resources.html">Other Resources</a>
+        </div>
+	<br/>
+	<br/>
+	<p>In this course you will be assigned a Git source-code repository (or repo for short) that you will use to turn in all assignments.</p>
+ <h1 id="what-is-git">What is Git?</h1>
+ <p>Git is a textfile revision system. One uses it to mangage revisions of text files between multiple people using a single set of files. Git will keep track of who made which changes and when (the revision history), provide tools for undoing and redoing changes (handling merging), allow remote access to the repository, and even support multiple timelines of the files (branching).</p>
+ <p>In this short tutorial I’ll go through everything you need to know in order to use Git in this course.</p>
+ <h1 id="installing-git">Installing Git</h1>
+ <p>First we need to get Git on your computer if it’s not there already. If you are running Linux, you are done, and can skip this section. Otherwise, Mac OS X users need only open the Terminal app, and type <code>git</code> at the commandline. If Git’s not install already, then it will tell you what you need to do.</p>
+ <p>So if you’re a Windows user, then please install Git from <a href="https://git-scm.com/">here</a>. This is all you need to install to use Git in this course.</p>
+ <p>This will install a commandline interface to Git called GitBash, and it looks like <a href="https://gitforwindows.org/img/gw1.png">this</a>. I like using the commandline, because the same commands work no matter which operating system you are using. Thus, I can help everyone using the same solutions to problems we run into.</p>
+ <p>Throughout the remainder of this tutorial I will say “open the commandline” to mean open either the terminal on Unix-based systems (Linux, Mac OS X, etc) or GitBash on Windows.</p>
+ <h1 id="setting-up-git">Setting up Git</h1>
+ <p>We now need to setup Git so that it knows who you are.</p>
+ <ul>
+ <li><p>Your name:</p>
+ <pre><code>&gt; git config --global user.name &quot;John Doe&quot;</code></pre>
+ <p>Replace “John Doe” with your full name. This is the name Git will use to record your changes in the revision history.</p></li>
+ <li><p>Your email:</p>
+ <pre><code>&gt; git config --global user.email jdoe@augusta.edu</code></pre>
+ <p>The revision history also records your email. Set this to your AU email address.</p></li>
+ </ul>
+ <p>This completes the Git basic setup.</p>
+ <h1 id="cloning-your-repo">Cloning your repo</h1>
+ <p>At this point you have emailed me with your <a href="https://www.github.com">Github</a> login and I have replied with the link to your Git repo. If not, then please do this step first.</p>
+ <p>At this point we need to <strong>clone</strong> your repo from Github to your computer. To do this open first create a folder on your computer that you will use to keep everything in this class in. I’ll call it <code>pl_dir</code> in this tutorial. Then open the commandline and navigate to <code>pl_dir</code>:</p>
+ <pre><code>&gt; cd path_to_pl_dir/pl_dir</code></pre>
+ <p>At this point you have changed your working directory to <code>pl_dir</code>. You can check that this worked by running the command:</p>
+ <pre><code>&gt; pwd</code></pre>
+ <p>This stands for “present working directory”.</p>
+ <p>Now that your working directory is <code>pl_dir</code> we can clone your course repository using the following command:</p>
+ <pre><code>&gt; git clone URL</code></pre>
+ <p>replace <code>URL</code> with the URL I sent you.</p>
+ <p>Now check to make sure that the clone was successful (if it weren’t you should have gotten an error message):</p>
+ <pre><code>&gt; ls </code></pre>
+ <p>This command is “list files” and simply lists all the files in your working directory. If you see your repo, then you are good to go. Otherwise an error happened, and so try again, but if you can’t figure it out, then ask on Slack.</p>
+ <h1 id="editing-files-in-your-repo">Editing files in your repo</h1>
+ <p>A Git repo is just a special directory that Git knows about. Once it’s cloned to your computer you can treat it as a standard folder on your computer that is full of textfiles that are managed by Git. The only time you need to use the commandline or Git is when you are ready to tell Git about the changes you’ve made.</p>
+ <p>So to get an idea of how this works. Using the file explorer (Finder on Mac OS X) go and take a look at your repo in <code>pl_dir</code>. The first time you clone your repo it will contain the following files:</p>
+ <ul>
+ <li><code>sf_src</code> : The source code for the book we are using in this course.</li>
+ <li><code>git_tutorial</code> : Some example files for this tutorial.</li>
+ </ul>
+ <p>Move into <code>sf_src</code> by double clicking on it, and then move into <code>vol1-lf</code>. These are all the files for the book including the Coq source code. Double click <code>index.html</code>. As you can see these are just files.</p>
+ <p>When you are working on your assignments you can use your graphical based means of exploring files and folders, and simply treat the files as normal files. Open them with editors and save them, etc.</p>
+ <p>Let’s do an example. Open <code>git_tutorial/example.txt</code> in your favorite text editor. Answer the question and save it.</p>
+ <p>Now we are going to tell Git about your changes, commit them to the revision history, and then push them to Github where I can see and get your changes too.</p>
+ <p>Open the commandline and move into the the <code>git_tutorial</code> folder:</p>
+ <pre><code>&gt; cd path_to_pl_dir/pl_dir/git_tutorial</code></pre>
+ <p>Now tell Git about your changes by committing them:</p>
+ <pre><code>&gt; git commit -a -m &#39;Answered the question.&#39;</code></pre>
+ <p>This is adds all the changes you’ve made to the files in your working directory to the revision history. This is a completely local operation, it doesn’t communicate it to Github.</p>
+ <p>You can see the revision history using the command:</p>
+ <pre><code>&gt; git log</code></pre>
+ <p>This lists all the changes by everyone who’ve made changes to the files in your repo. For example, you will see mine listed as well, and I will see yours.</p>
+ <p>The command <code>git commit -a -m</code> says you want to commit each change to the files in my working directory using the commit message provided; we used <code>'Answered the question'</code>. This message should be a detailed description of the changes you have made. As you can see in the revision history when using <code>git log</code> this shows up in the history. I’ll read these to see what you have done.</p>
+    </body>
+</html>
