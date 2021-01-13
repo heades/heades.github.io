@@ -40,8 +40,44 @@
 <h1 id="getting-coq">Getting Coq</h1>
 <p>We begin with installing the Coq environment. This is operating system dependent, and so please read the section that corresponds to the operating system you have on your computer.</p>
 <h2 id="coq-on-windows">Coq on Windows</h2>
-<p>First, download the Coq environment by visiting their <a href="https://github.com/coq/coq/releases/download/V8.13.0/coq-8.13.0-installer-windows-x86_64.exe">website</a>.</p>
-<p>blah</p>
+<p>First, download the Coq environment by visiting their <a href="https://github.com/coq/coq/releases/download/V8.13.0/coq-8.13.0-installer-windows-x86_64.exe">website</a>. Then follow these instructions:</p>
+<ol type="1">
+<li><p>Double click the installer file to begin the installation. You should then see this:</p>
+<p>IMAGE</p></li>
+<li></li>
+</ol>
 <h2 id="coq-on-the-mac">Coq on the Mac</h2>
+<p>To install on the Mac it’s best to do so using <code>opam</code>. Follow these instructions:</p>
+<ol type="1">
+<li><p>Open the Terminal app.</p></li>
+<li><p>Install Homebrew by running the following command:</p>
+<pre><code>&gt; /bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</code></pre>
+<p>Use copy and paste, but make sure to get all of it.</p></li>
+<li><p>Use Homebrew to install <code>opam</code> by running the following commands:</p>
+<pre><code>&gt; brew update
+...</code></pre>
+<pre><code>&gt; brew install gpatch
+...</code></pre>
+<pre><code>&gt; brew install opam
+...</code></pre></li>
+<li><p>Use opam to install Coq:</p>
+<pre><code>&gt; opam install coq</code></pre></li>
+<li><p>Check to make sure coq is really there:</p>
+<pre><code>&gt; ls ~/.opam/default/bin/coqtop
+~/.opam/default/bin/coqtop</code></pre>
+<p>If you get a “file or directory cannot be found” error, then something went wrong. Otherwise, Coq is installed!</p></li>
+<li><p>Next we need to install VS Code. To do this visit <a href="https://code.visualstudio.com/" class="uri">https://code.visualstudio.com/</a> and download and install it just like any other Mac OS X app.</p></li>
+<li><p>Finally, we need to install the VS Code plugin:</p>
+<ol type="1">
+<li>Open VS Code.</li>
+<li>Press F1 and start typing “Extensions: Install Extension”, press enter, and search for vscoq"</li>
+<li>select “enable” on the extension</li>
+<li>Press F1 and start typing “settings” to open the user settings.</li>
+<li>Click “Extensions” and then “Coq Configuration”</li>
+<li>In the box labeld “Coqtop: Bin Path” add the directory <code>~/.opam/default/bin/coqtop</code>.</li>
+</ol></li>
+<li><p>Bob’s your uncle!</p></li>
+</ol>
+<p>Coq is now setup.</p>
     </body>
 </html>
