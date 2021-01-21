@@ -8,7 +8,7 @@ sitemap:
 
 <img src="images/heades.jpg" style="float:left;padding:10px;" width="30%" alt="Harley Eades's photo">
 
- Welcome!
+Welcome!
 ===
 
 I am an Associate Professor in the <a href="https://www.augusta.edu/ccs/">School of Computer and Cyber
