@@ -75,7 +75,16 @@
 <pre><code>&gt; brew install gpatch
 ...</code></pre>
 <pre><code>&gt; brew install opam
-...</code></pre></li>
+...</code></pre>
+<p>If you already have homebrew installed (which means you skipped the previous instruction), you might get an error of the form:</p>
+<pre><code>Error: homebrew-core is a shallow clone.</code></pre>
+<p>This means that your homebrew is out of date. To update brew and fix this problem run this command:</p>
+<pre><code>&gt; git -C &quot;/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core&quot; fetch --unshallow</code></pre>
+<p>You might also get an error:</p>
+<pre><code>Error: homebrew-cask is a shallow clone.</code></pre>
+<p>To update brew and fix this problem run this command:</p>
+<pre><code>git -C &quot;/usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask&quot; fetch --unshallow</code></pre>
+<p>Then proceed with the above installation again.</p></li>
 <li><p>Use opam to install Coq:</p>
 <pre><code>&gt; opam install coq</code></pre></li>
 <li><p>Check to make sure coq is really there:</p>
