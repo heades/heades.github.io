@@ -9,3 +9,9 @@ _site/*
 /Makefile
 /CT-summer16-seminar/colloquium
 /old-index.html
+/.DS_Store
+/.jekyll-cache/
+*/.DS_Store
+*/*/.DS_Store
+/portfolio/images/raw-and-psd/*
+*~
