@@ -2,7 +2,11 @@
 /* CSS Document */
 
 .navbar-btn-left-padding {
-	margin-left: 10pt;
+    margin-left: 10pt;
+}
+
+.navbar-btn-top-padding {
+    margin-top: 10pt;
 }
 
 .btn-outline-dark:hover, .btn:active, .btn-outline-dark:visited {
