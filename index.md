@@ -32,7 +32,7 @@ Project</a> where I am studying graded logics, models, and type theories.
 - Keywords: Programming languages, type theory, category theory, and logic in computer science.
 - [AMS Classes](/AMS-classes.html)
 
-#### Conference and workshop service
+#### Conrference and workshop service
 
 <div class="list-group">
   <a href="https://icfp19.sigplan.org/series/icfp" class="list-group-item">Program committee member for ICFP 2021</a>
