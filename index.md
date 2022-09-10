@@ -31,12 +31,15 @@ May 2022).
 
 #### Research interests
 
-- Keywords: Programming languages, type theory, category theory, and logic in computer science.
+- Keywords: HCI, design, visualization, formal methods, Programming
+  languages, type theory, category theory, and logic in computer
+  science.
 - [AMS Classes](/AMS-classes.html)
 
 #### Conrference and workshop service
 
 <div class="list-group">
+  <a href="https://icfp22.sigplan.org/home/tyde-2022" class="list-group-item">Co-chair for TyDe 2022</a>
   <a href="https://icfp19.sigplan.org/series/icfp" class="list-group-item">Program committee member for ICFP 2021</a>
   <a href="http://gramsec.uni.lu/" class="list-group-item">coChair for GraMSec 2020</a>
   <a href="https://lipn.univ-paris13.fr/LinearityTLLA2020/" class="list-group-item">Program committee member for LINEARITY && TLLA 2020</a>
