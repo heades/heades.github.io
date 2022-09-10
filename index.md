@@ -23,9 +23,11 @@ May 2022).
 
 #### Current Projects
 
-My current project is
-on <a href="https://granule-project.github.io/">The Granule
-Project</a> where I am studying graded logics, models, and type theories.
+- Designing new tools for developers with vision impairments.
+- Designing new systems for remote coaching of athletic training: from
+  novice to elite athletes.
+- <a href="https://granule-project.github.io/">The Granule Project</a>
+  where I am studying graded logics, models, and type theories.
 
 #### Research interests
 
