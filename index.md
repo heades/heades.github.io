@@ -6,8 +6,6 @@ sitemap:
     changefreq: monthly
 ---
 
-<img src="images/heades.jpg" style="float:left;padding:10px;" width="30%" alt="Harley Eades's photo">
-
 Welcome!
 ===
 
