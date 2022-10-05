@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Survey Flyer</title>
+    
+    <style>
+        .wrapper {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            row-gap: 2em;
+            column-gap: 1em;            
+        }
+        .box1 {
+            grid-column-start: 1;
+            grid-column-end: 7;
+            grid-row-start:1;
+            grid-row-end: 3;
+            text-align: center;
+            font-size: 40px;
+
+        }
+        .lower-box1 {
+            grid-column-start: 1;
+            grid-column-end: 3;
+            grid-row-start: 3;
+            grid-row-end: 4;            
+        }
+        .lower-box2 {
+            grid-column-start: 3;
+            grid-column-end: 5;
+            grid-row-start: 3;
+            grid-row-end: 4;
+        }
+        .lower-box3 {
+            grid-column-start: 5;
+            grid-column-end: 7;
+            grid-row-start: 3;
+            grid-row-end: 4;
+        }
+        li {
+            margin: 10px 0;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+        <div class="box1">
+            New study to design better software development tools 
+            for people who use screen readers!
+        </div>
+        <div class="lower-box1">
+            <strong>Eligibility</strong>
+            <ul>
+                <li>Must be 18 years old or older.</li>
+                <li>Work as a software developer for at least 2 years.</li>
+                <li>Require a screen reader while developing software.</li>
+            </ul>                            
+        </div>
+        <div class="lower-box2">
+            <strong>Participation Involves</strong>
+            <ul>
+                <li>Completing a 30 minute survey.</li>
+                <li>The survey can be found here: </li>
+            </ul>                            
+        </div>
+        <div class="lower-box3">
+            <strong>Potential Benefits</strong>
+            <ul>
+                <li>Participating in this study may lead to new tools for developers who use screen readers.</li>
+            </ul>                            
+        </div>
+    </div>
+  </body>
+</html>
