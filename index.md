@@ -35,7 +35,7 @@ May 2022).
 - [ACM Classes](/ACM-classes.html)
 - [AMS Classes](/AMS-classes.html)
 
-#### Conrference and workshop service
+#### Conference and workshop service
 
 <div class="list-group">
   <a href="https://icfp22.sigplan.org/home/tyde-2022" class="list-group-item">Co-chair for TyDe 2022</a>
