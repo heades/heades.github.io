@@ -53,7 +53,7 @@ May 2022).
 
 <div class="list-group">
   <a class="list-group-item">Office: University Hall</a>
-  <a rel="me" href="https://hci.social/@heades">Mastodon</a>
+  <a class="list-group-item" rel="me" href="https://hci.social/@heades">Mastodon</a>
   <a href="mailto:harley.eades@gmail.com" class="list-group-item">Email: harley.eades@gmail.com</a>
 </div>  
 
