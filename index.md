@@ -29,7 +29,7 @@ May 2022).
 
 #### Research interests
 
-- Keywords: HCI, design, visualization, formal methods, Programming
+- Keywords: HCI, design, visualization, sports+HCI, formal methods, Programming
   languages, type theory, category theory, and logic in computer
   science.
 - [ACM Classes](/ACM-classes.html)
