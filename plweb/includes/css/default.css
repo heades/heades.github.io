@@ -4,17 +4,28 @@
 
 
 body {
-    line-height: 1.5em;
+    line-height: 2em;
 }
 
 h1 {
-    line-height: 1.5em;
+    line-height: 3em;
 }
 
+p {
+    font-size: large;
+}
+
+ul {
+    font-size: large;
+}
+
+ul.lecture {
+    font-size: x-large;
+}
 
 html {
     
-    font-family: "Lora", Georgia, "Times New Roman", Times, serif;
+    font-family: "Lora", Georgia, "Times New Roman", Times, serif;    
 
   /*
     font-family: "helvetica";
@@ -63,6 +74,7 @@ body {
     width: 700px;
     /* width: 900px; */
     margin: 0px auto 0px auto;
+    font-size: large;
 }
 /*
 body {
@@ -111,6 +123,7 @@ div#sidebar a {
 div#content {
     width: 570px;
     float: right;
+    font-size: large;
 }
 
 div#footer {
@@ -142,6 +155,7 @@ div.column {
 div.column p {
     padding-right: 15px;
 }
+
 
 img {
     display: block;
