@@ -1,0 +1,15 @@
+@charset "UTF-8";
+/* CSS Document */
+
+.navbar-btn-left-padding {
+    margin-left: 10pt;
+}
+
+.navbar-btn-top-padding {
+    margin-top: 10pt;
+}
+
+.btn-outline-dark:hover, .btn:active, .btn-outline-dark:visited {
+    background-color: #ff00d8 !important;
+}
+
