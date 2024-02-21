@@ -1,0 +1,7 @@
+name: Harley Eades III
+highlighter: rouge
+collections:
+  pubs:
+    output: false
+  talks:
+    output: false

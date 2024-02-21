@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Survey Flyer</title>
+    
+    <style>
+        .wrapper {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            row-gap: 3em;
+            column-gap: 1em;            
+        }
+        .box1 {
+            grid-column-start: 1;
+            grid-column-end: 7;
+            grid-row-start:1;
+            grid-row-end: 3;
+            text-align: center;
+            font-size: 40px;
+
+        }
+        .box2 {
+            grid-column-start: 1;
+            grid-column-end: 7;
+            grid-row-start:3;
+            grid-row-end: 5;
+            text-align: left;
+            font-size: 20px;
+
+        }
+        .lower-box1 {
+            grid-column-start: 1;
+            grid-column-end: 3;
+            grid-row-start: 5;
+            grid-row-end: 7;            
+        }
+        .lower-box2 {
+            grid-column-start: 3;
+            grid-column-end: 5;
+            grid-row-start: 5;
+            grid-row-end: 7;
+        }
+        .lower-box3 {
+            grid-column-start: 5;
+            grid-column-end: 7;
+            grid-row-start: 5;
+            grid-row-end: 7;
+        }
+        li {
+            margin: 10px 0;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+        <div class="box1">
+            New study to design better software development tools 
+            for people who use screen readers!
+        </div>
+        <div class="box2">
+            This study seeks to expand our understanding of the development
+            process followed by software developers who rely on a screen reader.
+            In particular, we are interested in the tools and devices they use,
+            problems they run into, and areas where existing tools can be
+            improved.  If you are interested and meet the eligibility requires
+            listed below please consider taking our survey at the following
+            link: LINK TO SURVEY
+        </div>
+        <div class="lower-box1">
+            <strong>Eligibility</strong>
+            <ol>
+                <li>Must be 18 years old or older.</li>
+                <li>Work as a software developer for at least 2 years.</li>
+                <li>Require a screen reader while developing software.</li>
+            </ol>                            
+        </div>
+        <div class="lower-box2">
+            <strong>Participation Involves</strong>
+            <p>Completing a 30 minute survey.</p>
+        </div>
+        <div class="lower-box3">
+            <strong>Potential Benefits</strong>
+             <p>Participating in this study may lead to new tools for developers who use screen readers.</p>
+        </div>
+    </div>
+  </body>
+</html>
