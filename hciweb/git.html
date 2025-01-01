@@ -5,7 +5,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Installing and using Git - Human Computer Interaction</title>
+        <title>Installing and using
+Git - Human Computer Interaction</title>
         <link rel="stylesheet" href="/plweb/includes/css/default.css" />
             </head>
     <body>
@@ -22,89 +23,184 @@
 <nav id="TOC" role="doc-toc">
 <h2 id="toc-title">Contents:</h2>
 <ul>
-<li><a href="#what-is-git">What is Git?</a></li>
-<li><a href="#the-difference-between-git-and-github">The difference between Git and Github</a></li>
-<li><a href="#installing-git">Installing Git</a></li>
-<li><a href="#setting-up-git">Setting up Git</a></li>
-<li><a href="#cloning-your-repo">Cloning your repo</a></li>
-<li><a href="#editing-files-in-your-repo">Editing files in your repo</a></li>
-<li><a href="#fetching-changes-from-github">Fetching changes from Github</a></li>
-<li><a href="#recommended-work-flow">Recommended work flow</a></li>
+<li><a href="#what-is-git" id="toc-what-is-git">What is Git?</a></li>
+<li><a href="#the-difference-between-git-and-github"
+id="toc-the-difference-between-git-and-github">The difference between
+Git and Github</a></li>
+<li><a href="#installing-git" id="toc-installing-git">Installing
+Git</a></li>
+<li><a href="#setting-up-git" id="toc-setting-up-git">Setting up
+Git</a></li>
+<li><a href="#cloning-your-repo" id="toc-cloning-your-repo">Cloning your
+repo</a></li>
+<li><a href="#editing-files-in-your-repo"
+id="toc-editing-files-in-your-repo">Editing files in your repo</a></li>
+<li><a href="#fetching-changes-from-github"
+id="toc-fetching-changes-from-github">Fetching changes from
+Github</a></li>
+<li><a href="#recommended-work-flow"
+id="toc-recommended-work-flow">Recommended work flow</a></li>
 </ul>
 </nav>
-<p>In this course you will be assigned a Git source-code repository (or repo for short) that you will use to turn in all assignments.</p>
+<p>In this course you will be assigned a Git source-code repository (or
+repo for short) that you will use to turn in all assignments.</p>
 <h1 id="what-is-git">What is Git?</h1>
-<p>Git is a textfile revision system. One uses it to manage revisions of text files between multiple people using a single set of files. Git will keep track of who made which changes and when (the revision history), provide tools for undoing and redoing changes (handling merging), allow remote access to the repository, and even support multiple time lines of the files (branching).</p>
-<p>In this short tutorial I’ll go through everything you need to know in order to use Git in this course.</p>
-<h1 id="the-difference-between-git-and-github">The difference between Git and Github</h1>
-<p>Git is a command-line tool that is installed on your computer to manage Git repositories of textfiles. When using Git on your computer the repositories are local, but Git has the ability to share them remotely with others. This is where Github comes in.</p>
-<p>Github is a hosting site for Git repositories. If you want to share your repo with a team of other people then you can host it on Github and allow others to subscribe to it. Github allows them be able to download your repositories, change it, and even submit changes back to the repository on Github for you to have as well.</p>
+<p>Git is a textfile revision system. One uses it to manage revisions of
+text files between multiple people using a single set of files. Git will
+keep track of who made which changes and when (the revision history),
+provide tools for undoing and redoing changes (handling merging), allow
+remote access to the repository, and even support multiple time lines of
+the files (branching).</p>
+<p>In this short tutorial I’ll go through everything you need to know in
+order to use Git in this course.</p>
+<h1 id="the-difference-between-git-and-github">The difference between
+Git and Github</h1>
+<p>Git is a command-line tool that is installed on your computer to
+manage Git repositories of textfiles. When using Git on your computer
+the repositories are local, but Git has the ability to share them
+remotely with others. This is where Github comes in.</p>
+<p>Github is a hosting site for Git repositories. If you want to share
+your repo with a team of other people then you can host it on Github and
+allow others to subscribe to it. Github allows them be able to download
+your repositories, change it, and even submit changes back to the
+repository on Github for you to have as well.</p>
 <h1 id="installing-git">Installing Git</h1>
-<p>First we need to get Git on your computer if it’s not there already. If you are running Linux, you are done, and can skip this section. Otherwise, Mac OS X users need only open the Terminal app, and type <code>git</code> at the command line. If Git’s not install already, then it will tell you what you need to do.</p>
-<p>So if you’re a Windows user, then please install Git from <a href="https://git-scm.com/">here</a>. This is all you need to install to use Git in this course.</p>
-<p>This will install a command line interface to Git called GitBash, and it looks like <a href="https://gitforwindows.org/img/gw1.png">this</a>. I like using the command line, because the same commands work no matter which operating system you are using. Thus, I can help everyone using the same solutions to problems we run into.</p>
-<p>Throughout the remainder of this tutorial I will say “open the command line” to mean open either the terminal on Unix-based systems (Linux, Mac OS X, etc) or GitBash on Windows.</p>
+<p>First we need to get Git on your computer if it’s not there already.
+If you are running Linux, you are done, and can skip this section.
+Otherwise, Mac OS X users need only open the Terminal app, and type
+<code>git</code> at the command line. If Git’s not install already, then
+it will tell you what you need to do.</p>
+<p>So if you’re a Windows user, then please install Git from <a
+href="https://git-scm.com/">here</a>. This is all you need to install to
+use Git in this course.</p>
+<p>This will install a command line interface to Git called GitBash, and
+it looks like <a href="https://gitforwindows.org/img/gw1.png">this</a>.
+I like using the command line, because the same commands work no matter
+which operating system you are using. Thus, I can help everyone using
+the same solutions to problems we run into.</p>
+<p>Throughout the remainder of this tutorial I will say “open the
+command line” to mean open either the terminal on Unix-based systems
+(Linux, Mac OS X, etc) or GitBash on Windows.</p>
 <h1 id="setting-up-git">Setting up Git</h1>
-<p>We now need to setup Git on your computer so that it knows who you are. This is independent of your Github username and email, and is setting up your local Git install to record your name and email when telling Git about your revisions.</p>
+<p>We now need to setup Git on your computer so that it knows who you
+are. This is independent of your Github username and email, and is
+setting up your local Git install to record your name and email when
+telling Git about your revisions.</p>
 <ul>
 <li><p>Your name:</p>
 <pre><code>&gt; git config --global user.name &quot;John Doe&quot;</code></pre>
-<p>Replace “John Doe” with your full name. This is the name Git will use to record your changes in the revision history.</p></li>
+<p>Replace “John Doe” with your full name. This is the name Git will use
+to record your changes in the revision history.</p></li>
 <li><p>Your email:</p>
 <pre><code>&gt; git config --global user.email jdoe@augusta.edu</code></pre>
-<p>The revision history also records your email. Set this to your AU email address.</p></li>
+<p>The revision history also records your email. Set this to your AU
+email address.</p></li>
 </ul>
 <p>This completes the Git basic setup.</p>
 <h1 id="cloning-your-repo">Cloning your repo</h1>
-<p><strong>At this point you have emailed me with your <a href="https://www.github.com">Github</a> login and I have replied with the link to your Git repo. If not, then please do this step first.</strong></p>
-<p>Now we will <strong>clone</strong> your repo that I have created for you, and that is hosted on Github, to your computer so that you can use it.</p>
-<p>First create a folder on your computer that you will use to keep everything in this class in. I’ll call it <code>pl_dir</code> in this tutorial. Then open the command line and navigate to <code>pl_dir</code>:</p>
+<p><strong>At this point you have emailed me with your <a
+href="https://www.github.com">Github</a> login and I have replied with
+the link to your Git repo. If not, then please do this step
+first.</strong></p>
+<p>Now we will <strong>clone</strong> your repo that I have created for
+you, and that is hosted on Github, to your computer so that you can use
+it.</p>
+<p>First create a folder on your computer that you will use to keep
+everything in this class in. I’ll call it <code>pl_dir</code> in this
+tutorial. Then open the command line and navigate to
+<code>pl_dir</code>:</p>
 <pre><code>&gt; cd path_to_pl_dir/pl_dir</code></pre>
-<p>At this point you have changed your working directory to <code>pl_dir</code>. You can check that this worked by running the command:</p>
+<p>At this point you have changed your working directory to
+<code>pl_dir</code>. You can check that this worked by running the
+command:</p>
 <pre><code>&gt; pwd</code></pre>
 <p>This stands for “present working directory”.</p>
-<p>Now that your working directory is <code>pl_dir</code> we can clone your course repository using the following command:</p>
+<p>Now that your working directory is <code>pl_dir</code> we can clone
+your course repository using the following command:</p>
 <pre><code>&gt; git clone URL</code></pre>
 <p>replace <code>URL</code> with the URL I sent you.</p>
-<p>Now check to make sure that the clone was successful (if it weren’t you should have gotten an error message):</p>
+<p>Now check to make sure that the clone was successful (if it weren’t
+you should have gotten an error message):</p>
 <pre><code>&gt; ls </code></pre>
-<p>This command is “list files” and simply lists all the files in your working directory. If you see your repo, then you are good to go. Otherwise an error happened, and so try again, but if you can’t figure it out, then ask on Slack.</p>
-<p>You only ever need to clone a repository once. Unless you delete the folder you will never have to clone this repository again.</p>
+<p>This command is “list files” and simply lists all the files in your
+working directory. If you see your repo, then you are good to go.
+Otherwise an error happened, and so try again, but if you can’t figure
+it out, then ask on Slack.</p>
+<p>You only ever need to clone a repository once. Unless you delete the
+folder you will never have to clone this repository again.</p>
 <h1 id="editing-files-in-your-repo">Editing files in your repo</h1>
-<p>A Git repo is just a special directory that Git knows about. Once it’s cloned to your computer you can treat it as a standard folder on your computer that is full of textfiles that are managed by Git. The only time you need to use the command line or Git is when you are ready to tell Git about the changes you’ve made.</p>
-<p>So to get an idea of how this works. Using the file explorer (Finder on Mac OS X) go and take a look at your repo in <code>pl_dir</code>. The first time you clone your repo it will contain the following files:</p>
+<p>A Git repo is just a special directory that Git knows about. Once
+it’s cloned to your computer you can treat it as a standard folder on
+your computer that is full of textfiles that are managed by Git. The
+only time you need to use the command line or Git is when you are ready
+to tell Git about the changes you’ve made.</p>
+<p>So to get an idea of how this works. Using the file explorer (Finder
+on Mac OS X) go and take a look at your repo in <code>pl_dir</code>. The
+first time you clone your repo it will contain the following files:</p>
 <ul>
-<li><code>sf_src</code> : The source code for the book we are using in this course.</li>
-<li><code>git_tutorial</code> : Some example files for this tutorial.</li>
+<li><code>sf_src</code> : The source code for the book we are using in
+this course.</li>
+<li><code>git_tutorial</code> : Some example files for this
+tutorial.</li>
 </ul>
-<p>Move into <code>sf_src</code> by double clicking on it, and then move into <code>vol1-lf</code>. These are all the files for the book including the Coq source code. Double click <code>index.html</code>. As you can see these are just files.</p>
-<p>When you are working on your assignments you can use your computers graphical based means of exploring files and folders, and simply treat the files as normal files. Open them with editors and save them, etc.</p>
-<p>Let’s do an example. Open <code>git_tutorial/example.txt</code> in your favorite text editor. Answer the question and save it.</p>
-<p>Now we are going to tell Git about your changes, commit them to the revision history, and then push them to Github where I can see and get your changes too.</p>
-<p>Open the command line and move into the the <code>git_tutorial</code> folder:</p>
+<p>Move into <code>sf_src</code> by double clicking on it, and then move
+into <code>vol1-lf</code>. These are all the files for the book
+including the Coq source code. Double click <code>index.html</code>. As
+you can see these are just files.</p>
+<p>When you are working on your assignments you can use your computers
+graphical based means of exploring files and folders, and simply treat
+the files as normal files. Open them with editors and save them,
+etc.</p>
+<p>Let’s do an example. Open <code>git_tutorial/example.txt</code> in
+your favorite text editor. Answer the question and save it.</p>
+<p>Now we are going to tell Git about your changes, commit them to the
+revision history, and then push them to Github where I can see and get
+your changes too.</p>
+<p>Open the command line and move into the the <code>git_tutorial</code>
+folder:</p>
 <pre><code>&gt; cd path_to_pl_dir/pl_dir/git_tutorial</code></pre>
 <p>Now tell Git about your changes by committing them:</p>
 <pre><code>&gt; git commit -a -m &#39;Answered the question.&#39;</code></pre>
-<p>This is adds all the changes you’ve made to the files in your working directory to the revision history. This is a completely local operation, it doesn’t communicate it to Github.</p>
+<p>This is adds all the changes you’ve made to the files in your working
+directory to the revision history. This is a completely local operation,
+it doesn’t communicate it to Github.</p>
 <p>You can see the revision history using the command:</p>
 <pre><code>&gt; git log</code></pre>
-<p>This lists all the changes by everyone who’ve made changes to the files in your repo. For example, you will see mine listed as well, and I will see yours. Notice your name and email are showing up, this is the result of the setup we did earlier.</p>
-<p>The command <code>git commit -a -m</code> says you want to commit each change to the files in my working directory using the commit message provided; we used <code>'Answered the question'</code>. This message should be a detailed description of the changes you have made. As you can see in the revision history when using <code>git log</code> this shows up in the history. I’ll read these to see what you have done.</p>
-<p>You are now ready to share your changes with Github. To do this, <strong>push</strong> your changes upstream:</p>
+<p>This lists all the changes by everyone who’ve made changes to the
+files in your repo. For example, you will see mine listed as well, and I
+will see yours. Notice your name and email are showing up, this is the
+result of the setup we did earlier.</p>
+<p>The command <code>git commit -a -m</code> says you want to commit
+each change to the files in my working directory using the commit
+message provided; we used <code>'Answered the question'</code>. This
+message should be a detailed description of the changes you have made.
+As you can see in the revision history when using <code>git log</code>
+this shows up in the history. I’ll read these to see what you have
+done.</p>
+<p>You are now ready to share your changes with Github. To do this,
+<strong>push</strong> your changes upstream:</p>
 <pre><code>&gt; git push</code></pre>
-<p>This sends all of your recent commits to Github so that everyone who subscribes to your repository can get your changes.</p>
+<p>This sends all of your recent commits to Github so that everyone who
+subscribes to your repository can get your changes.</p>
 <h1 id="fetching-changes-from-github">Fetching changes from Github</h1>
-<p>The last Git operation you will need for this course is a means of fetching or <strong>pulling</strong> recent changes by people other than you from Github. For example, I’ll be adding your assignments to your repository throughout the semester, and so, you will need to get them from Github into your repository.</p>
+<p>The last Git operation you will need for this course is a means of
+fetching or <strong>pulling</strong> recent changes by people other than
+you from Github. For example, I’ll be adding your assignments to your
+repository throughout the semester, and so, you will need to get them
+from Github into your repository.</p>
 <p>First, move into your repository:</p>
 <pre><code>&gt; cd path_to_pl_dir/pl_dir</code></pre>
-<p>Make sure you have no modified files Git doesn’t know about, because you have never committed them. Do the following:</p>
+<p>Make sure you have no modified files Git doesn’t know about, because
+you have never committed them. Do the following:</p>
 <pre><code>&gt; git status
 
 On branch main
 Your branch is up to date with &#39;origin/main&#39;.
 
 nothing to commit, working tree clean</code></pre>
-<p>If you see the above message, then you are good to go, all changes have been committed to your revision history. If you see something that looks like:</p>
+<p>If you see the above message, then you are good to go, all changes
+have been committed to your revision history. If you see something that
+looks like:</p>
 <pre><code>On branch main
 Your branch is up to date with &#39;origin/main&#39;.
 
@@ -114,18 +210,32 @@ Changes not staged for commit:
     modified:   markdown/git.md
 
 no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</code></pre>
-<p>Then you have untracked changes that need to be committed. Go back to the previous section and commit your changes before proceeding. There can be no non-committed changes when we pull from Github, because Git will merge all changes together.</p>
+<p>Then you have untracked changes that need to be committed. Go back to
+the previous section and commit your changes before proceeding. There
+can be no non-committed changes when we pull from Github, because Git
+will merge all changes together.</p>
 <p>To pull all changes from Github into your local repository do:</p>
 <pre><code>&gt; git pull</code></pre>
-<p>within your repository. Note that all Git commands must be within your repository. That is, your present working directory must be your repository; in this tutorial it has been <code>pl_dir</code>.</p>
+<p>within your repository. Note that all Git commands must be within
+your repository. That is, your present working directory must be your
+repository; in this tutorial it has been <code>pl_dir</code>.</p>
 <h1 id="recommended-work-flow">Recommended work flow</h1>
-<p>When using Git for this course and completing assignments I recommend the following work flow:</p>
+<p>When using Git for this course and completing assignments I recommend
+the following work flow:</p>
 <ol type="1">
-<li><p>Open the command line and move into your repository using the <code>cd</code> command.</p></li>
-<li><p>Pull all new changes from Github using <code>git pull</code>.</p></li>
+<li><p>Open the command line and move into your repository using the
+<code>cd</code> command.</p></li>
+<li><p>Pull all new changes from Github using
+<code>git pull</code>.</p></li>
 <li><p>Do your work by making changes to the files.</p></li>
-<li><p>After you are done working commit your changes using <code>git commit -a    -m 'MESSAGE'</code>. Commit after you work every time no matter if your done with your assignment or not. This keeps your repository clean.</p></li>
-<li><p>After you commit push your changes to Github using <code>git push</code>. Do this every time you’re done working too. You can push as many times as you like. Committing and pushing every time your done working on your assignments keeps Git happy.</p></li>
+<li><p>After you are done working commit your changes using
+<code>git commit -a    -m 'MESSAGE'</code>. Commit after you work every
+time no matter if your done with your assignment or not. This keeps your
+repository clean.</p></li>
+<li><p>After you commit push your changes to Github using
+<code>git push</code>. Do this every time you’re done working too. You
+can push as many times as you like. Committing and pushing every time
+your done working on your assignments keeps Git happy.</p></li>
 <li><p>Bob’s your uncle!</p></li>
 </ol>
 <p>And that’s all you need to know about Git for this class.</p>
