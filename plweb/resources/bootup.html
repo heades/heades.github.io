@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Boot the Course Tutorial</title>
+        <link rel="stylesheet" href="/plweb/includes/css/resource.css" />
+            </head>
+    <body>
+      <h1>Boot the Course Tutorial</h1>
+        <div id="navigation">
+        <a href="/plweb/index.html">Home</a>
+	<a href="/plweb/lectures.html">Lectures</a>
+        <a href="/plweb/includes/syllabus.pdf">PDF Syllabus</a>
+        <a href="/plweb/resources.html">Resources</a>
+        </div>
+	<br/>
+	<br/>
+<nav id="TOC" role="doc-toc">
+<h2 id="toc-title">Contents:</h2>
+<ul>
+<li><a href="#installing-vs-code."
+id="toc-installing-vs-code.">Installing VS Code.</a></li>
+<li><a href="#installing-and-using-git"
+id="toc-installing-and-using-git">Installing and using Git</a>
+<ul>
+<li><a href="#what-is-git" id="toc-what-is-git">What is Git?</a></li>
+<li><a href="#the-difference-between-git-and-github"
+id="toc-the-difference-between-git-and-github">The difference between
+Git and Github</a></li>
+<li><a href="#installing-git" id="toc-installing-git">Installing
+Git</a></li>
+<li><a href="#setting-up-git" id="toc-setting-up-git">Setting up
+Git</a></li>
+<li><a href="#cloning-your-repo" id="toc-cloning-your-repo">Cloning your
+repo</a></li>
+<li><a href="#editing-files-in-your-repo"
+id="toc-editing-files-in-your-repo">Editing files in your repo</a></li>
+<li><a href="#fetching-changes-from-github"
+id="toc-fetching-changes-from-github">Fetching changes from
+Github</a></li>
+</ul></li>
+<li><a href="#docker-and-ocaml" id="toc-docker-and-ocaml">Docker and
+OCaml</a>
+<ul>
+<li><a href="#docker-installation" id="toc-docker-installation">Docker
+Installation</a></li>
+<li><a href="#running-ocaml-in-docker"
+id="toc-running-ocaml-in-docker">Running OCaml in Docker</a></li>
+</ul></li>
+<li><a href="#recommended-work-flow"
+id="toc-recommended-work-flow">Recommended work flow</a></li>
+</ul>
+</nav>
+<h1 id="installing-vs-code.">Installing VS Code.</h1>
+<p>I recommend using VS Code as your editor, and I’m able to assist you
+with that if you run into trouble. You can use whatever editor you like,
+but I will not be able to support other editors.</p>
+<p>Go to the <a href="https://code.visualstudio.com/download">VS Code
+Download Page</a>. Install it! I highly recommend also installing the
+command-line <code>code</code> command to open files from the command
+line. Follow these steps to do that:</p>
+<p><strong>Mac</strong></p>
+<ol type="1">
+<li>Open Visual Studio Code.</li>
+<li>Press <kbd>⇧⌘P</kbd> to open the Command Palette.</li>
+<li>Type <code>Shell Command: Install 'code' command in PATH</code> and
+select it.</li>
+<li>Restart your terminal.</li>
+<li>Use <code>code PATH_TO_FILE_OR_FOLDER</code> to open VS Code from
+the terminal.</li>
+</ol>
+<hr />
+<p><strong>Windows (WSL)</strong></p>
+<ol type="1">
+<li>Open Visual Studio Code.</li>
+<li>Press <kbd>Ctrl+Shift+P</kbd> to open the Command Palette.</li>
+<li>Type <code>Shell Command: Install 'code' command in PATH</code> and
+select it.</li>
+<li>Restart the terminal.</li>
+<li>Use <code>code PATH_TO_FILE_OR_FOLDER</code> in your WSL terminal to
+open VS Code.</li>
+</ol>
+<hr />
+<p><strong>Linux</strong></p>
+<ol type="1">
+<li>Open Visual Studio Code.</li>
+<li>Press <kbd>Ctrl+Shift+P</kbd> to open the Command Palette.</li>
+<li>Type <code>Shell Command: Install 'code' command in PATH</code> and
+select it.</li>
+<li>Restart your terminal.</li>
+<li>Use <code>code PATH_TO_FILE_OR_FOLDER</code> to open VS Code from
+the terminal.</li>
+</ol>
+<h1 id="installing-and-using-git">Installing and using Git</h1>
+<p>In this course you will be assigned a Git source-code repository (or
+repo for short) that you will use to turn in all assignments.</p>
+<h2 id="what-is-git">What is Git?</h2>
+<p>Git is a textfile revision system. One uses it to manage revisions of
+text files between multiple people using a single set of files. Git will
+keep track of who made which changes and when (the revision history),
+provide tools for undoing and redoing changes (handling merging), allow
+remote access to the repository, and even support multiple time lines of
+the files (branching).</p>
+<p>In this short tutorial I’ll go through everything you need to know in
+order to use Git in this course.</p>
+<h2 id="the-difference-between-git-and-github">The difference between
+Git and Github</h2>
+<p>Git is a command-line tool that is installed on your computer to
+manage Git repositories of textfiles. When using Git on your computer
+the repositories are local, but Git has the ability to share them
+remotely with others. This is where Github comes in.</p>
+<p>Github is a hosting site for Git repositories. If you want to share
+your repo with a team of other people then you can host it on Github and
+allow others to subscribe to it. Github allows them be able to download
+your repositories, change it, and even submit changes back to the
+repository on Github for you to have as well.</p>
+<h2 id="installing-git">Installing Git</h2>
+<p>First we need to get Git on your computer if it’s not there already.
+If you are running Linux, you are done, and can skip this section.
+Otherwise, Mac OS X users need only open the Terminal app, and type
+<code>git</code> at the command line. If Git’s not install already, then
+it will tell you what you need to do.</p>
+<p>So if you’re a Windows user, then please install Git by opening the
+WSL (Windows Subsystem for Linux) terminal, and run the commands:</p>
+<pre><code>sudo apt update
+sudo apt install git</code></pre>
+<p>Then test that it is installed by running:</p>
+<pre><code>git --version</code></pre>
+<p>You should see an output similar to the following:</p>
+<pre><code>git version 2.39.5</code></pre>
+<p>If not, then something went wrong. Now that Git is installed please
+move on to setting it up.</p>
+<h2 id="setting-up-git">Setting up Git</h2>
+<p>We now need to setup Git on your computer so that it knows who you
+are. This is independent of your Github username and email, and is
+setting up your local Git install to record your name and email when
+telling Git about your revisions.</p>
+<ul>
+<li><p>Your name:</p>
+<pre><code>&gt; git config --global user.name &quot;John Doe&quot;</code></pre>
+<p>Replace “John Doe” with your full name. This is the name Git will use
+to record your changes in the revision history.</p></li>
+<li><p>Your email:</p>
+<pre><code>&gt; git config --global user.email jdoe@augusta.edu</code></pre>
+<p>The revision history also records your email. Set this to your AU
+email address.</p></li>
+</ul>
+<p>This completes the Git basic setup.</p>
+<h2 id="cloning-your-repo">Cloning your repo</h2>
+<p><strong>At this point you have emailed me with your <a
+href="https://www.github.com">Github</a> login and I have replied with
+the link to your Git repo. If not, then please do this step
+first.</strong></p>
+<p>Now we will <strong>clone</strong> your repo that I have created for
+you, and that is hosted on Github, to your computer so that you can use
+it.</p>
+<p>First create a folder on your computer that you will use to keep
+everything in this class in. I’ll call it <code>pl_dir</code> in this
+tutorial. Then open the command line and navigate to
+<code>pl_dir</code>:</p>
+<pre><code>&gt; cd path_to_pl_dir/pl_dir</code></pre>
+<p>At this point you have changed your working directory to
+<code>pl_dir</code>. You can check that this worked by running the
+command:</p>
+<pre><code>&gt; pwd</code></pre>
+<p>This stands for “present working directory”.</p>
+<p>Now that your working directory is <code>pl_dir</code> we can clone
+your course repository using the following command:</p>
+<pre><code>&gt; git clone URL</code></pre>
+<p>replace <code>URL</code> with the URL I sent you.</p>
+<p>Now check to make sure that the clone was successful (if it weren’t
+you should have gotten an error message):</p>
+<pre><code>&gt; ls </code></pre>
+<p>This command is “list files” and simply lists all the files in your
+working directory. If you see your repo, then you are good to go.
+Otherwise an error happened, and so try again, but if you can’t figure
+it out, then ask on Slack.</p>
+<p>You only ever need to clone a repository once. Unless you delete the
+folder you will never have to clone this repository again.</p>
+<h2 id="editing-files-in-your-repo">Editing files in your repo</h2>
+<p>A Git repo is just a special directory that Git knows about. Once
+it’s cloned to your computer you can treat it as a standard folder on
+your computer that is full of textfiles that are managed by Git. The
+only time you need to use the command line or Git is when you are ready
+to tell Git about the changes you’ve made.</p>
+<p>So to get an idea of how this works. Using the file explorer (Finder
+on Mac OS X) go and take a look at your repo in <code>pl_dir</code>. The
+first time you clone your repo it will contain the following files:</p>
+<ul>
+<li><code>git_tutorial</code> : Some example files for this
+tutorial.</li>
+</ul>
+<p>When you are working on your assignments you can use your computers
+graphical based means of exploring files and folders, and simply treat
+the files as normal files. Open them with editors and save them,
+etc.</p>
+<p>Let’s do an example. Open <code>git_tutorial/example.txt</code> in
+your favorite text editor. Answer the question and save it.</p>
+<p>Now we are going to tell Git about your changes, commit them to the
+revision history, and then push them to Github where I can see and get
+your changes too.</p>
+<p>Open the command line and move into the the <code>git_tutorial</code>
+folder:</p>
+<pre><code>&gt; cd path_to_pl_dir/pl_dir/git_tutorial</code></pre>
+<p>Now tell Git about your changes by committing them:</p>
+<pre><code>&gt; git commit -a -m &#39;Answered the question.&#39;</code></pre>
+<p>This is adds all the changes you’ve made to the files in your working
+directory to the revision history. This is a completely local operation,
+it doesn’t communicate it to Github.</p>
+<p>You can see the revision history using the command:</p>
+<pre><code>&gt; git log</code></pre>
+<p>This lists all the changes by everyone who’ve made changes to the
+files in your repo. For example, you will see mine listed as well, and I
+will see yours. Notice your name and email are showing up, this is the
+result of the setup we did earlier.</p>
+<p>The command <code>git commit -a -m</code> says you want to commit
+each change to the files in my working directory using the commit
+message provided; we used <code>'Answered the question'</code>. This
+message should be a detailed description of the changes you have made.
+As you can see in the revision history when using <code>git log</code>
+this shows up in the history. I’ll read these to see what you have
+done.</p>
+<p>You are now ready to share your changes with Github. To do this,
+<strong>push</strong> your changes upstream:</p>
+<pre><code>&gt; git push</code></pre>
+<p>This sends all of your recent commits to Github so that everyone who
+subscribes to your repository can get your changes.</p>
+<h2 id="fetching-changes-from-github">Fetching changes from Github</h2>
+<p>The last Git operation you will need for this course is a means of
+fetching or <strong>pulling</strong> recent changes by people other than
+you from Github. For example, I’ll be adding your assignments to your
+repository throughout the semester, and so, you will need to get them
+from Github into your repository.</p>
+<p>First, move into your repository:</p>
+<pre><code>&gt; cd path_to_pl_dir/pl_dir</code></pre>
+<p>Make sure you have no modified files Git doesn’t know about, because
+you have never committed them. Do the following:</p>
+<pre><code>&gt; git status
+
+On branch main
+Your branch is up to date with &#39;origin/main&#39;.
+
+nothing to commit, working tree clean</code></pre>
+<p>If you see the above message, then you are good to go, all changes
+have been committed to your revision history. If you see something that
+looks like:</p>
+<pre><code>On branch main
+Your branch is up to date with &#39;origin/main&#39;.
+
+Changes not staged for commit:
+  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+  (use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
+    modified:   markdown/git.md
+
+no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</code></pre>
+<p>Then you have untracked changes that need to be committed. Go back to
+the previous section and commit your changes before proceeding. There
+can be no non-committed changes when we pull from Github, because Git
+will merge all changes together.</p>
+<p>To pull all changes from Github into your local repository do:</p>
+<pre><code>&gt; git pull</code></pre>
+<p>within your repository. Note that all Git commands must be within
+your repository. That is, your present working directory must be your
+repository; in this tutorial it has been <code>pl_dir</code>.</p>
+<h1 id="docker-and-ocaml">Docker and OCaml</h1>
+<p>Now we will install and use Docker to run OCaml.</p>
+<h2 id="docker-installation">Docker Installation</h2>
+<p>First, regardless of your operating system go and install <a
+href="https://www.docker.com/products/docker-desktop/">Docker
+Desktop</a>. This will install a graphical interface for docker as well
+as the commandline. I will be using the commandline here, and I will
+only support the commandline. If you use the graphical interface, then
+that’s up to you to figure out.</p>
+<p>Make sure to open the Docker Desktop to finish installation.</p>
+<p>After installation, open a terminal (Windows the WSL terminal), and
+type the following command:</p>
+<pre><code>sudo docker --help</code></pre>
+<p>You should see the following output:</p>
+<pre><code>Usage:  docker [OPTIONS] COMMAND
+
+A self-sufficient runtime for containers
+
+Common Commands:
+  run         Create and run a new container from an image
+  exec        Execute a command in a running container
+  ps          List containers
+  build       Build an image from a Dockerfile
+  bake        Build from a file
+  pull        Download an image from a registry
+  push        Upload an image to a registry
+  images      List images
+  login       Authenticate to a registry
+  logout      Log out from a registry
+  search      Search Docker Hub for images
+  version     Show the Docker version information
+  info        Display system-wide information
+
+Management Commands:
+  ai*         Docker AI Agent - Ask Gordon
+  builder     Manage builds
+  buildx*     Docker Buildx
+  cloud*      Docker Cloud
+  compose*    Docker Compose
+  container   Manage containers
+  context     Manage contexts
+  debug*      Get a shell into any image or container
+  desktop*    Docker Desktop commands
+  extension*  Manages Docker extensions
+  image       Manage images
+  init*       Creates Docker-related starter files for your project
+  manifest    Manage Docker image manifests and manifest lists
+  mcp*        Docker MCP Plugin
+  model*      Docker Model Runner (EXPERIMENTAL)
+  network     Manage networks
+  plugin      Manage plugins
+  sbom*       View the packaged-based Software Bill Of Materials (SBOM) for an image
+  scout*      Docker Scout
+  system      Manage Docker
+  trust       Manage trust on Docker images
+  volume      Manage volumes
+
+Swarm Commands:
+  swarm       Manage Swarm
+
+Commands:
+  attach      Attach local standard input, output, and error streams to a running container
+  commit      Create a new image from a container&#39;s changes
+  cp          Copy files/folders between a container and the local filesystem
+  create      Create a new container
+  diff        Inspect changes to files or directories on a container&#39;s filesystem
+  events      Get real time events from the server
+  export      Export a container&#39;s filesystem as a tar archive
+  history     Show the history of an image
+  import      Import the contents from a tarball to create a filesystem image
+  inspect     Return low-level information on Docker objects
+  kill        Kill one or more running containers
+  load        Load an image from a tar archive or STDIN
+  logs        Fetch the logs of a container
+  pause       Pause all processes within one or more containers
+  port        List port mappings or a specific mapping for the container
+  rename      Rename a container
+  restart     Restart one or more containers
+  rm          Remove one or more containers
+  rmi         Remove one or more images
+  save        Save one or more images to a tar archive (streamed to STDOUT by default)
+  start       Start one or more stopped containers
+  stats       Display a live stream of container(s) resource usage statistics
+  stop        Stop one or more running containers
+  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+  top         Display the running processes of a container
+  unpause     Unpause all processes within one or more containers
+  update      Update configuration of one or more containers
+  wait        Block until one or more containers stop, then print their exit codes
+
+Global Options:
+      --config string      Location of client config files (default
+                           &quot;/Users/heades/.docker&quot;)
+  -c, --context string     Name of the context to use to connect to the
+                           daemon (overrides DOCKER_HOST env var and
+                           default context set with &quot;docker context use&quot;)
+  -D, --debug              Enable debug mode
+  -H, --host list          Daemon socket to connect to
+  -l, --log-level string   Set the logging level (&quot;debug&quot;, &quot;info&quot;,
+                           &quot;warn&quot;, &quot;error&quot;, &quot;fatal&quot;) (default &quot;info&quot;)
+      --tls                Use TLS; implied by --tlsverify
+      --tlscacert string   Trust certs signed only by this CA (default
+                           &quot;/Users/heades/.docker/ca.pem&quot;)
+      --tlscert string     Path to TLS certificate file (default
+                           &quot;/Users/heades/.docker/cert.pem&quot;)
+      --tlskey string      Path to TLS key file (default
+                           &quot;/Users/heades/.docker/key.pem&quot;)
+      --tlsverify          Use TLS and verify the remote
+  -v, --version            Print version information and quit
+
+Run &#39;docker COMMAND --help&#39; for more information on a command.
+
+For more help on how to use Docker, head to https://docs.docker.com/go/guides/</code></pre>
+<h2 id="running-ocaml-in-docker">Running OCaml in Docker</h2>
+<p>We will now get OCaml up and running using Docker. First, open a
+terminal (Windows the WSL terminal) and move into your course repo.</p>
+<pre><code>cd PATH_TO_YOUR_REPO</code></pre>
+<p>Then run the following command:</p>
+<pre><code>sudo docker compose build ocamlenv</code></pre>
+<p>This builds and sets up the Docker container with OCaml. This may
+take some time to complete based on your internet speed and
+computer.</p>
+<p>Next we can run the container using the following command:</p>
+<pre><code>sudo docker compose run ocamlenv</code></pre>
+<p>You should see a prompt similar to the following:</p>
+<pre><code>104b135fb4b4:/PL#</code></pre>
+<p>If we use the list files command <code>ls</code> then we can see the
+only files in the container are your homework files. These are the exact
+some homework files as the ones in your repo. So you run them using
+OCaml in the container, and still edit them using VS Code on your actual
+computer.</p>
+<p>We can also see that OCaml is installed by moving into a homework
+assignment, and running <code>dune</code>:</p>
+<pre><code>7a56fd199bb0:/PL# cd hwk/1/
+7a56fd199bb0:/PL/hwk/1# ls
+README.md     dune-project  hwk1.opam     lib           test          test.ml
+7a56fd199bb0:/PL/hwk/1# dune utop
+───────────────────────────────────────────────────────┬─────────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────
+                                                       │ Welcome to utop version 2.16.0 (using OCaml version 5.3.0)! │                                                        
+                                                       └─────────────────────────────────────────────────────────────┘                                                        
+
+Type #utop_help for help about using utop.
+
+─( 15:58:00 )─&lt; command 0 &gt;────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────{ counter: 0 }─
+utop # 
+┌──────────────┬──────────────┬───────────────┬─────┬────┬───┬──────────┬─────┬───────────┬──────┬────────────┬───────┬───────────┬──────────────┬──────────┬──────────────┬─┐
+│Afl_instrument│Alias_analysis│Allocated_const│Annot│Arch│Arg│Arg_helper│Array│ArrayLabels│Asmgen│Asmlibrarian│Asmlink│Asmpackager│Assert_failure│Ast_helper│Ast_invariants│A│
+└──────────────┴──────────────┴───────────────┴─────┴────┴───┴──────────┴─────┴───────────┴──────┴────────────┴───────┴───────────┴──────────────┴──────────┴──────────────┴─┘</code></pre>
+<p>If this worked, then you can now complete your homework assignments
+for this course.</p>
+<h1 id="recommended-work-flow">Recommended work flow</h1>
+<p>When completing your homework, I recommend using the following
+workflow:</p>
+<ol type="1">
+<li><p>Open the command line and move into your repository using the
+<code>cd</code> command.</p></li>
+<li><p>Pull all new changes from Github using
+<code>git pull</code>.</p></li>
+<li><p>Run <code>sudo docker compose run ocamlenv</code>.</p></li>
+<li><p>Open your repo in VS Code and open the homework assignment you
+want to complete.</p></li>
+<li><p>Edit some code, and then compile it using <code>dune</code> at
+the Docker prompt.</p></li>
+<li><p>Repeat until you are done with the assignment.</p></li>
+<li><p>Close the Docker container.</p></li>
+<li><p>After you are done working commit your changes using
+<code>git commit -a -m 'MESSAGE'</code>. Commit after you work every
+time no matter if your done with your assignment or not. This keeps your
+repository clean.</p></li>
+<li><p>After you commit push your changes to Github using
+<code>git push</code>. Do this every time you’re done working too. You
+can push as many times as you like. Committing and pushing every time
+your done working on your assignments keeps Git happy.</p></li>
+<li><p>Bob’s your uncle!</p></li>
+</ol>
+<p>And that’s all you need to know to complete all the assignments in
+this class.</p>
+    </body>
+</html>
