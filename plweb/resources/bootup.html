@@ -146,14 +146,24 @@ to record your changes in the revision history.</p></li>
 <li><p>Your email:</p>
 <pre><code>&gt; git config --global user.email jdoe@augusta.edu</code></pre>
 <p>The revision history also records your email. Set this to your AU
-email address.</p></li>
+email address.</p>
+<h2 id="setting-up-ssh-keys-for-github">Setting up SSH Keys for
+Github</h2>
+<p>Github has disabled username and password authentication when working
+with your git repositories. Following these directions to setup SSH-key
+authentication on your Github account:</p>
+<ol type="1">
+<li>Generate a new SSH key on your system (do this in WSL): <a
+href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Directions</a></li>
+<li>Add the newly generate key to your Github account: <a
+href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account">Directions</a></li>
+</ol></li>
 </ul>
-<p>This completes the Git basic setup.</p>
 <h2 id="cloning-your-repo">Cloning your repo</h2>
-<p><strong>At this point you have emailed me with your <a
-href="https://www.github.com">Github</a> login and I have replied with
-the link to your Git repo. If not, then please do this step
-first.</strong></p>
+<p><strong>At this point you have emailed me with your</strong>
+<strong><a href="https://www.github.com">Github</a> login and I have
+replied with the</strong> <strong>link to your Git repo. If not, then
+please do this step first.</strong></p>
 <p>Now we will <strong>clone</strong> your repo that I have created for
 you, and that is hosted on Github, to your computer so that you can use
 it.</p>
@@ -274,7 +284,19 @@ Desktop</a>. This will install a graphical interface for docker as well
 as the commandline. I will be using the commandline here, and I will
 only support the commandline. If you use the graphical interface, then
 that’s up to you to figure out.</p>
+<p>There are a couple of different installers for Docker. Select the
+from the ones below based on your operating system and CPU:</p>
+<ul>
+<li>Windows running on Intel and AMD, choose the AMD64.</li>
+<li>Windows running on ARM64, choose ARM64.</li>
+<li>Mac running on Intel, choose Intel Chip.</li>
+<li>Mac running on Apple Silicon, choose Apple Silicon.</li>
+<li>Linux, choose “Download for Linux”.</li>
+</ul>
 <p>Make sure to open the Docker Desktop to finish installation.</p>
+<p><strong>Note: Docker Desktop needs to be running whenever you use
+Docker on the</strong> <strong>commandline. If it is closed, the
+commands may not work.</strong></p>
 <p>After installation, open a terminal (Windows the WSL terminal), and
 type the following command:</p>
 <pre><code>sudo docker --help</code></pre>
