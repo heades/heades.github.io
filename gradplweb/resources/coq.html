@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Setting up Coq</title>
+        <link rel="stylesheet" href="/plweb/includes/css/resource.css" />
+            </head>
+    <body>
+      <h1>Setting up Coq</h1>
+        <div id="navigation">
+        <a href="/plweb/index.html">Home</a>
+	<a href="/plweb/lectures.html">Lectures</a>
+        <a href="/plweb/includes/syllabus.pdf">PDF Syllabus</a>
+        <a href="/plweb/resources.html">Resources</a>
+        </div>
+	<br/>
+	<br/>
+<nav id="TOC" role="doc-toc">
+<h2 id="toc-title">Contents:</h2>
+<ul>
+<li><a href="#introduction" id="toc-introduction">Introduction</a></li>
+<li><a href="#getting-coq" id="toc-getting-coq">Getting Coq</a>
+<ul>
+<li><a href="#coq-on-windows" id="toc-coq-on-windows">Coq on
+Windows</a></li>
+<li><a href="#coq-on-the-mac" id="toc-coq-on-the-mac">Coq on the
+Mac</a></li>
+</ul></li>
+<li><a href="#getting-vs-code" id="toc-getting-vs-code">Getting VS
+Code</a></li>
+</ul>
+</nav>
+<h1 id="introduction">Introduction</h1>
+<p>In this tutorial we will learn how to setup our Coq programming
+environment. This will include installing and setting up:</p>
+<ul>
+<li>Coq</li>
+<li>VS Code</li>
+<li>Coq VS Code Plugin</li>
+</ul>
+<p>After completeing this tutorial you will have everything you need to
+read the book and complete your assignments using Coq.</p>
+<h1 id="getting-coq">Getting Coq</h1>
+<p>We begin with installing the Coq environment. This is operating
+system dependent, and so please read the section that corresponds to the
+operating system you have on your computer.</p>
+<h2 id="coq-on-windows">Coq on Windows</h2>
+<p>First, download the Coq environment by visiting this <a
+href="https://github.com/coq/coq/releases/download/V8.13.0/coq-8.13.0-installer-windows-x86_64.exe">link</a>.
+Then follow these instructions:</p>
+<ol type="1">
+<li><p>Double click the installer file to begin the installation. You
+should then see this:</p>
+<p><img src="/plweb/images/coq-install/coq-install-window-start.png"
+style="width:80.0%" /></p></li>
+<li><p>Click “Next” to arrive at this screen:</p>
+<p><img src="/plweb/images/coq-install/coq-install-window-copyright.png"
+style="width:80.0%" /></p>
+<p>Select “I Agree”.</p></li>
+<li><p>Next the installer will ask you to select which packages to
+install:</p>
+<p><img src="/plweb/images/coq-install/coq-install-window-options.png"
+style="width:80.0%" /></p>
+<p>Simply click “Next” to install the defaults.</p></li>
+<li><p>Then the installer will ask you to select where to install Coq on
+your computer:</p>
+<p><img src="/plweb/images/coq-install/coq-install-window-path.png"
+style="width:80.0%" /></p>
+<p><strong>Do not modify this!</strong> Click “Next” to accept the
+default path.</p></li>
+<li><p>At this point the installation process will begin. You should see
+the install status bar:</p>
+<p><img src="/plweb/images/coq-install/coq-install-window-statusbar.png"
+style="width:80.0%" /></p>
+<p>Wait for this to complete, and the click “Next”.</p></li>
+<li><p>You should now be seeing that the installation was complete:</p>
+<p><img src="/plweb/images/coq-install/coq-install-window-complete.png"
+style="width:80.0%" /></p>
+<p>Click “Finish” to exit the installer.</p></li>
+<li><p>Now install VS Code by following the instructions in the VS Code
+section below.</p></li>
+</ol>
+<h2 id="coq-on-the-mac">Coq on the Mac</h2>
+<p>To install on the Mac it’s best to do so using <code>opam</code>.
+Follow these instructions:</p>
+<ol type="1">
+<li><p>Open the Terminal app.</p></li>
+<li><p>Install Homebrew by running the following command:</p>
+<pre><code>&gt; /bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</code></pre>
+<p>Use copy and paste, but make sure to get all of it.</p></li>
+<li><p>Use Homebrew to install <code>opam</code> by running the
+following commands:</p>
+<pre><code>&gt; brew update
+...</code></pre>
+<pre><code>&gt; brew install gpatch
+...</code></pre>
+<pre><code>&gt; brew install opam
+...</code></pre>
+<p>If you already have homebrew installed (which means you skipped the
+previous instruction), you might get an error of the form:</p>
+<pre><code>Error: homebrew-core is a shallow clone.</code></pre>
+<p>This means that your homebrew is out of date. To update brew and fix
+this problem run this command:</p>
+<pre><code>&gt; git -C &quot;/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core&quot; fetch --unshallow</code></pre>
+<p>You might also get an error:</p>
+<pre><code>Error: homebrew-cask is a shallow clone.</code></pre>
+<p>To update brew and fix this problem run this command:</p>
+<pre><code>git -C &quot;/usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask&quot; fetch --unshallow</code></pre>
+<p>Then proceed with the above installation again.</p></li>
+<li><p>Use opam to install Coq:</p>
+<pre><code>&gt; opam install coq</code></pre></li>
+<li><p>Check to make sure coq is really there:</p>
+<pre><code>&gt; ls ~/.opam/default/bin/coqtop
+~/.opam/default/bin/coqtop</code></pre>
+<p>If you get a “file or directory cannot be found” error, then
+something went wrong. Otherwise, Coq is installed!</p></li>
+<li><p>Next we need to install VS Code. Using the instructions
+below.</p></li>
+</ol>
+<h1 id="getting-vs-code">Getting VS Code</h1>
+<p>VS Code is a new editor built by Microsoft as a light-weight
+programming environment that is usable across all platforms. Thus, no
+matter what operating system you are running you can install and use VS
+Code, and the instructions do not very much. However, the screen shots
+below are for windows if you are on a Mac or Linux then the screens may
+be different.</p>
+<ol type="1">
+<li><p>Download the VS Code installer from <a
+href="https://code.visualstudio.com/download">here</a>.</p></li>
+<li><p>Double click the installer to start the installation process. You
+should see:</p>
+<p><img src="/plweb/images/coq-install/vscode-install-window-start.png"
+style="width:80.0%" /></p>
+<p>Select “I accept the agreement” and click “Next”.</p></li>
+<li><p>Next the installer will ask you where you would like to install
+VS Code:</p>
+<p><img src="/plweb/images/coq-install/vscode-install-window-path.png"
+style="width:80.0%" /></p>
+<p>Keep the default and click “Next”.</p></li>
+<li><p>Then the installer allows you to customize the name of the VS
+Code shortcut:</p>
+<p><img src="/plweb/images/coq-install/vscode-install-window-name.png"
+style="width:80.0%" /></p>
+<p>You can change this or use the default. When you are ready click
+“Next” to proceed.</p></li>
+<li><p>At this point the installer will ask about additional
+options:</p>
+<p><img
+src="/plweb/images/coq-install/vscode-install-window-additional.png"
+style="width:80.0%" /></p>
+<p>When you are ready click “Next”.</p></li>
+<li><p>Next we find that the installer is ready to begin the
+installation process:</p>
+<p><img src="/plweb/images/coq-install/vscode-install-window-ready.png"
+style="width:80.0%" /></p>
+<p>Click “Next”.</p></li>
+<li><p>The status bar will now appear to show the progress of the
+installation process:</p>
+<p><img
+src="/plweb/images/coq-install/vscode-install-window-status-window.png"
+style="width:80.0%" /></p></li>
+<li><p>After the installation process finishes you should see:</p>
+<p><img src="/plweb/images/coq-install/vscode-install-window-finish.png"
+style="width:80.0%" /></p>
+<p>Click “Finish” to open VS Code.</p></li>
+<li><p>Configuring VS Code:</p>
+<ol type="1">
+<li><p>You should have VS Code open, and seeing:</p>
+<p><img src="/plweb/images/coq-install/vscode-open.png"
+style="width:80.0%" /></p></li>
+<li><p>Press “F1” and start typing “Extensions: Install Extension”, you
+should see this screen:</p>
+<p><img src="/plweb/images/coq-install/vscode-extensions-install.png"
+style="width:80.0%" /></p>
+<p>Click “Extension: Install Extension”.</p></li>
+<li><p>Start typing “vscoq” which will look like:</p>
+<p><img src="/plweb/images/coq-install/vscode-vscoq-search.png"
+style="width:80.0%" /></p>
+<p>Click “install” to begin installing the VS Coq plugin, but when it
+completes do not close this window.</p></li>
+<li><p>Now click the gear icon next to “Installed” to bring up the
+plugin’s settings:</p>
+<p><img
+src="/plweb/images/coq-install/vscode-vscoq-extension-config.png"
+style="width:80.0%" /></p></li>
+<li><p>Now scroll down slowly until you see “Coq Bin”:</p>
+<p><img src="/plweb/images/coq-install/vscode-vscoq-binpath.png"
+style="width:80.0%" /></p>
+<p>The box on your screen will be empty, but:</p>
+<ul>
+<li>Windows: enter <code>C:/Coq/bin</code></li>
+<li>Mac OS X: enter <code>/Users/username/.opam/default/bin</code></li>
+<li>Linux: enter <code>/home/username/.opam/default/bin</code></li>
+</ul>
+<p>In the above replace <code>username</code> with your username on your
+computer. There is no save button, because these settings are saved
+automatically.</p></li>
+<li><p>At this point you are done, and can close the “Settings” tab by
+selecting the “X” next to the word “Settings”.</p></li>
+<li><p>Now test out the install by opening:</p>
+<pre><code>sf_src/vol1_lf/Basics.v</code></pre>
+<p>in VS Code in your Git repository. Once it’s open, press
+<code>Alt-downarrow</code> until you see this screen:</p>
+<p><img src="/plweb/images/coq-install/vscode-vscoq-example-run.png"
+style="width:100.0%" /></p>
+<p>If you eventually see the same screen as above, then you can have
+installed all the required tools necessary for this course. 🎉</p></li>
+</ol></li>
+</ol>
+    </body>
+</html>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>A virtual machine for
+homeworks - Programming Languages Concepts</title>
+        <link rel="stylesheet" href="/plweb/includes/css/default.css" />
+            </head>
+    <body>
+      <h1>A virtual machine for homeworks - Programming Languages </h1>
+        <div id="navigation">
+        <a href="/plweb/index.html">Home</a>
+	<a href="/plweb/lectures.html">Lectures</a>
+        <a href="/plweb/includes/syllabus.pdf">PDF Syllabus</a>
+        <a href="/plweb/resources.html">Resources</a>
+        </div>
+	<br/>
+	<br/>
+<p>To make it easier for everyone I made a virtual machine using
+VirtualBox that has Linux, VS Code, git, and OCaml already installed and
+configured on it. All you have to do is download it and import it into
+Virtual Box. Here I give some instructions on how to do that.</p>
+<ol type="1">
+<li><p>Install VirtualBox at <a
+href="https://www.virtualbox.org">https://www.virtualbox.org</a>.</p></li>
+<li><p>Download the prebuilt virtual machine from <a
+href="http://learn-ocaml.hde.design/PLVM.ova.zip">here</a>. Save this to
+Downloads or some temporary location, because after you are done
+importing the virtual machine into VirtualBox you can delete this file.
+Make sure and decompress the file before moving on.</p></li>
+<li><p>Open VirtualBox. Then go to File then Import Appliance. In the
+File box click the icon on the right, and then navigate to the OVA file
+you just decompressed in the previous step.</p></li>
+<li><p>Then click Next then Finish. At this point you just wait for the
+import to complete. Your screen should look like the following:</p>
+<p><img width="80%" src="/plweb/includes/images/vm-importing.png"></p></li>
+<li><p>When the import finishes your screen should look like this:</p>
+<p><img width="70%" src="/plweb/includes/images/vm-finished-importing.png"></p></li>
+<li><p>Before booting you will need to make sure the settings of the
+machine are configured property for your computer. Click Settings. Then
+System.</p></li>
+<li><p>Drag the Base Memory toggle into the green if it is not already.
+Don’t decrease it too much or the machine will run poorly.</p></li>
+<li><p>Now click Display. Change the scale factor to 100%.</p></li>
+<li><p>Click ok.</p></li>
+<li><p>Now start the machine by clicking Start. You should see the
+Ubuntu splash screen booting up.</p></li>
+<li><p>Once it’s booted up your screen should look like:</p>
+<p><img width="70%" src="/plweb/includes/images/UbuntuScreen.png"></p></li>
+<li><p>You will see the icon to open VS Code at the top left, and right
+underneath it is the terminal program for issuing your git
+commands.</p></li>
+<li><p>Open the terminal program.</p></li>
+<li><p>Now go and complete the <a href="/plweb/git.html">Git
+tutorial</a>. This will configure git properly.</p></li>
+</ol>
+    </body>
+</html>
