@@ -1,4 +1,4 @@
-<!doctype html><html lang=en dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>All about Servant | Harley Eades</title><link rel=stylesheet href=/css/main.dcb34da85d8249a4b4719f5e6aac4e5ac9e38d597c44f77161dcfb4cb384291c.css integrity="sha256-3LNNqF2CSaS0cZ9eaqxOWsnjjVl8RPdxYdz7TLOEKRw=" crossorigin=anonymous><script src=/js/main.eab4c58a7f1dbc3aae476375e5b3c1aaecf521240646d64b78b3c76fb4bf8eb6.js integrity="sha256-6rTFin8dvDquR2N15bPBquz1ISQGRtZLeLPHb7S/jrY=" crossorigin=anonymous></script></head><body><header class=header><nav class=navbar><div class=navbar-title-container><h1 class=navbar-title>Harley Eades</h1><h3 class=subtitle>Research Professor in Computer Science</h3></div><div class=navbar-container><ul class=navbar-menu><li class=navbar-menu-button><a aria-current=page class="nav-bar-link inactive-link" href=/>Menu</a></li><li class=navbar-menu-button><a aria-current=true class="nav-bar-link ancestor" href=/academic/>Home</a></li><li class=navbar-menu-button><a aria-current=true class="nav-bar-link ancestor" href=/academic/activity/>Activity</a></li><li class=navbar-menu-button><a aria-current=page class="nav-bar-link inactive-link" href=/academic/blog/>Blog</a></li></ul></div></nav></header><main class=academic-home-container><div class="academic-home-content academic-post-content"><div class=academic-post-header><h1>All about Servant</h1><span class=academic-post-date>Posted: 08-12-2025</span><ul class=activity-tags><li class=activity-tag>haskell</li><li class=activity-tag>web api</li><li class=activity-tag>servant</li><li class=activity-tag>web development</li></ul></div><p><strong>I&rsquo;m live writing this, and so this document is ALIVE (ALIVE, IT&rsquo;S ALIVE), so
+<!doctype html><html lang=en dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>All about Servant | Harley Eades</title><link rel=stylesheet href=/css/main.1e646d6d02c8925eeb2e469b94cd064d8549ed60ac4b821514238b9365a1d6c1.css integrity="sha256-HmRtbQLIkl7rLkablM0GTYVJ7WCsS4IVFCOLk2Wh1sE=" crossorigin=anonymous><script src=/js/main.eab4c58a7f1dbc3aae476375e5b3c1aaecf521240646d64b78b3c76fb4bf8eb6.js integrity="sha256-6rTFin8dvDquR2N15bPBquz1ISQGRtZLeLPHb7S/jrY=" crossorigin=anonymous></script></head><body><header class=header><nav class=navbar><div class=navbar-title-container><h1 class=navbar-title>Harley Eades</h1><h3 class=subtitle>Research Professor in Computer Science</h3></div><div class=navbar-container><ul class=navbar-menu><li class=navbar-menu-button><a aria-current=page class="nav-bar-link inactive-link" href=/>Menu</a></li><li class=navbar-menu-button><a aria-current=true class="nav-bar-link ancestor" href=/academic/>Home</a></li><li class=navbar-menu-button><a aria-current=true class="nav-bar-link ancestor" href=/academic/activity/>Activity</a></li><li class=navbar-menu-button><a aria-current=page class="nav-bar-link inactive-link" href=/academic/blog/>Blog</a></li></ul></div></nav></header><main class=academic-home-container><div class=academic-home-content><div class=academic-post-header><h1>All about Servant</h1><span class=academic-post-date>Posted: 08-12-2025</span><ul class=activity-tags><li class=activity-tag>haskell</li><li class=activity-tag>web api</li><li class=activity-tag>servant</li><li class=activity-tag>web development</li></ul></div><p><strong>I&rsquo;m live writing this, and so this document is ALIVE (ALIVE, IT&rsquo;S ALIVE), so
 expect there to be errors, gaps, and no ending (yet).</strong></p><p>Servant is a Haskell library for writing web API&rsquo;s. Some research I&rsquo;m starting
 up requires that I understand how it works. So I thought I&rsquo;d write up my notes
 here. These notes simply follow along with the
@@ -13,33 +13,9 @@ recommend that we put our API into it&rsquo;s own Haskell module. I created a ne
 module called <code>WebAPIType</code> which will contain the web API. Servant&rsquo;s whole bag
 is the specification of the API at the type level. So this module will contain
 that type or several types. Since we are working at the type level it makes
-sense that we need language extensions:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE TypeOperators #-}
-</code></pre><p>I&rsquo;ll start by creating a single query for pulling all the Mega Man games which
-has the following schema:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-.sql data-lang=.sql><span style=display:flex><span><span style=color:#66d9ef>CREATE</span> <span style=color:#66d9ef>TABLE</span> <span style=color:#66d9ef>IF</span> <span style=color:#66d9ef>NOT</span> <span style=color:#66d9ef>EXISTS</span> <span style=color:#a6e22e>games</span> (
-</span></span><span style=display:flex><span>  game_id           BIGSERIAL <span style=color:#66d9ef>PRIMARY</span> <span style=color:#66d9ef>KEY</span>,
-</span></span><span style=display:flex><span>  slug              <span style=color:#66d9ef>TEXT</span> <span style=color:#66d9ef>NOT</span> <span style=color:#66d9ef>NULL</span> <span style=color:#66d9ef>UNIQUE</span> <span style=color:#66d9ef>CHECK</span> (<span style=color:#a6e22e>is_valid_slug</span>(slug)),
-</span></span><span style=display:flex><span>  title             <span style=color:#66d9ef>TEXT</span> <span style=color:#66d9ef>NOT</span> <span style=color:#66d9ef>NULL</span>,
-</span></span><span style=display:flex><span>  series_number     <span style=color:#66d9ef>SMALLINT</span> <span style=color:#66d9ef>CHECK</span> (series_number <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0</span>),
-</span></span><span style=display:flex><span>  release_date      <span style=color:#66d9ef>DATE</span>,
-</span></span><span style=display:flex><span>  platform          <span style=color:#66d9ef>TEXT</span>,               <span style=color:#75715e>-- e.g., &#34;NES&#34;, &#34;SNES&#34;, &#34;PS4&#34;
-</span></span></span><span style=display:flex><span>  created_at        TIMESTAMPTZ <span style=color:#66d9ef>NOT</span> <span style=color:#66d9ef>NULL</span> <span style=color:#66d9ef>DEFAULT</span> <span style=color:#a6e22e>NOW</span>(),
-</span></span><span style=display:flex><span>  updated_at        TIMESTAMPTZ <span style=color:#66d9ef>NOT</span> <span style=color:#66d9ef>NULL</span> <span style=color:#66d9ef>DEFAULT</span> <span style=color:#a6e22e>NOW</span>()
-</span></span><span style=display:flex><span>);
-</span></span></code></pre></div><p>We can define the <code>Game</code> record as follows:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>type Date = UTCTime
-
-data Game = Game {
-    title :: Text,
-    seriesNumber :: Integer,
-    releaseDate :: Date,
-    platform :: Text
-}
-</code></pre><p>This can easily be encoded and decoded from JSON which Servant takes care of for
-us. Since we are using <code>Text</code> and <code>UTCTime</code> we also need the following imports:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>import Servant.API
-import Data.Time (UTCTime)
-import Data.Text (Text)
-</code></pre><p>Now using the <code>Game</code> record we define the <code>GameAPI</code> type as follows:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>type GameAPI = &#34;games&#34; :&gt; Get &#39;[JSON] [Game]
-</code></pre><p>Let&rsquo;s break this type&rsquo;s definition down:</p><ul><li><p><code>"games"</code> is the name of our query.</p></li><li><p><code>:></code> is a Servant operator that we use to create path in our API queries. We
+sense that we need language extensions:</p><p>I&rsquo;ll start by creating a single query for pulling all the Mega Man games which
+has the following schema:</p><p>We can define the <code>Game</code> record as follows:</p><p>This can easily be encoded and decoded from JSON which Servant takes care of for
+us. Since we are using <code>Text</code> and <code>UTCTime</code> we also need the following imports:</p><p>Now using the <code>Game</code> record we define the <code>GameAPI</code> type as follows:</p><p>Let&rsquo;s break this type&rsquo;s definition down:</p><ul><li><p><code>"games"</code> is the name of our query.</p></li><li><p><code>:></code> is a Servant operator that we use to create path in our API queries. We
 can think of <code>:></code> as simply <code>/</code> where the last element in the chain of <code>:></code>&rsquo;s
 is the operation at that path. So <code>"games" :> Get '[JSON] [Game]</code> is
 equivalent to the path <code>/games</code> and it performs a <code>Get</code>, but if I did <code>"seg1" :> "seg2" :> "seg3" :> Get '[JSON] [b]</code> then we obtain a path <code>/seg1/seg2/se3</code>
@@ -48,280 +24,94 @@ using <code>:></code>. This is a GET request and it&rsquo;ll return a <code>b</c
 if <code>a</code> is <code>'[JSON]</code>, then <code>b</code> is encoded as a JSON response using
 <a href=https://hackage.haskell.org/package/aeson>Aeson</a>.</p><p>Next we need to actually serve the API. We&rsquo;ll create a new module called
 <code>Server</code> for this. First, we import the <code>WebAPI</code>:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>import WebAPIType (GameAPI, Game)
-</code></pre></li></ul><p>Then from Servant we will need the following:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>import Servant (Server, Application, Proxy(..), serve)
-</code></pre><p><code>Server</code> is the type of the server that we will create from our API <code>GameAPI</code>.
+</code></pre></li></ul><p>Then from Servant we will need the following:</p><p><code>Server</code> is the type of the server that we will create from our API <code>GameAPI</code>.
 It is here that we connect the API to our server-side resolver (Servant calls
-these handlers). It has the following definition:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>class HasServer api context where
-  type ServerT api (m :: Type -&gt; Type) :: Type
-
-  route ::
-       Proxy api
-    -&gt; Context context
-    -&gt; Delayed env (Server api)
-    -&gt; Router env
-
-  hoistServerWithContext
-      :: Proxy api
-      -&gt; Proxy context
-      -&gt; (forall x. m x -&gt; n x)
-      -&gt; ServerT api m
-      -&gt; ServerT api n
-
-type Server api = ServerT api Handler
-</code></pre><p>This is a cool way to define the <code>Server</code> type, using a type class, because now
+these handlers). It has the following definition:</p><p>This is a cool way to define the <code>Server</code> type, using a type class, because now
 Servant can create different instances based on how the API is defined. For
 example, if one of your endpoints in your API route requires input, then Servant
 will require your resolver to be a function where the input is this input to the
 route. We will see some examples of this later.</p><p>The <code>Proxy</code> type is used to create a witness to all our type-level magic. We
 give the proxied API to the <code>serve</code> command when we create our final Servant
 <code>Application</code>. This application can then be given to the Wai Warp server which
-allows us to actually serve our API on a port of our system.</p><p>The <code>GameAPI</code> can now be turned into something servable using the above:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>games :: [Game]
-games = []
-
-serverGames :: Server GameAPI
-serverGames = return games
-
--- Actually build the api:
-gamesAPI :: Proxy GameAPI
-gamesAPI = Proxy
-
-gamesApp :: Application
-gamesApp = serve gamesAPI serverGames
-</code></pre><p>One question I currently have is, can <code>games</code> exist in the IO monad? I&rsquo;ll need
-to query the database which will need to be in IO.</p><p>Finally, we can serve our API using the following:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>module Main (main) where
-
-import Server (gamesApp)
-
-import Network.Wai.Handler.Warp (run)
-
-main :: IO ()
-main = run 5000 gamesApp
-</code></pre><p>Let&rsquo;s try and get this connected to the database using the <a href=https://hackage.haskell.org/package/hasql>HASQL Library</a>.</p><h2 id=the-database>The Database</h2><p><a href=https://hackage.haskell.org/package/hasql>HASQL Library</a> appears to be the
+allows us to actually serve our API on a port of our system.</p><p>The <code>GameAPI</code> can now be turned into something servable using the above:</p><p>One question I currently have is, can <code>games</code> exist in the IO monad? I&rsquo;ll need
+to query the database which will need to be in IO.</p><p>Finally, we can serve our API using the following:</p><p>Let&rsquo;s try and get this connected to the database using the <a href=https://hackage.haskell.org/package/hasql>HASQL Library</a>.</p><h2 id=the-database>The Database</h2><p><a href=https://hackage.haskell.org/package/hasql>HASQL Library</a> appears to be the
 best option for connecting to Postgres that is production grade. In this section
 we will setup HASQL within our example Servant application. This will allow us
 to conduct more realistic experiments to help our understanding.</p><p>Getting HASQL installed was a little bit of a challenge, because I didn&rsquo;t want
 to install the full Postgres database in the container of our example API,
 because it runs in a separate container as its own service. So I just want to
 connect to it using HASQL as a client. This requires the following packages be
-installed in the API&rsquo;s container:</p><pre tabindex=0><code>- libpq-dev
-- postgresql-client
-</code></pre><p>These got HASQL to fully install as part of our project. I also needed to add
-the following dependencies to my <code>stack.yaml</code>&rsquo;s <code>extra-deps</code>:</p><pre tabindex=0><code>- testcontainers
-- testcontainers-postgresql
-- text-builder-core
-- text-builder
-</code></pre><p>HASQL wouldn&rsquo;t compile without them. Now that I have a working build we can
+installed in the API&rsquo;s container:</p><p>These got HASQL to fully install as part of our project. I also needed to add
+the following dependencies to my <code>stack.yaml</code>&rsquo;s <code>extra-deps</code>:</p><p>HASQL wouldn&rsquo;t compile without them. Now that I have a working build we can
 proceed with setting up HASQL to query my database. I created a new module
 <code>Database</code> to house all of our database specific code.</p><p>First, we have to establish a connection with the database. Based on the
-documentation we should use these:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>Hasql.Connection
-Hasql.Connection.Setting
-Hasql.Connection.Setting.Connection
-</code></pre><p>I setup a database settings record:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>data ConnectionSettings = ConnectionSettings {
-    ipAddr :: String,
-    port :: Int,
-    user :: String,
-    dbname :: String
-}
-
-settings :: ConnectionSettings
-settings = ConnectionSettings {
-    ipAddr = &#34;123.4.5.6&#34;,
-    port = 5432,
-    user = &#34;postgres&#34;,
-    dbname = &#34;postgres&#34;
-}
-</code></pre><p>Then we can establish a connection to the database using <code>Connection.acquire :: [Setting] -> IO (Either ConnectionError Connection)</code> where we first define a
-<code>Setting</code> as a Postgres connection string:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>psqlSettings :: T.Text
-psqlSettings = T.pack $ &#34;host=&#34;++settings.ipAddr++&#34; dbname=&#34;++settings.dbname++&#34; user=&#34;++settings.user++&#34; port=&#34;++(show settings.port)
-
-connect :: IO (Either Connection.ConnectionError Connection.Connection)
-connect = Connection.acquire [connectSettings]
-    where
-        connectSettings = ConnectionSetting.connection $ ConnectionSettingConnection.string psqlSettings
-</code></pre><p>Updating the main loop to make a connection to the database is pretty easy now:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>main :: IO ()
-main = do
-    _dbconn &lt;- connect
-    case _dbconn of
-        Left err -&gt; putStrLn . show $ err
-        Right dbconn -&gt; do putStrLn &#34;Connected to Postgres&#34;
-                          hFlush stdout
-                          -- Make use of dbconn.
-                          run 5000 gamesApp
-</code></pre><p>In order to pass the database connection to <code>gamesApp</code>, we modify the type of
-<code>gamesApp</code> placing it into the <code>Control.Monad.Reader</code> monad.</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>gamesApp :: Reader Connection Application
-gamesApp = do
-    sg &lt;- serverGames
-    return $ serve gamesAPI sg
-</code></pre><p>Since the resolution of the query happens in <code>serverGames</code> we update it as well:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>serverGames :: Reader Connection (Server GameAPI)
-serverGames = do
-    dbconn &lt;- ask
-    return . liftIO $ games dbconn
-</code></pre><p>The type of <code>gamesProxy</code> doesn&rsquo;t need to change, because it does&rsquo;nt need to
+documentation we should use these:</p><p>I setup a database settings record:</p><p>Then we can establish a connection to the database using <code>Connection.acquire :: [Setting] -> IO (Either ConnectionError Connection)</code> where we first define a
+<code>Setting</code> as a Postgres connection string:</p><p>Updating the main loop to make a connection to the database is pretty easy now:</p><p>In order to pass the database connection to <code>gamesApp</code>, we modify the type of
+<code>gamesApp</code> placing it into the <code>Control.Monad.Reader</code> monad.</p><p>Since the resolution of the query happens in <code>serverGames</code> we update it as well:</p><p>The type of <code>gamesProxy</code> doesn&rsquo;t need to change, because it does&rsquo;nt need to
 access the database. However, <code>games</code> is the resolution function, and hence does
-need access to the database, but we update it as a pure function:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>games :: Connection -&gt; IO [Game]
-games dbconn = return []
-</code></pre><p>We now have access to the database in the resolution function for the <code>games</code>
+need access to the database, but we update it as a pure function:</p><p>We now have access to the database in the resolution function for the <code>games</code>
 query. So the next step is to actually write an SQL query for all of the games
 in the database, and execute the query on the database using <code>dbconn</code>.</p><p>Querying the database requires us to define two things: a <code>Statement</code> and a
 <code>Session</code>. The former boils down to the actual Postgres query while the latter
 is the action, synthesized from the statement, to be executed on the database
 connection. Then we simply pass the database connection and the session to the
 <code>run</code> function and the query will be executed on the database.</p><p>These both require encoding/decoding of the data to/from the database and
-Haskell. I defined the encoding between <code>Game</code> and Postgres as follows:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>gameParams :: HEnc.Params Game
-gameParams = (title &gt;$&lt; HEnc.param (HEnc.nonNullable HEnc.text))
-          &lt;&gt; (fmap fromInteger . seriesNumber &gt;$&lt; HEnc.param (HEnc.nullable HEnc.int8))
-          &lt;&gt; (releaseDate &gt;$&lt; HEnc.param (HEnc.nullable HEnc.timestamptz))
-          &lt;&gt; (platform &gt;$&lt; HEnc.param (HEnc.nullable HEnc.text))
-</code></pre><p>This encoder allows for the <code>Game</code> record to be given as a parameter to an SQL
+Haskell. I defined the encoding between <code>Game</code> and Postgres as follows:</p><p>This encoder allows for the <code>Game</code> record to be given as a parameter to an SQL
 statement. Each field of <code>Game</code> needs it&rsquo;s own encoding using
 <code>param :: NullableOrNot Value a -> Params a</code> that takes as input an encoder
 between a Postgres value that can be nullable or not and a Haskell type. We
 compose this encoder with the projection function of the field we are encoding.
-For example,</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>fmap fromInteger . seriesNumber &gt;$&lt; HEnc.param (HEnc.nullable HEnc.int8)
-</code></pre><p>This encoder of the <code>seriesNumber</code> field, first projects the series number, then
+For example,</p><p>This encoder of the <code>seriesNumber</code> field, first projects the series number, then
 converts it into an <code>Int64</code> which is then encoded as a parameter into Postgres.
 We need the call to <code>fmap</code>, because the series number is nullable, hence the
 type of <code>seriesNumber</code> is <code>Maybe Integer</code> and we need a <code>Maybe Int64</code> which is
 encodable into Postgres.</p><p>Decoding is opposite, but operates at the row level of the returned data from
 the database. Ultimately, we wish to query for the list of all <code>Game</code>&rsquo;s which
 corresponds to a list of games <code>[Game]</code>. Decoding a list of games is easy if we
-can decode single row containing a <code>Game</code>. We do this as follows:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>gameRow :: HDec.Row Game
-gameRow = Game &lt;$&gt; HDec.column (HDec.nonNullable HDec.text)               -- title
-               &lt;*&gt; HDec.column (HDec.nullable (fmap toInteger HDec.int8)) -- seriesNumber
-               &lt;*&gt; HDec.column (HDec.nullable HDec.timestamptz)           -- releaseDate
-               &lt;*&gt; HDec.column (HDec.nullable HDec.text)                  -- platform
-</code></pre><p>Here <code>gameRow</code> returns <code>Game</code> record by decoding each column of the row. The
-title of the game is decoded as:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>HDec.column (HDec.nonNullable HDec.text) -- title
-</code></pre><p>This says, decode this column as a <code>Text</code> value that is non-nullable. Thus, the
-above code has the type <code>Row Text</code> whereas the following:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>HDec.column (HDec.nullable (fmap toInteger HDec.int8)) -- seriesNumber
-</code></pre><p>has type <code>Row (Maybe Integer)</code>, because the series number is nullable.</p><p>Next we use this decoder to decode lists of <code>Games</code>:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>gamesDecoder :: HDec.Result [Game]
-gamesDecoder = HDec.rowList gameRow
-</code></pre><p>We use the library function <code>rowList :: Row a -> Result [a]</code> to lift our <code>Game</code>
+can decode single row containing a <code>Game</code>. We do this as follows:</p><p>Here <code>gameRow</code> returns <code>Game</code> record by decoding each column of the row. The
+title of the game is decoded as:</p><p>This says, decode this column as a <code>Text</code> value that is non-nullable. Thus, the
+above code has the type <code>Row Text</code> whereas the following:</p><p>has type <code>Row (Maybe Integer)</code>, because the series number is nullable.</p><p>Next we use this decoder to decode lists of <code>Games</code>:</p><p>We use the library function <code>rowList :: Row a -> Result [a]</code> to lift our <code>Game</code>
 decoder to lists. At this point we have everything we need to be able to resolve
 queries using the database.</p><h2 id=query-resolution>Query Resolution</h2><p>In the previous section we finished with needing to define a <code>Statement</code> and a
 <code>Session</code> in order to execute a query on the database. These are both coupled
 tightly to the actual query being resolved by Servant; and thus, we define these
 as part of the resolver for our <code>games</code> query in the module <code>Resolver</code>. The
-actual SQL statement we wish to execute is defined as a Hasql <code>Statement</code>:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>selectGames :: Statement () [Game]
-selectGames = Statement sql HEnc.noParams gamesDecoder True
-    where
-        sql = &#34;select title, series_number, release_date, platform from games&#34;
-</code></pre><p>The <code>selectGames</code> statement simply configures Hasql for parsing the SQL
+actual SQL statement we wish to execute is defined as a Hasql <code>Statement</code>:</p><p>The <code>selectGames</code> statement simply configures Hasql for parsing the SQL
 statement <code>sql</code>. This statement has no parameters indicated by using <code>noParams</code>,
 Hasql should decode the returned data using the <code>gamesDecoder</code> defined in the
 previous section, and finally, Hasql should execute this as a single query
 indicated by <code>True</code> which should improve performance (based on the Hasql
-documentation).</p><p>Using <code>selectGames</code> we can define our Hasql <code>Session</code>:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>gamesSession :: Session [Game]
-gamesSession = statement () selectGames
-</code></pre><p>Since we have no parameters we give
+documentation).</p><p>Using <code>selectGames</code> we can define our Hasql <code>Session</code>:</p><p>Since we have no parameters we give
 <code>statement :: params -> Statement params result -> Session result</code>
 the unit <code>()</code>, but give <code>selectGames</code> as our result.</p><p>Now we can use <code>gamesSession</code> to define our resolver for our <code>games</code> Servant
-query:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>games :: Connection -&gt; IO [Game]
-games dbconn = do
-    result &lt;- run gamesSession dbconn
-    case result of
-        Left err -&gt; error . show $ err
-        Right g -&gt; do print g
-                      hFlush stdout
-                      return g
-</code></pre><p>We first run the <code>gamesSession</code> on the database using the given connection
+query:</p><p>We first run the <code>gamesSession</code> on the database using the given connection
 <code>dbconn</code>, and then simply case split on the result to determine if we got an
-error or a value result.</p><h2 id=executing-a-query>Executing a query</h2><p>We can now execute our <code>games</code> query to obtain the list of games:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-.bash data-lang=.bash><span style=display:flex><span><span style=color:#75715e># curl http://localhost:5000/games</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>[{</span><span style=color:#e6db74>&#34;platform&#34;</span>:<span style=color:#e6db74>&#34;NES&#34;</span>,<span style=color:#e6db74>&#34;releaseDate&#34;</span>:<span style=color:#e6db74>&#34;2000-01-01T01:11:34.962898Z&#34;</span>,<span style=color:#e6db74>&#34;seriesNumber&#34;</span>:1,<span style=color:#e6db74>&#34;title&#34;</span>:<span style=color:#e6db74>&#34;Mega Man&#34;</span><span style=color:#f92672>}</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>{</span><span style=color:#e6db74>&#34;platform&#34;</span>:<span style=color:#e6db74>&#34;NES&#34;</span>,<span style=color:#e6db74>&#34;releaseDate&#34;</span>:<span style=color:#e6db74>&#34;2000-01-01T01:11:34.963271Z&#34;</span>,<span style=color:#e6db74>&#34;seriesNumber&#34;</span>:2,<span style=color:#e6db74>&#34;title&#34;</span>:<span style=color:#e6db74>&#34;Mega Man 2&#34;</span><span style=color:#f92672>}</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>{</span><span style=color:#e6db74>&#34;platform&#34;</span>:<span style=color:#e6db74>&#34;NES&#34;</span>,<span style=color:#e6db74>&#34;releaseDate&#34;</span>:<span style=color:#e6db74>&#34;2000-01-01T01:11:34.963914Z&#34;</span>,<span style=color:#e6db74>&#34;seriesNumber&#34;</span>:3,<span style=color:#e6db74>&#34;title&#34;</span>:<span style=color:#e6db74>&#34;Mega Man 3&#34;</span><span style=color:#f92672>}</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>{</span><span style=color:#e6db74>&#34;platform&#34;</span>:<span style=color:#e6db74>&#34;SNES&#34;</span>,<span style=color:#e6db74>&#34;releaseDate&#34;</span>:<span style=color:#e6db74>&#34;2000-01-01T01:11:34.96509Z&#34;</span>,<span style=color:#e6db74>&#34;seriesNumber&#34;</span>:1,<span style=color:#e6db74>&#34;title&#34;</span>:<span style=color:#e6db74>&#34;Mega Man X&#34;</span><span style=color:#f92672>}</span>,
-</span></span><span style=display:flex><span>  <span style=color:#f92672>{</span><span style=color:#e6db74>&#34;platform&#34;</span>:<span style=color:#e6db74>&#34;PS4&#34;</span>,<span style=color:#e6db74>&#34;releaseDate&#34;</span>:<span style=color:#e6db74>&#34;2000-01-01T00:00:00.006849Z&#34;</span>,<span style=color:#e6db74>&#34;seriesNumber&#34;</span>:11,<span style=color:#e6db74>&#34;title&#34;</span>:<span style=color:#e6db74>&#34;Mega Man 11&#34;</span><span style=color:#f92672>}]</span>
-</span></span></code></pre></div><p>As we can see all of the games in our database are returned.</p><h1 id=extending-our-simple-api>Extending our simple API</h1><p>Now let&rsquo;s try adding a new endpoint I&rsquo;ll call &ldquo;character&rdquo; that will return a
+error or a value result.</p><h2 id=executing-a-query>Executing a query</h2><p>We can now execute our <code>games</code> query to obtain the list of games:</p><p>As we can see all of the games in our database are returned.</p><h1 id=extending-our-simple-api>Extending our simple API</h1><p>Now let&rsquo;s try adding a new endpoint I&rsquo;ll call &ldquo;character&rdquo; that will return a
 list of characters based on a JSON request with some detail we will use to
-filter the response.</p><p>A character is defined as follows:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>data Character = Character {
-    displayName :: Text,
-    kind :: Text,
-    alignment :: Text,
-    debut_game :: Maybe Text,
-    description :: Maybe Text
-} deriving (Eq, Show, Generic)
-
-instance ToJSON Character
-instance FromJSON Character
-</code></pre><p>Then we will pass in via JSON a character detail:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>data CharDetails = DisplayName Text 
-                 | Kind Text
-                 | Alignment Text
-  deriving (Eq, Show, Generic)
-
-instance FromJSON CharDetails
-
-newtype GetCharDetails = GetCharDetails {
-    details :: CharDetails
-} deriving (Eq, Show, Generic)
-
-instance FromJSON GetCharDetails
-</code></pre><p>The type <code>GetCharDetails</code> will be the structure of our JSON. For example,</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-.json data-lang=.json><span style=display:flex><span>{
+filter the response.</p><p>A character is defined as follows:</p><p>Then we will pass in via JSON a character detail:</p><p>The type <code>GetCharDetails</code> will be the structure of our JSON. For example,</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-.json data-lang=.json><span style=display:flex><span>{
 </span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;details&#34;</span>: {
 </span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;tag&#34;</span>: <span style=color:#e6db74>&#34;DisplayName&#34;</span>, 
 </span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;contents&#34;</span>: <span style=color:#e6db74>&#34;Mega Man&#34;</span>
 </span></span><span style=display:flex><span>  }
 </span></span><span style=display:flex><span>}
-</span></span></code></pre></div><p>Now we can add a new endpoint to our <code>GameAPI</code>:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>type GameAPI = &#34;games&#34;     :&gt; Get &#39;[JSON] [Game]
-          :&lt;|&gt; &#34;character&#34; :&gt; ReqBody &#39;[JSON] GetCharDetails :&gt; Post &#39;[JSON] [Character]
-</code></pre><p>Servant allows us to name the endpoint &ldquo;character&rdquo; and then require a JSON
+</span></span></code></pre></div><p>Now we can add a new endpoint to our <code>GameAPI</code>:</p><p>Servant allows us to name the endpoint &ldquo;character&rdquo; and then require a JSON
 request body whose contents must parse as a <code>GetCharDetails</code> (the parsing will
 be done using AESON). Since we are passing information to the server we must do
 this through a POST request. Servant makes this pretty easy!</p><p>After updating the definition of our API type, we will need to update our
 server. Based on how we wrote the <code>gamesApp</code> which serves the API we do not need
 to change it.</p><p>However, our server <code>serverGames</code> now requires we define our resolvers as
-Servant handlers:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>characterHandler :: Connection -&gt; GetCharDetails -&gt; Handler [Character]
-characterHandler dbconn deets = liftIO $ character dbconn (details deets)
-
-gamesHandler :: Connection -&gt; Handler [Game]
-gamesHandler dbconn = liftIO $ games dbconn
-</code></pre><p>The handler <code>gamesHandler</code> doesn&rsquo;t change, except for being in the <code>Handler</code>
+Servant handlers:</p><p>The handler <code>gamesHandler</code> doesn&rsquo;t change, except for being in the <code>Handler</code>
 monad. The handler for our new endpoint <code>characterHandler</code> takes as input a
 database connection as well as a <code>GetCharDetails</code> which is the character details
 obtained from the JSON request body. In Servant, this simply corresponds to a
-new argument to the function. We implement this handler as follows:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>characterHandler :: Connection -&gt; GetCharDetails -&gt; Handler [Character]
-characterHandler dbconn deets = liftIO $ character dbconn (details deets)
-</code></pre><p>We simply call a resolver function that operates in <code>IO</code> and lift its result
-into the <code>Handler</code> monad. This allows <code>character</code> to be written fairly simply.</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>character :: Connection -&gt; CharDetails -&gt; IO [Character]
-character dbconn details = do
-    print details
-    hFlush stdout
-    result &lt;- run (characterSession details) dbconn
-    case result of
-        Left err -&gt; error . (++&#34;\n&#34;) . show $ err
-        Right g -&gt; do print g
-                      hFlush stdout
-                      return g
-</code></pre><p>In fact, the only differences from the <code>games</code> resolver is that we call
+new argument to the function. We implement this handler as follows:</p><p>We simply call a resolver function that operates in <code>IO</code> and lift its result
+into the <code>Handler</code> monad. This allows <code>character</code> to be written fairly simply.</p><p>In fact, the only differences from the <code>games</code> resolver is that we call
 <code>characterSession</code> the Hasql session for executing the SQL query on our database
 using the character details, <code>details</code>.</p><p>Then <code>characterSession</code> case splits on which character detail was passed in, and
-filter our results based on that:</p><pre tabindex=0><code class=language-.haskell data-lang=.haskell>characterSession :: CharDetails -&gt; Session [Character]
-characterSession (DisplayName name) = statement name $ Statement sql textEncoder characterDecoder True
-    where 
-        sql = sqlStr $ selectCharacterBySQL &#34;characters.display_name&#34;
-characterSession (Kind kind) = statement kind $ Statement sql textEncoder characterDecoder True
-    where 
-        sql = sqlStr $ selectCharacterBySQL &#34;characters.kind&#34;
-characterSession (Alignment alignment) = statement alignment $ Statement sql textEncoder characterDecoder True
-    where 
-        sql = sqlStr $ selectCharacterBySQL &#34;characters.alignment&#34;
-
-selectCharacterBySQL :: String -&gt; String
-selectCharacterBySQL field = &#34;SELECT display_name,kind,alignment,games.title AS game_title,description FROM characters INNER JOIN games on characters.debut_game_id = games.game_id WHERE &#34;++field++&#34; = $1&#34;
-</code></pre><p>One thing to note about this, I tried to use the Hasql template haskell library
+filter our results based on that:</p><p>One thing to note about this, I tried to use the Hasql template haskell library
 (Hasql-TH) to write my SQL statement, but since I&rsquo;m using records, and in the
 future, nested records, it doesn&rsquo;t support it. However, even for simple types I
 found it a lot easier to actually just write my own encoder/decoders for my
 data. The fact that there really isn&rsquo;t any documentation for Hasql-TH made it
 even more difficult.</p><p>Besides the encoders for the data, this is all it took to extend our API with a
-more advanced endpoint. Here is an example query:</p><pre tabindex=0><code># curl -X POST -H &#34;Content-Type: application/json&#34; -d &#39;{&#34;details&#34;: {&#34;tag&#34;: &#34;Alignment&#34;, &#34;contents&#34;: &#34;villain&#34;}}&#39; http://localhost:5000/character
-[{&#34;alignment&#34;:&#34;villain&#34;,&#34;debut_game&#34;:&#34;Mega Man&#34;,&#34;description&#34;:&#34;Mad scientist&#34;,&#34;displayName&#34;:&#34;Dr. Wily&#34;,&#34;kind&#34;:&#34;scientist&#34;},
- {&#34;alignment&#34;:&#34;villain&#34;,&#34;debut_game&#34;:&#34;Mega Man&#34;,&#34;description&#34;:&#34;Timber-cutting robot&#34;,&#34;displayName&#34;:&#34;Cut Man&#34;,&#34;kind&#34;:&#34;robot_master&#34;},
- {&#34;alignment&#34;:&#34;villain&#34;,&#34;debut_game&#34;:&#34;Mega Man&#34;,&#34;description&#34;:&#34;Super-strong construction robot&#34;,&#34;displayName&#34;:&#34;Guts Man&#34;,&#34;kind&#34;:&#34;robot_master&#34;},
- {&#34;alignment&#34;:&#34;villain&#34;,&#34;debut_game&#34;:&#34;Mega Man&#34;,&#34;description&#34;:&#34;Cold-weather robot&#34;,&#34;displayName&#34;:&#34;Ice Man&#34;,&#34;kind&#34;:&#34;robot_master&#34;},
- {&#34;alignment&#34;:&#34;villain&#34;,&#34;debut_game&#34;:&#34;Mega Man&#34;,&#34;description&#34;:&#34;Demolition robot&#34;,&#34;displayName&#34;:&#34;Bomb Man&#34;,&#34;kind&#34;:&#34;robot_master&#34;},
- {&#34;alignment&#34;:&#34;villain&#34;,&#34;debut_game&#34;:&#34;Mega Man&#34;,&#34;description&#34;:&#34;Waste disposal robot&#34;,&#34;displayName&#34;:&#34;Fire Man&#34;,&#34;kind&#34;:&#34;robot_master&#34;},
- {&#34;alignment&#34;:&#34;villain&#34;,&#34;debut_game&#34;:&#34;Mega Man&#34;,&#34;description&#34;:&#34;Power plant robot&#34;,&#34;displayName&#34;:&#34;Elec Man&#34;,&#34;kind&#34;:&#34;robot_master&#34;},
- {&#34;alignment&#34;:&#34;villain&#34;,&#34;debut_game&#34;:&#34;Mega Man 2&#34;,&#34;description&#34;:&#34;Uses deadly Metal Blades&#34;,&#34;displayName&#34;:&#34;Metal Man&#34;,&#34;kind&#34;:&#34;robot_master&#34;},
- {&#34;alignment&#34;:&#34;villain&#34;,&#34;debut_game&#34;:&#34;Mega Man 2&#34;,&#34;description&#34;:&#34;Controls wind attacks&#34;,&#34;displayName&#34;:&#34;Air Man&#34;,&#34;kind&#34;:&#34;robot_master&#34;}]
-</code></pre><p>To be continued&mldr;.</p><h1 id=authorization-tba>Authorization (TBA)</h1><p>Authorization uses <a href=https://en.wikipedia.org/wiki/Basic_access_authentication>Basic Auth</a></p></div></main><footer class=footer><div></div><div>© 2026-2027 Harley Eades III</div></footer></body></html>
+more advanced endpoint. Here is an example query:</p><p>To be continued&mldr;.</p><h1 id=authorization-tba>Authorization (TBA)</h1><p>Authorization uses <a href=https://en.wikipedia.org/wiki/Basic_access_authentication>Basic Auth</a></p></div></main><footer class=footer><div></div><div>© 2026-2027 Harley Eades III</div></footer></body></html>
