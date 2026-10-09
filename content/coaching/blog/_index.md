@@ -1,4 +1,0 @@
-+++
-type = 'coaching'
-layout = 'blog'
-+++
