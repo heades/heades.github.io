@@ -1,0 +1,21 @@
+{{ define "main" }}
+    <header class="header">
+        {{ partial "header.html" (dict "title"    site.Title 
+                                       "subtitle" "USAW Level 1 Coach" 
+                                       "menuID"   "coaching" 
+                                       "section"  .) }}
+    </header>
+    <main class="academic-home-container">
+        <div class="academic-home-content">
+            <div class="image-description-side-by-side">
+                <img src="/images/harley.jpg" alt="image placeholder" />
+                <div>{{ .Content }}</div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="footer">
+      {{ partial "footer.html" . }}
+    </footer>   
+{{ end }}
+

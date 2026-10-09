@@ -1,0 +1,4 @@
++++
+type = 'coaching'
+layout = 'blog'
++++

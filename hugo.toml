@@ -1,0 +1,75 @@
+baseURL = 'localhost'
+title = 'Harley Eades'
+theme = 'nab-dark'
+
+[params]
+email = 'harley.eades@gmail.com'
+copyright = '2026-2027 Harley Eades III'
+instagram = 'harleyeadeslifts'
+subtitle = 'Academic, Olympic Weightlifting Coach, Designer'
+
+[menus]
+  [[menus.main]]
+    name = 'Menu'
+    pageRef = '/'
+    weight = 1
+  
+  [[menus.main]]
+    name = 'Coaching'
+    pageRef = '/coaching'
+    weight = 2
+  
+  [[menus.main]]
+    name = 'Academic'
+    url = "/academic"
+    weight = 2
+
+  [[menus.academic]]
+    name = 'Menu'
+    pageRef = '/'
+    weight = 1
+
+  [[menus.academic]]
+    name = 'Home'
+    pageRef = '/academic'
+    weight = 2
+
+  [[menus.academic]]
+    name = 'Activity'
+    pageRef = 'activity/'
+    weight = 3
+    
+  [[menus.academic]]
+    name = 'Blog'
+    pageRef = '/academic/blog/'
+    weight = 4
+
+  [[menus.coaching]]
+    name = 'Menu'
+    pageRef = '/'
+    weight = 1
+
+  [[menus.coaching]]
+    name = 'Home'
+    pageRef = '/coaching'
+    weight = 2
+  
+  [[menus.coaching]]
+    name = 'Blog'
+    pageRef = '/coaching/blog/'
+    weight = 3
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
+
+[security]
+  allowContent = ['! ^text/org$']
+  enableInlineShortcodes = false
+
+[security.exec]
+  allow = ["^(dart-)?sass$", "^go$", "^git$", "^node$", "^postcss$", "^tailwindcss$"]
+
+[build]
+  [buildStats]
+    enable = true

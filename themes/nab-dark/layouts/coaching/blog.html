@@ -1,0 +1,94 @@
+{{ define "main" }}
+    <header class="header">
+        {{ partial "header.html" (dict "title"    site.Title 
+                                       "subtitle" "USAW Level 1 Coach" 
+                                       "menuID"   "coaching" 
+                                       "section"  .) }}
+    </header>
+    <main class="activity-container">
+        <div class="activity-content">
+            <p>Welcome to my coaching blog.</p>
+            <ul class="activity-feed-filter">
+                <input class="activity-feed-search-input" 
+                       placeholder="filter by title, tag, date"
+                       id="filter-input"/>
+            </ul>
+            <ul class="activity-feed"
+                id="feed">                
+                {{ $year := "" }}
+                {{ $yearId := 0 }}
+                {{ $itemId := 0 }}
+                {{ range (where site.RegularPages "Type" "coaching").ByDate.Reverse }}
+                    {{if isset .Params "activity"}}
+                        {{if isset .Params.activity "type"}}
+                            {{if eq .Params.activity.type "post"}}
+                                {{ $itemLink := .RelPermalink }}
+                                {{ $date := .Params.date.Format "2006-01-02"}}
+                                {{ $currentYear := .Params.date.Format "2006"}}                   
+                                {{ if not (eq $year $currentYear) }}
+                                    {{ $year = $currentYear }}
+                                    {{ $yearId = add $yearId 1 }}
+                                    {{ $itemId = 0 }}
+                                    <li class="activity-feed-year-heading"
+                                        id="year-{{ $year }}">{{ $year }}</li>
+                                {{ end }}                                                                    
+                                    <li class="activity-feed-item"
+                                        id="{{ path.Base $itemLink }}"
+                                        data-title="{{ .Title }}"
+                                        {{if isset .Params "activity"}}
+                                            data-tags="
+                                            {{ .Params.activity.type }}
+
+                                            {{if isset .Params.activity "authors"}}
+                                                {{ delimit .Params.activity.authors " " }}
+                                            {{ end }}
+
+                                            {{if isset .Params.activity "tags"}}
+                                                {{ delimit .Params.activity.tags " " }}
+                                            {{ end }}"
+                                        {{ end }}
+                                        data-year="{{ $year }}">
+                                {{ $itemId = add $itemId 1 }}
+                                    <h4
+                                    {{ if not (eq (mod $itemId 2) 0) }}
+                                        class="activity-feed-h4"
+                                    {{ else }}
+                                        class="activity-feed-h4 activity-feed-h4-even"
+                                    {{ end }}
+                                    >
+                                        <a href="{{ $itemLink }}">{{ .Title | safeHTML }}</a>
+                                    </h4>
+                                    <ul class="activity-fields">  
+                                        <li class="activity-field">
+                                            <span>date: </span>
+                                            <span>{{ $date }}</span>
+                                        </li>
+                                    {{if isset .Params "activity"}}                            
+                                                {{ if isset .Params.activity "authors" }}                                             
+                                                    <li class="activity-field">
+                                                        <span>author:</span>
+                                                        <span>{{ delimit .Params.activity.authors ", " }}</span>
+                                                    </li>
+                                                {{ end }}                                                                                                
+                                                <li class="activity-field">                                
+                                                    <ul class="activity-tags">                                                        
+                                                        {{ range .Params.activity.tags}}  
+                                                            <li class="activity-tag">{{.}}</li>
+                                                        {{ end }}                          
+                                                    </ul>
+                                                </li>
+                                        </ul>  
+                                    {{ end }}
+                                </li>
+                            {{end }}
+                        {{ end }}
+                    {{ end }}
+                {{ end }}
+            </ul>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="footer">
+      {{ partial "footer.html" . }}
+    </footer> 
+{{ end }}

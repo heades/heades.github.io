@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Harley Eades</title>
+		<link>http://10.52.32.46:1313/academic/activity/</link>
+		<description>Recent content on Harley Eades</description>
+		<generator>Hugo</generator>
+		<language>en</language>
+		
+		
+		
+		
+			<lastBuildDate>Mon, 08 Dec 2025 00:00:00 +0000</lastBuildDate>
+		
+			<atom:link href="http://10.52.32.46:1313/academic/activity/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>All about Servant</title>
+				<link>http://10.52.32.46:1313/academic/activity/2025-11-20-servant/</link>
+				<pubDate>Mon, 08 Dec 2025 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2025-11-20-servant/</guid>
+				<description>&lt;p&gt;&lt;strong&gt;I&amp;rsquo;m live writing this, and so this document is ALIVE (ALIVE, IT&amp;rsquo;S ALIVE), so&#xA;expect there to be errors, gaps, and no ending (yet).&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;Servant is a Haskell library for writing web API&amp;rsquo;s. Some research I&amp;rsquo;m starting&#xA;up requires that I understand how it works. So I thought I&amp;rsquo;d write up my notes&#xA;here. These notes simply follow along with the&#xA;&lt;a href=&#34;https://docs.servant.dev/en/latest/index.html&#34;&gt;Servant Documentation&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;h1 id=&#34;setup&#34;&gt;Setup&lt;/h1&gt;&#xA;&lt;p&gt;I&amp;rsquo;m using Docker Compose with two services: a service called &lt;code&gt;servant&lt;/code&gt; and a&#xA;service called &lt;code&gt;database&lt;/code&gt;. The latter is the default Postgres image from&#xA;DockerHub, but I wrote a custom &lt;code&gt;init.db&lt;/code&gt; script that populates it with a schema&#xA;and dataset of random information from the Mega Man video game. I&amp;rsquo;ll use this&#xA;data to write queries that will modify and read an actual database.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Combining Dependency, Grades, and Adjoint Logic</title>
+				<link>http://10.52.32.46:1313/academic/activity/2023-tyde23/</link>
+				<pubDate>Thu, 31 Aug 2023 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2023-tyde23/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>CrossFit&#43;HCI: Improving the Design of Remote Fitness Coaching Platforms</title>
+				<link>http://10.52.32.46:1313/academic/activity/2023-wish23/</link>
+				<pubDate>Fri, 24 Feb 2023 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2023-wish23/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Graded Modal Dependent Type Theory</title>
+				<link>http://10.52.32.46:1313/academic/activity/2021-esop/</link>
+				<pubDate>Tue, 23 Mar 2021 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2021-esop/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>A graded dependent type system with a usage-aware semantics (extended version)</title>
+				<link>http://10.52.32.46:1313/academic/activity/2021-popl/</link>
+				<pubDate>Sun, 20 Dec 2020 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2021-popl/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Towards Graded Modal Dependent Types</title>
+				<link>http://10.52.32.46:1313/academic/activity/2020-tyde/</link>
+				<pubDate>Sun, 23 Aug 2020 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2020-tyde/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Grading Adjoint Logic</title>
+				<link>http://10.52.32.46:1313/academic/activity/2020-linearity-tlla/</link>
+				<pubDate>Mon, 29 Jun 2020 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2020-linearity-tlla/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>The Graded Lambek Calculus</title>
+				<link>http://10.52.32.46:1313/academic/activity/2020-linearity-tlla-lambek/</link>
+				<pubDate>Mon, 29 Jun 2020 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2020-linearity-tlla-lambek/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Unifying graded and parameterised monads</title>
+				<link>http://10.52.32.46:1313/academic/activity/2020-msfp/</link>
+				<pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2020-msfp/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Graded Modal Types</title>
+				<link>http://10.52.32.46:1313/academic/activity/2020-cmu-talk/</link>
+				<pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2020-cmu-talk/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>On Linear Modalities for Exchange, Weakening, and Contraction</title>
+				<link>http://10.52.32.46:1313/academic/activity/2016-ll/</link>
+				<pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2016-ll/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Quantitative Program Reasoning with Graded Modal Types</title>
+				<link>http://10.52.32.46:1313/academic/activity/2019-icfp/</link>
+				<pubDate>Sun, 18 Aug 2019 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2019-icfp/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>My Path from Special Education to Assistant Professor</title>
+				<link>http://10.52.32.46:1313/academic/activity/2018-05-10-from-sped-to-prof/</link>
+				<pubDate>Fri, 02 Aug 2019 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2018-05-10-from-sped-to-prof/</guid>
+				<description>&lt;p&gt;I am wrapping up the preparation of my tenure application which is due August 16th.  This marks a major milestone in my life, and as a result, has caused me to reflect a bit on my path to where I am today.  In doing so I have decided to share my very non-traditional path with everyone.  I&amp;rsquo;ve decided to do this, because I&amp;rsquo;ve had to overcome a bit of struggle to get here, and I generally feel less alone when I know of others who deal with similar problems, and even more so when those people are generally successful in their life.  In this post, I would like to share my story and problems I deal with in the hope that someone out there might feel less alone.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>On the Lambek Calculus with an Exchange Modality</title>
+				<link>http://10.52.32.46:1313/academic/activity/2019-linearity-proceedings/</link>
+				<pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2019-linearity-proceedings/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>On Linear Logic, Functional Programming, and Attack Trees</title>
+				<link>http://10.52.32.46:1313/academic/activity/2018-gramsec/</link>
+				<pubDate>Sun, 29 Jul 2018 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2018-gramsec/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>On the Lambek Calculus with an Exchange Modality</title>
+				<link>http://10.52.32.46:1313/academic/activity/2018-linearity/</link>
+				<pubDate>Sat, 07 Jul 2018 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2018-linearity/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Explaining Type Errors</title>
+				<link>http://10.52.32.46:1313/academic/activity/2018-obt/</link>
+				<pubDate>Sat, 13 Jan 2018 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2018-obt/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Dialectica Categories for the Lambek Calculus</title>
+				<link>http://10.52.32.46:1313/academic/activity/2018-lfcs/</link>
+				<pubDate>Mon, 08 Jan 2018 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2018-lfcs/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Advancing PL Based Formal Methods Research and Education</title>
+				<link>http://10.52.32.46:1313/academic/activity/2018-plas-kent-talk/</link>
+				<pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2018-plas-kent-talk/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Introducing a New Project on The Combination of Substructural Logics and Dependent Type Theory</title>
+				<link>http://10.52.32.46:1313/academic/activity/2017-tlla/</link>
+				<pubDate>Mon, 31 Jul 2017 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2017-tlla/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Dialectica categories for the Lambek calculus</title>
+				<link>http://10.52.32.46:1313/academic/activity/2016-asl/</link>
+				<pubDate>Sat, 15 Apr 2017 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2016-asl/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Constructive Temporal Logic, Categorically</title>
+				<link>http://10.52.32.46:1313/academic/activity/2017-ifcolog/</link>
+				<pubDate>Wed, 01 Feb 2017 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2017-ifcolog/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Dualized Simple Type Theory</title>
+				<link>http://10.52.32.46:1313/academic/activity/2014-lmcs/</link>
+				<pubDate>Mon, 15 Aug 2016 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2014-lmcs/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Multiple Conclusion Linear Logic: Cut-elimination and more</title>
+				<link>http://10.52.32.46:1313/academic/activity/2016-lfcs/</link>
+				<pubDate>Mon, 04 Jan 2016 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2016-lfcs/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>A New Foundation of Attack Trees in Monoidal Categories</title>
+				<link>http://10.52.32.46:1313/academic/activity/2016-ia-colloquium-talk/</link>
+				<pubDate>Fri, 01 Jan 2016 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2016-ia-colloquium-talk/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Multiple Conclusion Linear Logic: Cut Elimination and more</title>
+				<link>http://10.52.32.46:1313/academic/activity/2016-lfcs-talk/</link>
+				<pubDate>Fri, 01 Jan 2016 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2016-lfcs-talk/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>The Three Perspectives of Computation</title>
+				<link>http://10.52.32.46:1313/academic/activity/2016-gasouthern-colloquium-talk/</link>
+				<pubDate>Fri, 01 Jan 2016 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2016-gasouthern-colloquium-talk/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Full Intuitionistic Linear Logic (FILL)</title>
+				<link>http://10.52.32.46:1313/academic/activity/2015-cade/</link>
+				<pubDate>Mon, 17 Aug 2015 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2015-cade/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Constructive Modal Logic S4 (CS4)</title>
+				<link>http://10.52.32.46:1313/academic/activity/2015-eps2/</link>
+				<pubDate>Sat, 01 Aug 2015 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2015-eps2/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Full Intuitionistic Logic</title>
+				<link>http://10.52.32.46:1313/academic/activity/2015-eps3/</link>
+				<pubDate>Sat, 01 Aug 2015 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2015-eps3/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Two-sided Linear Sequent Calculus</title>
+				<link>http://10.52.32.46:1313/academic/activity/2015-eps1/</link>
+				<pubDate>Sat, 01 Aug 2015 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2015-eps1/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>The Semantic Analysis of Advanced Programming Languages</title>
+				<link>http://10.52.32.46:1313/academic/activity/2014-thesis/</link>
+				<pubDate>Fri, 01 Aug 2014 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2014-thesis/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Hereditary Substitution for the λΔ-Calculus</title>
+				<link>http://10.52.32.46:1313/academic/activity/2014-clc-talk/</link>
+				<pubDate>Wed, 01 Jan 2014 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2014-clc-talk/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Hereditary Substitution for the λΔ-Calculus</title>
+				<link>http://10.52.32.46:1313/academic/activity/2013-cos/</link>
+				<pubDate>Wed, 04 Sep 2013 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2013-cos/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Reconsidering Intuitionistic Duality</title>
+				<link>http://10.52.32.46:1313/academic/activity/2013-cos-ea/</link>
+				<pubDate>Wed, 04 Sep 2013 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2013-cos-ea/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>The Categorical Structure of Semi-Bilinear Intuitionistic Logic</title>
+				<link>http://10.52.32.46:1313/academic/activity/2013-mvd/</link>
+				<pubDate>Sun, 01 Sep 2013 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2013-mvd/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Equational reasoning about programs with general recursion and call-by-value semantics</title>
+				<link>http://10.52.32.46:1313/academic/activity/2013-pi/</link>
+				<pubDate>Fri, 01 Mar 2013 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2013-pi/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>On the Categorical Structure of Bi-Intuitionistic Logics</title>
+				<link>http://10.52.32.46:1313/academic/activity/2013-ims-talk/</link>
+				<pubDate>Tue, 01 Jan 2013 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2013-ims-talk/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Exploring the Reach of Hereditary Substitution</title>
+				<link>http://10.52.32.46:1313/academic/activity/2012-types/</link>
+				<pubDate>Wed, 12 Sep 2012 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2012-types/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>LFSC for SMT Proofs: Work in Progress</title>
+				<link>http://10.52.32.46:1313/academic/activity/2012-pxtp/</link>
+				<pubDate>Sat, 30 Jun 2012 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2012-pxtp/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Irrelevance, Heterogeneous Equality, and Call-by-value Dependent Type Systems</title>
+				<link>http://10.52.32.46:1313/academic/activity/2012-msfp/</link>
+				<pubDate>Mon, 25 Jun 2012 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2012-msfp/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Equational reasoning about programs with general recursion and call-by-value semantics</title>
+				<link>http://10.52.32.46:1313/academic/activity/2012-plpv/</link>
+				<pubDate>Tue, 24 Jan 2012 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2012-plpv/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Exploring the Reach of Hereditary Substitution</title>
+				<link>http://10.52.32.46:1313/academic/activity/2012-penn-pl-club-talk/</link>
+				<pubDate>Sun, 01 Jan 2012 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2012-penn-pl-club-talk/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Hereditary Substitution for Classical Natural Deduction</title>
+				<link>http://10.52.32.46:1313/academic/activity/2012-trellys-talk/</link>
+				<pubDate>Sun, 01 Jan 2012 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2012-trellys-talk/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Hereditary Substitution for the λΔ-Calculus</title>
+				<link>http://10.52.32.46:1313/academic/activity/2012-clc-talk/</link>
+				<pubDate>Sun, 01 Jan 2012 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2012-clc-talk/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Separation from Proof and Program</title>
+				<link>http://10.52.32.46:1313/academic/activity/2011-mvd-talk/</link>
+				<pubDate>Sat, 01 Jan 2011 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2011-mvd-talk/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Hereditary Substitution for Stratified System F</title>
+				<link>http://10.52.32.46:1313/academic/activity/2010-pstt/</link>
+				<pubDate>Thu, 15 Jul 2010 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2010-pstt/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Zero-Divisors and Their Graph Languages</title>
+				<link>http://10.52.32.46:1313/academic/activity/2009-rose/</link>
+				<pubDate>Sun, 04 Jan 2009 00:00:00 +0000</pubDate>
+				<guid>http://10.52.32.46:1313/academic/activity/2009-rose/</guid>
+				<description></description>
+			</item>
+	</channel>
+</rss>

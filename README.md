@@ -1,6 +1,6 @@
-My personal website
--------------------
+# Harley Eades': Web Collective
 
-The style is based on the site:
-
-https://github.com/DavidDeharbe/DavidDeharbe.github.io
+## Documentation
+- Put resources that amount to static websites into `/static`.
+  - This will be the case for course websites like `plweb`, `hciweb`, etc.
+  - Keynote slides are under `/static/keynote-slides`.

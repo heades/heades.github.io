@@ -1,0 +1,4 @@
++++
+type = 'academic'
+layout = 'activity'
++++

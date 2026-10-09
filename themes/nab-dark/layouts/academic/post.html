@@ -1,0 +1,27 @@
+{{ define "main" }}
+    <header class="header">
+        {{ partial "header.html" (dict "title"    site.Title 
+                                       "subtitle" "Research Professor in Computer Science" 
+                                       "menuID"   "academic" 
+                                       "section"  .) }}
+    </header>
+    <main class="academic-home-container">
+        <div class="academic-home-content academic-post-content">
+            <div class="academic-post-header">
+              {{ $date := .Date.Format "02-01-2006"}}
+              <h1>{{ .Title }}</h1>
+              <span class="academic-post-date">Posted: {{ $date }}</span>
+              <ul class="activity-tags">                
+                {{ range .Params.activity.tags}}  
+                    <li class="activity-tag">{{.}}</li>
+                {{ end }}                          
+              </ul>
+            </div>
+            {{ .Content }}
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="footer">
+      {{ partial "footer.html" . }}
+    </footer> 
+{{ end }}
