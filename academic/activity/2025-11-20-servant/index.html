@@ -13,9 +13,9 @@ recommend that we put our API into it&rsquo;s own Haskell module. I created a ne
 module called <code>WebAPIType</code> which will contain the web API. Servant&rsquo;s whole bag
 is the specification of the API at the type level. So this module will contain
 that type or several types. Since we are working at the type level it makes
-sense that we need language extensions:</p><pre tabindex=0><code>{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE TypeOperators #-}
-</code></pre><p>I&rsquo;ll start by creating a single query for pulling all the Mega Man games which
+sense that we need language extensions:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-haskell data-lang=haskell><span style=display:flex><span><span style=color:#66d9ef>LANGUAGE</span> <span style=color:#66d9ef>DataKinds</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>LANGUAGE</span> <span style=color:#66d9ef>TypeOperators</span>
+</span></span></code></pre></div><p>I&rsquo;ll start by creating a single query for pulling all the Mega Man games which
 has the following schema:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>CREATE</span> <span style=color:#66d9ef>TABLE</span> <span style=color:#66d9ef>IF</span> <span style=color:#66d9ef>NOT</span> <span style=color:#66d9ef>EXISTS</span> games (
 </span></span><span style=display:flex><span>  game_id           BIGSERIAL <span style=color:#66d9ef>PRIMARY</span> <span style=color:#66d9ef>KEY</span>,
 </span></span><span style=display:flex><span>  slug              TEXT <span style=color:#66d9ef>NOT</span> <span style=color:#66d9ef>NULL</span> <span style=color:#66d9ef>UNIQUE</span> <span style=color:#66d9ef>CHECK</span> (is_valid_slug(slug)),
