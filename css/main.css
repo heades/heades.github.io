@@ -446,15 +446,21 @@ a {
   padding: 0;
   margin: 0;
 }
-.highlight {
-  min-width: 0;
+pre {
   overflow-x: auto;
-  width: 10px;
+  background: #e2e1e1;
+  color: black;
+  padding: 5px;
 }
-.highlight pre {
-  width: 10%;
-  overflow-x: auto;
-  white-space: pre;
+pre code {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    SF Mono,
+    Menlo,
+    Consolas,
+    Liberation Mono,
+    monospace;
 }
 .image-description-side-by-side img {
   margin: 5px;
