@@ -422,7 +422,7 @@ a {
   padding: 2px;
   padding-right: 5px;
   padding-left: 5px;
-  font-size: x-small;
+  font-size: small;
 }
 @media (min-width: 1100px) {
   .academic-post-content {
